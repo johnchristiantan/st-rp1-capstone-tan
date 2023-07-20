@@ -1,0 +1,12 @@
+{
+  "name": "st-rp1-capstone-tan-root",
+  "version": "1.0.0",
+  "description": "<br>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
