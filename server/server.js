@@ -1,11 +1,11 @@
-require('dotenv').config()
+require('dotenv').config() //npm install dotenv
 
-const express = require('express')
+const express = require('express') //npm install express || to be able to use CRUD
 const app = express()
 
 // SECURITY---------------------npm install cors
 const cors = require('cors')
-app.use(cors()) // middleware
+app.use(cors()) // middleware || Cross Origin Resource Sharing (CORS)
 app.use(express.json())
 // ----------------------------
 
@@ -14,6 +14,7 @@ const port = process.env.SERVERPORT || 3000
 const pool = require('./config/db')
 
 app.get('/users', async (req, res) => {
+    // res.send('Hello JC')
     try {
         const users = await pool.query('SELECT * FROM users')
         res.json(users.rows)
