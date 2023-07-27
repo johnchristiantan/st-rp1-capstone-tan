@@ -96,7 +96,7 @@ const EditUser = ({ user }) => {
 
                                     <div className="flex justify-between">
                                         <button className="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-orange-600">
-                                            Update
+                                            Save
                                         </button>
                                         <button
                                             className="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700"
