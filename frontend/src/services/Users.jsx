@@ -24,37 +24,41 @@ export async function getUsers() {
 }
 
 // EDIT/UPDATE User
-export async function editUser(userDetails) {
+export async function editUser(user) {
     try {
-        const response = await fetch(`http://localhost:8000/users/${userDetails.user_id}`), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: userDetails }),
-        })
+        const response = await fetch(
+            `http://localhost:8000/users/${user.user_id}`,
+            {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user),
+            }
+        )
 
         if (response.status === 200) {
-            return await response.json()
+            // return await response.json()
+            console.log(response)
         }
     } catch (error) {
         console.log('Error: ', error)
     }
 }
 
-// DELETE User
-export async function deleteUser(userId) {
-    try {
-        const confirmed = window.confirm(
-            'Are you sure you want to delete this user?'
-        )
-        if (confirmed) {
-            const response = await fetch(`http://localhost:8000/users/${userId}`),
-                {
-                    method: 'DELETE',
-                }
-            )
-            return await response.json()
-        }
-    } catch (error) {
-        console.log('Error: ', error)
-    }
-}
+// // DELETE User
+// export async function deleteUser(userId) {
+//     try {
+//         const confirmed = window.confirm(
+//             'Are you sure you want to delete this user?'
+//         )
+//         if (confirmed) {
+//             const response = await fetch(`http://localhost:8000/users/${userId}`),
+//                 {
+//                     method: 'DELETE',
+//                 }
+//             )
+//             return await response.json()
+//         }
+//     } catch (error) {
+//         console.log('Error: ', error)
+//     }
+// }
