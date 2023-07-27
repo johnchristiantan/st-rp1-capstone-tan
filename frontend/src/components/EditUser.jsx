@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 import { editUser } from '../services/Users'
 
-const EditUser = (user) => {
+const EditUser = ({ user }) => {
     // console.log('Galing sa Show Users', user)
     // console.log('Username: ', user.user['user_name'])
     const initial_users_data = {
         // user_id: user.user['user_id'] || '',
-        user_name: user.user['user_name'] || '',
-        password: user.user['password'] || '',
-        user_type: user.user['user_type'] || '',
+        user_name: user['user_name'] || '',
+        password: user['password'] || '',
+        user_type: user['user_type'] || '',
     }
     const [showModal, setShowModal] = useState(false)
     const [userUpdatedData, setUserUpdatedData] = useState(initial_users_data)
     //HANDLES THE UPDATE
     const handleSubmit = (e) => {
         e.preventDefault()
-        userUpdatedData.user_id = user.user['user_id']
+        userUpdatedData.user_id = user['user_id']
         editUser(userUpdatedData)
             .then(() => toggleModal())
             .catch((error) => {
@@ -61,9 +61,7 @@ const EditUser = (user) => {
                                         </div>
                                         <input
                                             className="h-5 rounded-md grow"
-                                            defaultValue={
-                                                user.user['user_name']
-                                            }
+                                            defaultValue={user['user_name']}
                                             onChange={handleOnChange}
                                             name="user_name"
                                         />
@@ -90,7 +88,7 @@ const EditUser = (user) => {
                                         </div>
                                         <input
                                             className="h-5 rounded-md grow"
-                                            defaultValue={user.user['password']}
+                                            defaultValue={user['user_type']}
                                             onChange={handleOnChange}
                                             name="user_type"
                                         />
@@ -98,7 +96,7 @@ const EditUser = (user) => {
 
                                     <div className="flex justify-between">
                                         <button className="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-orange-600">
-                                            Save
+                                            Update
                                         </button>
                                         <button
                                             className="px-4 py-2 font-bold text-white bg-gray-500 rounded hover:bg-gray-700"
