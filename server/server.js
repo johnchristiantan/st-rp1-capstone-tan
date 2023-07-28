@@ -16,7 +16,9 @@ const pool = require('./config/db')
 app.get('/users', async (req, res) => {
     // res.send('Hello JC')
     try {
-        const users = await pool.query('SELECT * FROM users')
+        const users = await pool.query(
+            'SELECT * FROM users ORDER BY user_id ASC'
+        )
         res.json(users.rows)
     } catch (err) {
         console.error(err.message)

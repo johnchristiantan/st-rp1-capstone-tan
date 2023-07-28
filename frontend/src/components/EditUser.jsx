@@ -75,7 +75,7 @@ const EditUser = ({ user }) => {
                                         <input
                                             type="password"
                                             className="h-5 rounded-md grow"
-                                            defaultValue={user.user['password']}
+                                            defaultValue={user['password']}
                                             onChange={handleOnChange}
                                             name="password"
                                         />
