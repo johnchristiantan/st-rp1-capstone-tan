@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { editUser } from '../services/Users'
 
-const EditUser = ({ user }) => {
+const EditUser = ({ user, handleEditAlertClose }) => {
     // console.log('Galing sa Show Users', user)
     // console.log('Username: ', user.user['user_name'])
     const initial_users_data = {
@@ -17,7 +17,10 @@ const EditUser = ({ user }) => {
         e.preventDefault()
         userUpdatedData.user_id = user['user_id']
         editUser(userUpdatedData)
-            .then(() => toggleModal())
+            .then(() => {
+                handleEditAlertClose()
+                toggleModal()
+            })
             .catch((error) => {
                 console.log(error.message)
             })
