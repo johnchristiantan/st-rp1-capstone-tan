@@ -48,7 +48,7 @@ export const ShowUsers = () => {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center w-full h-screen gap-4 overflow-x-auto ">
+            <div className="flex flex-col items-center justify-center w-full h-screen gap-4 mt-32 overflow-x-auto overflow-y-scroll">
                 {alertCreatedMessage && (
                     <div className="flex flex-row items-center justify-between p-2 text-xs text-left bg-green-100 rounded-lg">
                         <span className="font-semibold text-green-900">
@@ -85,7 +85,7 @@ export const ShowUsers = () => {
                 )}
 
                 <CreateUser handleCreatedAlertClose={handleCreatedAlertClose} />
-
+                {/* w-5/6 text-sm text-left text-gray-400" */}
                 <table className="w-5/6 text-sm text-left text-gray-400">
                     <thead className="text-xs text-gray-400 uppercase bg-gray-700">
                         <tr>

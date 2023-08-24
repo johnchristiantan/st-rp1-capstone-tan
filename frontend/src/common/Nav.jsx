@@ -44,7 +44,7 @@ const Nav = () => {
     const [open, setOpen] = useState(true)
     return (
         <>
-            <nav className="fixed w-full pb-12 pl-4 text-white bg-yellow-800 shadow-lg md:p-0 md-flex md:h-16">
+            <nav className=" fixed top-0 left-0 w-full pb-12 pl-4 text-white bg-amber-400 shadow-lg md:p-0 md-flex md:h-16">
                 <span className="absolute top-4 left-4">JC 😁</span>
                 <ul
                     className={`mt-14 md:mt-0 justify-around md:mx-24 md:h-16 ${
@@ -70,9 +70,9 @@ const Nav = () => {
                             </li>
                         )
                     })}
-                    <button className="p-1 mt-2 bg-red-600 rounded-md md:h-10 md:mt-3">
-                        Contact Me
-                    </button>
+                    {/* <button className="p-1 mt-2 bg-red-600 rounded-md md:h-10 md:mt-3"> */}
+                    {/* Contact Me */}
+                    {/* </button> */}
                 </ul>
                 <button onClick={() => setOpen(!open)}>
                     {open ? (
