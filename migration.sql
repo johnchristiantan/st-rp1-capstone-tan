@@ -19,16 +19,21 @@ CREATE SEQUENCE IF NOT EXISTS public.users_id_seq
 ALTER TABLE users ALTER COLUMN user_id SET DEFAULT nextval('users_id_seq'::regclass);
 
 CREATE TABLE "branches" (
-  "branch_code" varying character (255),
-  "branch_name" varying character (255),
-  "percent_share" double (2, 0),
-  PRIMARY KEY ("branch_code")
+  "branch_code"  character varying (255) Primary key,
+  "branch_name"  character varying (255),
+  "percent_share" decimal (2, 0)
+  );
+
+CREATE TABLE "discounts" (
+  "discount_code"  character varying (255) Primary key,
+  "discount_description"  character varying (255),
+  "percentage" decimal (2, 0)
 );
 
 CREATE TABLE "transactions" (
-  "transaction_id" varying character (255),
+  "transaction_id" character varying (255),
   "voucher_number" integer,
-  "branch_code" varying character (255),
+  "branch_code"  character varying (255),
   "customer_id" integer,
   "date" datetime,
   "total_amount" double (10, 2),
@@ -39,24 +44,19 @@ CREATE TABLE "availed_services" (
   "a_service_id" integer     ,
   "therapist_id" integer,
   "service_id" integer,
-  "discount_code" varying character (255),
+  "discount_code" character varying (255),
   "tip" Type,
   PRIMARY KEY ("a_service_id")
 );
 CREATE TABLE "services" (
-  "service_id" integer,
-  "service_name" varying character (255),
-  "service_type" varying character (255),
-  "price" double (10, 2),
+  "service_id"  serial ,
+  "service_name" character varying  (255),
+  "service_type" character varying  (255),
+  "price" decimal (10, 2),
   "minutes" integer,
-  "commission" double (10, 2),
+  "commission" decimal (10, 2),
   PRIMARY KEY ("service_id")
 );
 
 
-CREATE TABLE "discounts" (
-  "discount_code" varying character (255),
-  "discount_description" varying character (255),
-  "percentage" double (2, 0),
-  PRIMARY KEY ("discount_code")
-);
+
