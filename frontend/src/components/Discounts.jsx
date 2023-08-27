@@ -11,6 +11,16 @@ export default function Discounts() {
         setShowButton((prev) => !prev)
     }
     // ----------------------------------------------------------------
+
+    useEffect(() => {
+        getAllDiscounts()
+            .then((res) => {
+                setDiscounts(res)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [])
     return (
         <>
             <div className=" flex flex-col items-center justify-center h-screen bg-gray-10">
@@ -34,9 +44,7 @@ export default function Discounts() {
                             </div>
                         </div>
                         <div className="flex justify-between w-full space-y-2">
-                            <label className="self-center">
-                                Discount Description:
-                            </label>
+                            <label className="self-center">Description:</label>
                             <div className="flex flex-col ">
                                 <input
                                     className="p-1 text-black rounded "
@@ -47,9 +55,7 @@ export default function Discounts() {
                         </div>
 
                         <div className="flex justify-between w-full space-y-2">
-                            <label className="self-center">
-                                Percent Share:
-                            </label>
+                            <label className="self-center">Percentage:</label>
                             <div className="flex flex-col ">
                                 <input
                                     className="p-1 text-black rounded"
