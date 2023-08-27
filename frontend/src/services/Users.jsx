@@ -44,21 +44,15 @@ export async function editUser(user) {
     }
 }
 
-// // DELETE User
-// export async function deleteUser(userId) {
-//     try {
-//         const confirmed = window.confirm(
-//             'Are you sure you want to delete this user?'
-//         )
-//         if (confirmed) {
-//             const response = await fetch(`http://localhost:8000/users/${userId}`),
-//                 {
-//                     method: 'DELETE',
-//                 }
-//             )
-//             return await response.json()
-//         }
-//     } catch (error) {
-//         console.log('Error: ', error)
-//     }
-// }
+// DELETE User
+export async function deleteUser(user_id) {
+    try {
+        const response = await fetch(`http://localhost:8000/users/${user_id}`, {
+            method: 'DELETE',
+        })
+        console.log(response)
+        // return await response.json()
+    } catch (error) {
+        console.log('Error: ', error)
+    }
+}
