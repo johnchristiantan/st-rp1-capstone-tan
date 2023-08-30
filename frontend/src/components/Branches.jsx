@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react'
 import { getAllBranches } from '../services/BranchServices'
+import { BranchesAdd } from './BranchesAdd'
 
 export default function Branches() {
+    const [branches, setBranches] = useState([])
     const [showButton, setShowButton] = useState(false)
 
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
     }
-
-    const [branches, setBranches] = useState([
-        {
-            branch_code: 'MNL-1',
-            branch_name: 'xxxx',
-            percent_share: '0.25',
-        },
-    ])
 
     useEffect(() => {
         getAllBranches()
@@ -25,6 +19,19 @@ export default function Branches() {
                 console.log(error)
             })
     }, [])
+
+    const { branchesInputs, handleOnChange, handleOnSubmit } = BranchesAdd()
+
+    const handleBranchSubmit = () => {
+        handleOnSubmit()
+            .then((res) => {
+                setBranches(res)
+                setShowButton(false) // Hide the form after submission
+            })
+            .catch((error) => {
+                // Handle error if needed
+            })
+    }
 
     return (
         <>
@@ -58,7 +65,10 @@ export default function Branches() {
                     <button onClick={handleShowButton}>+</button>
                 </div>
                 {showButton && (
-                    <form className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12">
+                    <form
+                        className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
+                        onSubmit={handleOnSubmit}
+                    >
                         <div className="flex items-center justify-center w-full">
                             <h1 className="mb-2  text-[1.2rem] ">
                                 Branch Maintenance
@@ -69,6 +79,7 @@ export default function Branches() {
                             <label className="self-center">Branch Code</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded"
                                     type="text"
                                     name="branch_code"
@@ -79,6 +90,7 @@ export default function Branches() {
                             <label className="self-center">Branch Name:</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded "
                                     type="text"
                                     name="branch_name"
@@ -92,6 +104,7 @@ export default function Branches() {
                             </label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded"
                                     type="text"
                                     name="percent_share"

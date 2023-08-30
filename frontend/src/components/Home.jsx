@@ -1,5 +1,5 @@
 import React from 'react'
-import SpaHome from '../common/Spa2.jpg'
+import SpaHome from '../assets/images/Spa2.webp'
 
 export default function Home() {
     const backgroundStyle = {

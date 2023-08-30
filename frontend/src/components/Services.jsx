@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react'
-import { getAllServices } from '../services/SpaServices'
+import { getAllServices, createdService } from '../services/SpaServices'
+import { ServicesAdd } from './ServicesAdd'
 
 export default function Services() {
     const [showButton, setShowButton] = useState(false)
+    const [services, setServices] = useState([])
 
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
     }
 
-    const [services, setServices] = useState([
-        {
-            service_id: 'MNL-1-1',
-            service_name: 'xxxx',
-            service_type: 'Spa',
-            price: 1000,
-            minutes: 0,
-            commission: 0,
-        },
-    ])
+    // const [services, setServices] = useState([
+    //     {
+    //         service_id: 'MNL-1-1',
+    //         service_name: 'xxxx',
+    //         service_type: 'Spa',
+    //         price: 1000,
+    //         minutes: 0,
+    //         commission: 0,
+    //     },
+    // ])
 
     useEffect(() => {
         getAllServices()
@@ -28,6 +30,19 @@ export default function Services() {
                 console.log(error)
             })
     }, [])
+
+    const { servicesInputs, handleOnChange, handleOnSubmit } = ServicesAdd()
+
+    const handleServiceSubmit = () => {
+        handleOnSubmit()
+            .then((res) => {
+                setServices(res)
+                setShowButton(false) // Hide the form after submission
+            })
+            .catch((error) => {
+                // Handle error if needed
+            })
+    }
 
     return (
         <>
@@ -68,7 +83,10 @@ export default function Services() {
                     <button onClick={handleShowButton}>+</button>
                 </div>
                 {showButton && (
-                    <form className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12">
+                    <form
+                        className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
+                        onSubmit={handleOnSubmit}
+                    >
                         <div className="flex items-center justify-center w-full">
                             <h1 className="mb-2 text-xl">Services</h1>
                         </div>
@@ -77,6 +95,7 @@ export default function Services() {
                             <label className="self-center">Service ID</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded"
                                     type="text"
                                     name="service_id"
@@ -87,6 +106,7 @@ export default function Services() {
                             <label className="self-center">Service Name:</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded "
                                     type="text"
                                     name="service_name"
@@ -98,6 +118,7 @@ export default function Services() {
                             <label className="self-center">Service Type:</label>
                             <div className="flex flex-col w-1/2">
                                 <select
+                                    onChange={handleOnChange}
                                     className="w-full p-1 text-black rounded"
                                     name="service_type"
                                 >
@@ -112,6 +133,7 @@ export default function Services() {
                             <label className="self-center">Price:</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded"
                                     type="text"
                                     name="price"
@@ -123,6 +145,7 @@ export default function Services() {
                             <label className="self-center">Minutes:</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded"
                                     type="text"
                                     name="minutes"
@@ -134,6 +157,7 @@ export default function Services() {
                             <label className="self-center">Commission:</label>
                             <div className="flex flex-col ">
                                 <input
+                                    onChange={handleOnChange}
                                     className="p-1 text-black rounded"
                                     type="text"
                                     name="commission"
@@ -143,6 +167,7 @@ export default function Services() {
 
                         <div className="flex items-center justify-center w-full px-6 mt-4">
                             <input
+                                onChange={handleOnChange}
                                 className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600"
                                 type="submit"
                                 value="Submit"

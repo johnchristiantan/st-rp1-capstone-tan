@@ -77,6 +77,28 @@ app.get('/services', async (req, res) => {
     }
 })
 
+app.post('/services', async (req, res) => {
+    console.log(req.body)
+    try {
+        const {
+            service_id,
+            service_name,
+            service_type,
+            price,
+            minutes,
+            commission,
+        } = req.body
+
+        const newBranch = await pool.query(
+            'INSERT INTO services (service_id, service_name, service_type, price, minutes, commission ) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+            [service_id, service_name, service_type, price, minutes, commission]
+        )
+        res.json(newService.rows[0])
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
 // BRANCHES----------------------------------------------------------------
 app.get('/branches', async (req, res) => {
     try {

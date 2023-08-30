@@ -10,6 +10,7 @@ export async function getAllDiscounts() {
     }
 }
 
+// ADD
 export async function createdDiscount(discount_input) {
     try {
         const createdDiscount = await axios.post(baseURL, discount_input)
