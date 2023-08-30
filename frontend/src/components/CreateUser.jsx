@@ -6,6 +6,12 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     const password_value = useRef(null)
     const user_type_value = useRef(null)
 
+    const [showButton, setShowButton] = useState(false)
+
+    const handleShowButton = () => {
+        setShowButton((prev) => !prev)
+    }
+
     const [userDetails, setUserDetails] = useState({
         user_name: '',
         password: '',
@@ -83,70 +89,77 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
 
     return (
         <>
-            <form
-                onSubmit={handleSubmit}
-                className="flex flex-col justify-around w-10/12 p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
-            >
-                <div className="flex items-center justify-center w-full">
-                    <h1 className="mb-2 text-xl ">Create User</h1>
+            <div>
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500">
+                    <button onClick={handleShowButton}>+</button>
                 </div>
+                {showButton && (
+                    <form
+                        onSubmit={handleSubmit}
+                        className="flex flex-col justify-around w-10/12 p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
+                    >
+                        <div className="flex items-center justify-center w-full">
+                            <h1 className="mb-2 text-xl ">Create User</h1>
+                        </div>
 
-                <div className="flex justify-between w-full ">
-                    <label>Username:</label>
-                    <div className="flex flex-col ">
-                        <input
-                            className="p-1 text-black rounded"
-                            type="text"
-                            name="user_name"
-                            // defaultValue={userDetails.user_name}
-                            ref={user_name_value}
-                            onChange={handleUserChange}
-                        />
-                        <div className="text-red-400 x-[0.65rem] font-semibold my-1 ">
-                            {formErrors.user_name}
+                        <div className="flex justify-between w-full ">
+                            <label>Username:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    className="p-1 text-black rounded"
+                                    type="text"
+                                    name="user_name"
+                                    // defaultValue={userDetails.user_name}
+                                    ref={user_name_value}
+                                    onChange={handleUserChange}
+                                />
+                                <div className="text-red-400 x-[0.65rem] font-semibold my-1 ">
+                                    {formErrors.user_name}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="flex justify-between w-full ">
-                    <label>Password:</label>
-                    <div className="flex flex-col ">
-                        <input
-                            className="p-1 text-black rounded "
-                            type="password"
-                            name="password"
-                            // defaultValue={userDetails.password}
-                            ref={password_value}
-                            onChange={handleUserChange}
-                        />
-                        <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
-                            {formErrors.password}
+                        <div className="flex justify-between w-full ">
+                            <label>Password:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    className="p-1 text-black rounded "
+                                    type="password"
+                                    name="password"
+                                    // defaultValue={userDetails.password}
+                                    ref={password_value}
+                                    onChange={handleUserChange}
+                                />
+                                <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
+                                    {formErrors.password}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="flex justify-between w-full">
-                    <label className="">Usertype:</label>
-                    <div className="flex flex-col ">
-                        <input
-                            className="p-1 text-black rounded"
-                            type="text"
-                            name="user_type"
-                            // defaultValue={userDetails.user_type}
-                            ref={user_type_value}
-                            onChange={handleUserChange}
-                        />
-                        <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
-                            {formErrors.user_type}
+                        <div className="flex justify-between w-full">
+                            <label className="">Usertype:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    className="p-1 text-black rounded"
+                                    type="text"
+                                    name="user_type"
+                                    // defaultValue={userDetails.user_type}
+                                    ref={user_type_value}
+                                    onChange={handleUserChange}
+                                />
+                                <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
+                                    {formErrors.user_type}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="flex items-center justify-center w-full">
-                    <input
-                        className="w-1/3 p-1 rounded-full bg-amber-700 hover:amber-600"
-                        type="submit"
-                        value="Submit"
-                    />
-                </div>
-            </form>
+                        <div className="flex items-center justify-center w-full">
+                            <input
+                                className="w-1/3 p-1 rounded-full bg-amber-700 hover:amber-600"
+                                type="submit"
+                                value="Submit"
+                            />
+                        </div>
+                    </form>
+                )}
+            </div>
         </>
     )
 }

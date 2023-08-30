@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAllServices } from '../services/Services'
+import { getAllServices } from '../services/SpaServices'
 
 export default function NewTransaction() {
     const [servicesDetails, setServicesDetails] = useState([

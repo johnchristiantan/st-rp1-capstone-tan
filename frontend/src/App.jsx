@@ -8,6 +8,7 @@ import Branches from './components/Branches'
 import Services from './components/Services'
 import Discounts from './components/Discounts'
 import Settings from './components/Settings'
+import Home from './components/Home'
 
 function App() {
     return (
@@ -16,7 +17,8 @@ function App() {
             {/* <ShowUsers /> */}
             <Nav />
             <Routes>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/new-transaction" element={<NewTransaction />} />
                 <Route path="/branches" element={<Branches />} />
                 <Route path="/services" element={<Services />} />

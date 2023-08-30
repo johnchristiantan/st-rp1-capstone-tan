@@ -85,7 +85,7 @@ export const ShowUsers = () => {
                 )}
 
                 <CreateUser handleCreatedAlertClose={handleCreatedAlertClose} />
-                {/* w-5/6 text-sm text-left text-gray-400" */}
+
                 <table className="w-5/6 text-sm text-left text-gray-400">
                     <thead className="text-xs text-gray-400 uppercase bg-gray-700">
                         <tr>

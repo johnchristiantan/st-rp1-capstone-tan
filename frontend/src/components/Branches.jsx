@@ -4,6 +4,10 @@ import { getAllBranches } from '../services/BranchServices'
 export default function Branches() {
     const [showButton, setShowButton] = useState(false)
 
+    const handleShowButton = () => {
+        setShowButton((prev) => !prev)
+    }
+
     const [branches, setBranches] = useState([
         {
             branch_code: 'MNL-1',
@@ -11,10 +15,6 @@ export default function Branches() {
             percent_share: '0.25',
         },
     ])
-
-    const handleShowButton = () => {
-        setShowButton((prev) => !prev)
-    }
 
     useEffect(() => {
         getAllBranches()
@@ -28,8 +28,8 @@ export default function Branches() {
 
     return (
         <>
-            <div className=" flex flex-col items-center justify-center h-screen bg-gray-10">
-                <div className="flex flex-col w-[20rem] p-2 bg-slate-500">
+            <div className="flex flex-col items-center justify-start h-screen pt-16 bg-gray-10">
+                <div className="flex flex-col w-[25rem] p-2 bg-slate-500 ">
                     <div className="flex text-[0.8rem] w-full justify-around text-white ">
                         <div>Branch Code</div>
                         <div>Branch Name</div>
@@ -54,11 +54,11 @@ export default function Branches() {
                         </>
                     )}
                 </div>
-                <div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500">
                     <button onClick={handleShowButton}>+</button>
                 </div>
                 {showButton && (
-                    <form className="flex flex-col justify-around w-10/12 p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12">
+                    <form className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12">
                         <div className="flex items-center justify-center w-full">
                             <h1 className="mb-2  text-[1.2rem] ">
                                 Branch Maintenance

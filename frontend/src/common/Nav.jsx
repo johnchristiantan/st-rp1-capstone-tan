@@ -1,12 +1,21 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FaBars } from 'react-icons/fa'
+import { FaUserCircle } from 'react-icons/fa'
+import { AiOutlineHome } from 'react-icons/ai'
+import logoImage from '../common/PATH.png'
+
 // import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 const Nav = () => {
     const pages = [
         {
+            name: 'Home',
+            link: '/home',
+        },
+        {
             name: 'Dashboard',
-            link: '/',
+            link: '/dashboard',
         },
         {
             name: 'New Transaction',
@@ -44,8 +53,10 @@ const Nav = () => {
     const [open, setOpen] = useState(true)
     return (
         <>
-            <nav className=" fixed top-0 left-0 w-full pb-12 pl-4 text-white bg-amber-400 shadow-lg md:p-0 md-flex md:h-16">
-                <span className="absolute top-4 left-4">JC 😁</span>
+            <nav className="fixed top-0 left-0 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
+                <span className="absolute top-4 left-4">
+                    <img src={logoImage} alt="Logo" className="mr-2" />{' '}
+                </span>
                 <ul
                     className={`mt-14 md:mt-0 justify-around md:mx-24 md:h-16 ${
                         open && 'hidden'
@@ -74,16 +85,18 @@ const Nav = () => {
                     {/* Contact Me */}
                     {/* </button> */}
                 </ul>
+
                 <button onClick={() => setOpen(!open)}>
-                    {open ? (
-                        <span className="absolute text-2xl md:hidden right-4 top-4">
-                            🍔
-                        </span>
-                    ) : (
-                        <span className="absolute text-2xl md:hidden right-4 top-4">
-                            🍟
-                        </span>
-                    )}
+                    <span className="absolute flex items-center text-2xl md:hidden right-4 top-4">
+                        <FaUserCircle className="mr-2 text-white" />
+                        <AiOutlineHome className="mr-2 text-white" />
+
+                        {open ? (
+                            <FaBars style={{ color: 'white' }} />
+                        ) : (
+                            <FaBars style={{ color: 'red' }} />
+                        )}
+                    </span>
                 </button>
             </nav>
         </>
