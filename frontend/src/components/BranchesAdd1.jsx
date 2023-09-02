@@ -16,8 +16,7 @@ export function BranchesAdd() {
         }))
     }
 
-    const handleOnSubmit = (e) => {
-        e.preventdefault()
+    const handleOnSubmit = () => {
         return createdBranch(branchesInputs)
             .then(() => getAllBranches())
             .catch((error) => {

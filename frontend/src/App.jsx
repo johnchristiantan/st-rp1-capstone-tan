@@ -17,7 +17,7 @@ function App() {
             {/* <ShowUsers /> */}
             <Nav />
             <Routes>
-                <Route path="/home" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/new-transaction" element={<NewTransaction />} />
                 <Route path="/branches" element={<Branches />} />

@@ -11,6 +11,7 @@ export async function getAllBranches() {
 }
 
 export async function createdBranch(branch_input) {
+    console.log(branch_input)
     try {
         const createdBranch = await axios.post(baseURL, branch_input)
         return createdBranch.data
@@ -20,6 +21,7 @@ export async function createdBranch(branch_input) {
 }
 
 export async function editBranch(branch_input) {
+    console.log(branch_input)
     try {
         const editBranch = await axios.put(
             `${baseURL}/${branch_input.branch_code}`,

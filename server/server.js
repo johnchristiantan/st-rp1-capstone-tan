@@ -103,7 +103,7 @@ app.post('/services', async (req, res) => {
 app.get('/branches', async (req, res) => {
     try {
         const branches = await pool.query(
-            'SELECT * FROM branches ORDER BY branch_code ASC'
+            'SELECT * FROM branches ORDER BY created_at ASC'
         )
         res.json(branches.rows)
     } catch (err) {
