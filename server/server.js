@@ -182,18 +182,18 @@ app.post('/discounts', async (req, res) => {
     }
 })
 
-// app.delete('/discounts/:discount_code', async (req, res) => {
-//     try {
-//         const { discount_code } = req.params
-//         const deleteDiscount = await pool.query(
-//             'DELETE FROM discounts WHERE discount_code = $1',
-//             [discount_code]
-//         )
-//         res.json('Discount has been deleted!')
-//     } catch (err) {
-//         console.error(err.message)
-//     }
-// })
+app.delete('/discounts/:discount_code', async (req, res) => {
+    try {
+        const { discount_code } = req.params
+        const deleteDiscount = await pool.query(
+            'DELETE FROM discounts WHERE discount_code = $1',
+            [discount_code]
+        )
+        res.json('Discount has been deleted!')
+    } catch (err) {
+        console.error(err.message)
+    }
+})
 
 // update discounts
 app.put('/branches/:b_code', async (req, res) => {
