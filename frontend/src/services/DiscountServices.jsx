@@ -19,3 +19,27 @@ export async function createdDiscount(discount_input) {
         console.log('Error: ', error)
     }
 }
+
+export async function deleteDiscount(discount_input) {
+    try {
+        const deleteDiscount = await axios.delete(
+            `${baseURL}/${discount_input}`
+        )
+        return deleteDiscount.data
+    } catch (error) {
+        console.log('Error: ', error)
+    }
+}
+
+export async function editDiscount(discount_input) {
+    console.log(discount_input)
+    try {
+        const editDiscount = await axios.put(
+            `${baseURL}/${discount_input.discount_code}`,
+            discount_input
+        )
+        return editDiscount.data
+    } catch (error) {
+        console.log('Error: ', error)
+    }
+}

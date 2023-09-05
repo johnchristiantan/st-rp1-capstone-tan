@@ -1,5 +1,8 @@
+// THIS IS A COPY WHERE ADD FUNCTION IS STILL LINKED TO BranchesAdd.jsx
+
 import { useEffect, useState } from 'react'
 import { getAllServices, createdService } from '../services/SpaServices'
+import { ServicesAdd } from './ServicesAdd'
 
 export default function Services() {
     const [showButton, setShowButton] = useState(false)
@@ -7,38 +10,6 @@ export default function Services() {
 
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
-    }
-
-    //ServicesAdd
-    const [servicesInputs, setServicesInputs] = useState({
-        service_id: '',
-        service_name: '',
-        service_type: '',
-        price: null,
-        minutes: null,
-        commission: null,
-    })
-
-    //ServicesAdd
-    const handleOnChange = (e) => {
-        const { name, value } = e.target
-        setServicesInputs((prev) => ({
-            ...prev,
-            [name]: value,
-        }))
-    }
-    //ServicesAdd
-    const handleOnSubmit = () => {
-        return createdService(servicesInputs)
-            .then(() => getAllServices())
-            .then((res) => {
-                setServices(res)
-                setShowButton(false) // Hide the form after submission
-            })
-            .catch((error) => {
-                console.log('Error creating or fetching services:', error)
-                throw error // Rethrow the error to handle it in the main component if needed
-            })
     }
 
     useEffect(() => {
@@ -50,6 +21,19 @@ export default function Services() {
                 console.log(error)
             })
     }, [])
+
+    const { servicesInputs, handleOnChange, handleOnSubmit } = ServicesAdd()
+
+    const handleServiceSubmit = () => {
+        handleOnSubmit()
+            .then((res) => {
+                setServices(res)
+                setShowButton(false) // Hide the form after submission
+            })
+            .catch((error) => {
+                // Handle error if needed
+            })
+    }
 
     return (
         <>

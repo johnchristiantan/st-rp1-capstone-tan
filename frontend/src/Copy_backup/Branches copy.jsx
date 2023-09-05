@@ -1,3 +1,5 @@
+// THIS IS A COPY WHERE ADD FUNCTION IS STILL LINKED TO BranchesAdd.jsx
+
 import { useEffect, useState, useRef } from 'react'
 import { getAllBranches } from '../services/BranchServices'
 import {
@@ -10,7 +12,7 @@ export default function Branches() {
     const [branches, setBranches] = useState([])
     const [showCreateForm, setShowCreateForm] = useState(false)
     const [showSelectedBranch, setShowSelectedBranch] = useState(false)
-    const [selectedBranch, setSelectedBranch] = useState(null) //State Variable for Selected Branch
+    const [selectedBranch, setSelectedBranch] = useState(null)
     const [createBranchForm, setCreateBranchForm] = useState(false)
     const [isCreateBranchFormSubmitted, setIsCreateBranchFormSubmitted] =
         useState(false)
@@ -48,12 +50,19 @@ export default function Branches() {
     }
 
     const handleOnChangeEdit = (e) => {
+        // setInputChanges(selectedBranch)
         const { name, value } = e.target
         setSelectedBranch((prev) => ({
             ...prev,
             [name]: value,
         }))
     }
+
+    // const { branchesInputs, handleOnChange, handleOnSubmit } = BranchesAdd()
+
+    const branch_code_ur = useRef(null)
+    const branch_name_ur = useRef(null)
+    const percent_share_ur = useRef(null)
 
     useEffect(() => {
         getAllBranches()
@@ -65,12 +74,7 @@ export default function Branches() {
             })
     }, [isCreateBranchFormSubmitted, isDeleted, isEdited]) // auto reload when submitted
 
-    // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-    const branch_code_ur = useRef(null)
-    const branch_name_ur = useRef(null)
-    const percent_share_ur = useRef(null)
-
-    // This handles the selection of a branch (1/2)
+    // Define the handleSelectBranch function that will be called when a branch is double-clicked:
     const handleSelectBranch = (branch) => {
         console.log(branch)
         setShowCreateForm(false)
@@ -80,9 +84,9 @@ export default function Branches() {
         branch_code_ur.current.value = branch.branch_code
         branch_name_ur.current.value = branch.branch_name
         percent_share_ur.current.value = branch.percent_share
+        // console.log('Selected Branch Code:', branch.branch_code) // Output the branch code
     }
 
-    //Handle delete (1/1)
     const handleDeleteBranch = (branch_code) => {
         deleteBranch(branch_code)
             .then((res) => {
@@ -93,11 +97,6 @@ export default function Branches() {
                 console.log(error)
             })
     }
-
-    //Form Submission for Editing (2/)
-    // This function is called when the user submits the edit form.
-    // It creates a new object (mergeObject) by merging the changes made in the input fields (inputChanges) with the original selected branch (selectedBranch).
-    // Then, it sends a request to edit the branch using the editBranch function from the service. If the edit is successful, it displays an alert and updates the isEdited state variable to trigger a reload of the branch list.
     const handleEditSubmit = (e) => {
         e.preventDefault()
         const mergeObject = { ...selectedBranch, ...inputChanges }
@@ -127,7 +126,7 @@ export default function Branches() {
                             return (
                                 <div
                                     key={index}
-                                    onClick={() => handleSelectBranch(branch)} // This onClick handler triggers the selection of a branch (2/2)
+                                    onClick={() => handleSelectBranch(branch)}
                                     className="cursor-pointer"
                                 >
                                     <div className="cursor-pointer flex text-[0.8rem] w-full justify-around text-black bg-white mt-2">
@@ -230,7 +229,7 @@ export default function Branches() {
                             <label className="self-center">Branch Code</label>
                             <div className="flex flex-col ">
                                 <input
-                                    ref={branch_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    ref={branch_code_ur}
                                     onChange={handleOnChangeEdit}
                                     className="p-1 text-black rounded"
                                     type="text"
@@ -248,7 +247,7 @@ export default function Branches() {
                             <label className="self-center">Branch Name:</label>
                             <div className="flex flex-col ">
                                 <input
-                                    ref={branch_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    ref={branch_name_ur}
                                     onChange={handleOnChangeEdit}
                                     className="p-1 text-black rounded "
                                     type="text"
@@ -268,7 +267,7 @@ export default function Branches() {
                             </label>
                             <div className="flex flex-col ">
                                 <input
-                                    ref={percent_share_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    ref={percent_share_ur}
                                     onChange={handleOnChangeEdit}
                                     className="p-1 text-black rounded"
                                     type="text"
@@ -286,7 +285,7 @@ export default function Branches() {
                             <input
                                 className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
                                 type="submit"
-                                value="Update"
+                                value="Edit"
                             />
                             <input
                                 className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "

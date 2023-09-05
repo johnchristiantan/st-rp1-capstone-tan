@@ -2,6 +2,7 @@ import React from 'react'
 
 function DiscountList({ discounts }) {
     return (
+        //DiscountList
         <div className="flex flex-col w-[25rem] p-2 bg-slate-500">
             <div className="flex text-[0.8rem] w-full justify-around text-white bg-slate-500">
                 <div>Discount Code</div>
