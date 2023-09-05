@@ -1,28 +1,16 @@
 import { useEffect, useState, useRef } from 'react'
-import {
-    getAllServices,
-    createdService,
-    deleteService,
-    // editService,
-} from '../services/SpaServices'
+import { getAllServices, createdService } from '../services/SpaServices'
 
 export default function Services() {
     const [showButton, setShowButton] = useState(false)
     const [services, setServices] = useState([])
-    const [isDeleted, setIsDeleted] = useState(false)
 
-    // This handles the selection of a discount
     const [showServiceCreateForm, setShowServiceCreateForm] = useState(false) // This handles the selection of a discount (1/6)
     const [showSelectedService, setShowSelectedService] = useState(false) // This handles the selection of a discount (2/6)
     const [selectedService, setSelectedService] = useState(null) // This handles the selection of a discount (3/6)
 
-    // Confirmation dialog state
-    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-    const [serviceToDelete, setServiceToDelete] = useState(null)
-
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
-        setShowServiceCreateForm((prev) => !prev)
     }
 
     //ServicesAdd
@@ -65,7 +53,7 @@ export default function Services() {
             .catch((error) => {
                 console.log(error)
             })
-    }, [isDeleted, showServiceCreateForm])
+    }, [])
 
     // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
     const service_id_ur = useRef(null)
@@ -102,38 +90,12 @@ export default function Services() {
         }
     }
 
-    // Function to toggle the confirmation dialog
-    const toggleDeleteConfirmation = (service) => {
-        setServiceToDelete(service)
-        setShowDeleteConfirmation(!showDeleteConfirmation)
-    }
-
-    // Function to handle delete confirmation
-    const handleDeleteConfirmation = () => {
-        if (serviceToDelete) {
-            deleteService(serviceToDelete.service_id)
-                .then(() => {
-                    setIsDeleted((prev) => !prev)
-                    setShowSelectedService(false)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        }
-        setShowDeleteConfirmation(false)
-    }
-
     const handleOnChangeEdit = (e) => {
         const { name, value } = e.target
         setSelectedService((prev) => ({
             ...prev,
             [name]: value,
         }))
-    }
-
-    const handleOnCancelEdit = () => {
-        setShowServiceCreateForm(false)
-        setShowSelectedService((prev) => !prev)
     }
 
     return (
@@ -390,54 +352,15 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-around w-full gap-2 px-6 mt-4 ">
+                        <div className="flex items-center justify-center w-full px-6 mt-4">
                             <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
+                                onChange={handleOnChange}
+                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600"
                                 type="submit"
-                                value="Update"
-                            />
-                            <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
-                                type="button"
-                                value="Delete"
-                                onClick={() =>
-                                    toggleDeleteConfirmation(selectedService)
-                                }
-                            />
-                            <input
-                                className="w-1/3 p-1 rounded-full bg-slate-900 hover:bg-teal-600 "
-                                type="button"
-                                onClick={handleOnCancelEdit}
-                                value="Cancel"
+                                value="Submit"
                             />
                         </div>
                     </form>
-                )}
-                {/* Delete confirmation dialog */}
-                {showDeleteConfirmation && (
-                    <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-75">
-                        <div className="p-4 bg-white rounded-lg">
-                            <p className="text-lg">
-                                Are you sure you want to delete this service?
-                            </p>
-                            <div className="flex justify-end mt-4">
-                                <button
-                                    className="px-3 py-1 mr-2 text-white bg-red-500 rounded"
-                                    onClick={handleDeleteConfirmation}
-                                >
-                                    Confirm
-                                </button>
-                                <button
-                                    className="px-3 py-1 text-gray-800 bg-gray-400 rounded"
-                                    onClick={() =>
-                                        setShowDeleteConfirmation(false)
-                                    }
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 )}
             </div>
         </>

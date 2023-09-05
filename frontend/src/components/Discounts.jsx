@@ -9,9 +9,12 @@ import {
 export default function Discounts() {
     const [showButton, setShowButton] = useState(false)
     const [discounts, setDiscounts] = useState([])
+
+    // This handles the selection of a discount
     const [showDiscountCreateForm, setShowDiscountCreateForm] = useState(false) // This handles the selection of a discount (1/6)
     const [showSelectedDiscount, setShowSelectedDiscount] = useState(false) // This handles the selection of a discount (2/6)
     const [selectedDiscount, setSelectedDiscount] = useState(null) // This handles the selection of a discount (3/6)
+
     const [isDeleted, setIsDeleted] = useState(false)
     const [inputChanges, setInputChanges] = useState(selectedDiscount)
     const [isEdited, setIsEdited] = useState(false)
@@ -88,10 +91,6 @@ export default function Discounts() {
         setShowDiscountCreateForm(false)
         setSelectedDiscount(discount)
         setShowSelectedDiscount(true)
-
-        // discount_code_ur.current.value = discount.discount_code
-        // discount_description_ur.current.value = discount.discount_description
-        // percentage_ur.current.value = discount.percentage
 
         // Make sure to check if the refs are defined before setting their values
         if (discount_code_ur.current) {

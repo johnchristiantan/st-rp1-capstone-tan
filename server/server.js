@@ -99,6 +99,35 @@ app.post('/services', async (req, res) => {
     }
 })
 
+// app.delete('/services/:service_id', async (req, res) => {
+//     try {
+//         const { service_id } = req.params
+//         const deleteService = await pool.query(
+//             'DELETE FROM services WHERE service_id = $1',
+//             [service_id]
+//         )
+//         res.json('Service has been deleted!')
+//     } catch (err) {
+//         console.error(err.message)
+//     }
+// })
+
+app.delete('/services/:service_id', async (req, res) => {
+    try {
+        const { service_id } = req.params
+
+        // Perform the delete operation using service_id as a string
+        const deleteService = await pool.query(
+            'DELETE FROM services WHERE service_id = $1',
+            [service_id]
+        )
+        res.json('Service has been deleted!')
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).json({ error: 'Internal server error' })
+    }
+})
+
 // BRANCHES----------------------------------------------------------------
 app.get('/branches', async (req, res) => {
     try {
@@ -196,21 +225,23 @@ app.delete('/discounts/:discount_code', async (req, res) => {
 })
 
 // update discounts
-app.put('/branches/:b_code', async (req, res) => {
+app.put('/discounts/:discount_code', async (req, res) => {
     try {
-        const { b_code } = req.params
+        const { discount_code } = req.params
 
-        const { branch_name, percent_share } = req.body
-        const updateBranch = await pool.query(
-            'UPDATE branches SET  branch_name = $1, percent_share = $2 WHERE branch_code = $3 RETURNING *',
-            [branch_name, percent_share, b_code]
+        const { discount_description, percentage } = req.body
+        const updateDiscount = await pool.query(
+            'UPDATE discounts SET  discount_description = $1, percentage = $2 WHERE discount_code = $3 RETURNING *',
+            [discount_description, percentage, discount_code]
         )
 
-        res.json(updateBranch.rows[0])
+        res.json(updateDiscount.rows[0])
     } catch (err) {
         console.error(err.message)
     }
 })
+
+// ALWAYS AT THE END OF THIS
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

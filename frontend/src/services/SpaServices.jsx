@@ -20,3 +20,27 @@ export async function createdService(service_input) {
         console.log('Error: ', error)
     }
 }
+
+//DELETE
+export async function deleteService(service_input) {
+    try {
+        const deleteService = await axios.delete(`${baseURL}/${service_input}`)
+        return deleteService.data
+    } catch (error) {
+        console.log('Error: ', error)
+    }
+}
+
+//EDIT
+export async function editService(service_input) {
+    console.log(service_input)
+    try {
+        const editService = await axios.put(
+            `${baseURL}/${service_input.service_id}`,
+            service_input
+        )
+        return editService.data
+    } catch (error) {
+        console.log('Error: ', error)
+    }
+}

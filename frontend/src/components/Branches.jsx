@@ -32,7 +32,12 @@ export default function Branches() {
         e.preventDefault()
         console.log('Created successfully')
         createdBranch(createBranchForm)
-            .then((res) => setIsCreateBranchFormSubmitted((prev) => !prev))
+            .then((res) => {
+                setIsCreateBranchFormSubmitted((prev) => !prev)
+
+                // Hide the form after successful branch creation
+                setShowCreateForm(false)
+            })
             .catch((error) => {
                 console.log('Error creating or fetching branches:', error)
                 throw error // Rethrow the error to handle it in the main component if needed
