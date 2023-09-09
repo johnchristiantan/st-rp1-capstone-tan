@@ -9,6 +9,7 @@ import Services from './components/Services'
 import Discounts from './components/Discounts'
 import Settings from './components/Settings'
 import Home from './components/Home'
+import LoginForm from './components/LoginForm'
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/new-transaction" element={<NewTransaction />} />
+                <Route path="/login" element={<LoginForm />} />
                 <Route path="/branches" element={<Branches />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/discounts" element={<Discounts />} />

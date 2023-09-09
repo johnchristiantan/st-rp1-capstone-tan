@@ -311,11 +311,6 @@ export default function Discounts() {
                                 className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
                                 type="button"
                                 value="Delete"
-                                // onClick={() =>
-                                //     handleDeleteDiscount(
-                                //         selectedDiscount.discount_code
-                                //     )
-                                // }
                                 onClick={() =>
                                     toggleDeleteConfirmation(selectedDiscount)
                                 }
