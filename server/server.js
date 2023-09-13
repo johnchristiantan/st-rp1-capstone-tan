@@ -39,7 +39,7 @@ app.put('/users/:user_id', async (req, res) => {
     }
 })
 
-app.post('/user', async (req, res) => {
+app.post('/users', async (req, res) => {
     try {
         const { user_name, password, user_type } = req.body
         const newUser = await pool.query(

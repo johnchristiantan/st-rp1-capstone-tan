@@ -53,7 +53,7 @@ const Nav = () => {
     const [open, setOpen] = useState(true)
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
+            <nav className="fixed top-0 left-0 z-10 w-full pb-8 pl-4 m-0 overflow-hidden text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
                 <span className="absolute top-4 left-4">
                     <img src={logoImage} alt="Logo" className="mr-2" />{' '}
                 </span>
@@ -71,19 +71,9 @@ const Nav = () => {
                                 >
                                     {page.name}
                                 </Link>
-                                {/* <a
-                                    href={page.link}
-                                    onClick={() => setOpen(!open)}
-                                >
-                                    {' '}
-                                    {page.name}
-                                </a> */}
                             </li>
                         )
                     })}
-                    {/* <button className="p-1 mt-2 bg-red-600 rounded-md md:h-10 md:mt-3"> */}
-                    {/* Contact Me */}
-                    {/* </button> */}
                 </ul>
 
                 <button onClick={() => setOpen(!open)}>
