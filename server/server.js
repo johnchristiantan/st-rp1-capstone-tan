@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bcrypt = require('bcryptjs') //encrypt | npm install bcryptjs
 
 const express = require('express')
 const app = express()
@@ -42,9 +43,11 @@ app.put('/users/:user_id', async (req, res) => {
 app.post('/user', async (req, res) => {
     try {
         const { user_name, password, user_type } = req.body
+        const salt = bcrypt.genSaltSync(10)
+        const hashedPassword = bcrypt.hashSync(password, salt)
         const newUser = await pool.query(
             'INSERT INTO users (user_name, password, user_type) VALUES($1, $2, $3) RETURNING *',
-            [user_name, password, user_type]
+            [user_name, hashedPassword, user_type]
         )
         res.json(newUser.rows[0])
     } catch (err) {
@@ -239,6 +242,20 @@ app.put('/discounts/:discount_code', async (req, res) => {
     } catch (err) {
         console.error(err.message)
     }
+})
+
+// LOGIN
+app.post('/login', async (req, res) => {
+    const { user_name, password } = req.body
+    const user = await pool.query('SELECT * FROM users where user_name =$1', [
+        user_name,
+    ])
+    console.log(user.rows.password)
+    if (user.rows.password) {
+        const isMatch = await bcrypt.compare(password, user.rows.password)
+        res.json(user.rows)
+    }
+    res.json(user.rows)
 })
 
 // ALWAYS AT THE END OF THIS
