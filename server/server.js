@@ -258,6 +258,66 @@ app.post('/login', async (req, res) => {
     res.json(user.rows)
 })
 
+// transactions----------------------------------------------------------------
+
+app.get('/new-transaction', async (req, res) => {
+    try {
+        const transactions = await pool.query(
+            'SELECT * FROM transactions ORDER BY transaction_id ASC'
+        )
+        res.json(transactions.rows)
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.post('/new-transaction', async (req, res) => {
+    console.log(req.body)
+    try {
+        const {
+            transaction_id,
+            voucher_number,
+            transaction_date,
+            total_amount,
+            status,
+            branch_code,
+            customer_name,
+        } = req.body
+
+        const newTransaction = await pool.query(
+            'INSERT INTO transactions ( transaction_id, voucher_number, transaction_date, total_amount, status, branch_code, customer_name) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            [
+                transaction_id,
+                voucher_number,
+                transaction_date,
+                total_amount,
+                status,
+                branch_code,
+                customer_name,
+            ]
+        )
+        res.json(newTransaction.rows[0])
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.delete('/new-transaction/:transaction_id', async (req, res) => {
+    try {
+        const { transaction_id } = req.params
+        console.log('Deleting transaction with ID:', transaction_id) // Add this log statement
+        const deleteTransaction = await pool.query(
+            'DELETE FROM transactions WHERE transaction_id = $1',
+            [transaction_id]
+        )
+        console.log('Transaction deleted:', deleteTransaction.rows)
+        res.json('Transaction has been deleted!')
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).json({ error: 'Internal server error' })
+    }
+})
+
 // ALWAYS AT THE END OF THIS
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
