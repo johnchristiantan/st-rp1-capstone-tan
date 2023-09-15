@@ -16,12 +16,6 @@ export default function NewTransaction() {
             service_type: '',
         },
     ])
-
-    const [selectedServiceType, setSelectedServiceType] = useState('') // Add a new state variable to track the selected service type
-    const [filteredServiceNames, setFilteredServiceNames] = useState([]) // Add a state variable to store the filtered service names
-    const [selectedServiceName, setSelectedServiceName] = useState('')
-    const [selectedServicePrice, setSelectedServicePrice] = useState(0)
-
     const [showTransactionCreateForm, setShowTransactionCreateForm] =
         useState(false) // This handles the selection of a transaction (1/6)
     const [showSelectedTransaction, setShowSelectedTransaction] =
@@ -33,39 +27,6 @@ export default function NewTransaction() {
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [transactionToDelete, setTransactionToDelete] = useState(null)
-
-    // Use useState to manage specificServices
-    const [specificServices, setSpecificServices] = useState([])
-
-    useEffect(() => {
-        getAllServices()
-            .then((res) => {
-                setServicesDetails(res)
-                console.log(res)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }, [])
-
-    useEffect(() => {
-        // Filter the service names based on the selected service type
-        const filteredNames = specificServices.map(
-            (service) => service.service_name
-        )
-        setFilteredServiceNames(filteredNames)
-    }, [specificServices])
-
-    useEffect(() => {
-        loadTransactions()
-        getAllTransactions()
-            .then((res) => {
-                setTransactions(res)
-            })
-            .catch((error) => {
-                console.log('Error fetching transactions:', error)
-            })
-    }, [isDeleted])
 
     // Function to toggle the confirmation dialog
     const toggleDeleteConfirmation = (transaction) => {
@@ -92,41 +53,6 @@ export default function NewTransaction() {
         setShowDeleteConfirmation(false)
     }
 
-    const handleServiceTypeChange = (event) => {
-        const newServiceType = event.target.value
-        setSelectedServiceType(newServiceType)
-
-        // Filter the service names based on the selected service type
-        const filteredNames = servicesDetails
-            .filter((service) => service.service_type === newServiceType)
-            .map((service) => service.service_name)
-
-        setFilteredServiceNames(filteredNames)
-        setSelectedServiceName('')
-
-        // Update specificServices using setSpecificServices
-        const updatedSpecificServices = servicesDetails.filter(
-            (service) => service.service_type === newServiceType
-        )
-        setSpecificServices(updatedSpecificServices)
-    }
-    const handleServiceNameChange = (event) => {
-        const newServiceName = event.target.value
-        setSelectedServiceName(newServiceName)
-
-        // Find the selected service by name in the `specificServices` array
-        const selectedService = specificServices.find(
-            (service) => service.service_name === newServiceName
-        )
-
-        // Check if selectedService is defined before accessing its properties
-        if (selectedService) {
-            setSelectedServicePrice(selectedService.price)
-        } else {
-            setSelectedServicePrice(0)
-        }
-    }
-
     const [serviceType, setServiceType] = useState('service_name')
 
     const currentDate = new Date()
@@ -143,15 +69,67 @@ export default function NewTransaction() {
         customer_name: '',
     })
 
+    useEffect(() => {
+        getAllServices()
+            .then((res) => {
+                setServicesDetails(res)
+                console.log(res)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [])
+
+    useEffect(() => {
+        loadTransactions()
+        getAllTransactions()
+            .then((res) => {
+                setTransactions(res)
+            })
+            .catch((error) => {
+                console.log('Error fetching transactions:', error)
+            })
+    }, [isDeleted])
+
     const loadTransactions = async () => {
         const data = await getAllTransactions()
         setTransactions(data)
     }
 
+    // const handleDeleteClick = (transaction_id) => {
+    //     // When the "x" button is clicked, set the transaction to delete
+    //     console.log(transaction_id)
+    //     setTransactionToDelete(transaction_id)
+
+    //     // Show the delete confirmation dialog
+    //     setShowDeleteConfirmation(true)
+    // }
+    // const handleDeleteConfirmation = () => {
+    //     console.log(transactionToDelete)
+    //     if (transactionToDelete) {
+    //         deleteTransaction(transactionToDelete)
+    //             .then(() => {
+    //                 setIsDeleted((prev) => !prev)
+    //                 setShowDeleteConfirmation(false)
+    //                 setTransactionToDelete(null) // Clear the transaction to delete
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error)
+    //             })
+    //     } else {
+    //         // Handle the case where no transaction to delete is selected
+    //         console.log('No transaction selected for deletion.')
+    //     }
+    // }
+
     let uniqueServices = servicesDetails.filter(
         (service, index, self) =>
             index ===
             self.findIndex((s) => s.service_type === service.service_type)
+    )
+
+    let specificServices = servicesDetails.filter(
+        (service, index, self) => service.service_type === serviceType
     )
 
     const handleOnChange = (event) => {
@@ -237,7 +215,11 @@ export default function NewTransaction() {
 
     // This handles the selection of a discount (6/6)
     const handleSelectTransaction = (transaction) => {
+        // console.log(transaction)
         console.log('Selected Transaction:', transaction)
+        // setShowTransactionCreateForm(false)
+        // setSelectedTransaction(transaction)
+        // setShowSelectedTransaction(true)
 
         if (transaction) {
             setSelectedTransaction(transaction)
@@ -497,15 +479,21 @@ export default function NewTransaction() {
                                 ---------------------------
                             </div>
 
+                            <div className="flex items-center justify-center w-full px-6 mt-2">
+                                <input
+                                    className="w-1/3 p-1 font-bold text-orange-500 rounded-full hover:bg-teal-600"
+                                    type="button"
+                                    value="Update"
+                                />
+                            </div>
                             <div className="font-bold">Availed Services</div>
 
                             <div className="flex items-center justify-center w-full mt-2">
                                 <input
-                                    // className="w-[30rem] p-1 text-white bg-orange-500 rounded-lg hover:bg-orange-400"
-                                    className="w-1/3 p-1 font-bold text-orange-400 rounded-full hover:text-orange-500 "
+                                    className="w-[30rem] p-1 text-white bg-orange-500 rounded-lg hover:bg-orange-400"
                                     onClick={handleAddServices}
                                     type="button"
-                                    value="Add Services"
+                                    value="Services"
                                 />
                             </div>
                         </form>
@@ -528,13 +516,11 @@ export default function NewTransaction() {
                                     </label>
                                     <div className="flex flex-col w-[12rem]">
                                         <select
-                                            className="w-[12rem] p-1 text-black rounded"
+                                            onChange={handleOnChange}
+                                            className="w-full p-1 text-black rounded"
                                             name="service_type"
-                                            value={selectedServiceType}
-                                            onChange={(event) =>
-                                                handleServiceTypeChange(event)
-                                            }
                                         >
+                                            {' '}
                                             {uniqueServices.map((service) => (
                                                 <option
                                                     key={service.service_type}
@@ -546,7 +532,6 @@ export default function NewTransaction() {
                                         </select>
                                     </div>
                                 </div>
-
                                 <div className="relative flex justify-between space-y-2 text-black">
                                     <label className="self-center">
                                         Service:
@@ -554,29 +539,19 @@ export default function NewTransaction() {
                                     <div className="flex flex-col w-[12rem]">
                                         <select
                                             className="w-[12rem] p-1 text-black rounded"
-                                            name="service_name"
-                                            value={selectedServiceName}
-                                            onChange={(event) =>
-                                                handleServiceNameChange(event)
-                                            }
+                                            name="service_type"
                                         >
-                                            <option value="">
-                                                Select a service
-                                            </option>
-                                            {filteredServiceNames.map(
-                                                (serviceName) => (
-                                                    <option
-                                                        key={serviceName}
-                                                        value={serviceName}
-                                                    >
-                                                        {serviceName}
-                                                    </option>
-                                                )
-                                            )}
+                                            {specificServices.map((service) => (
+                                                <option
+                                                    key={service.service_name}
+                                                    value={service.service_name}
+                                                >
+                                                    {service.service_name}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
-
                                 <div className="flex justify-between space-y-2 text-black ">
                                     <label className="self-center">
                                         Price:
@@ -586,7 +561,6 @@ export default function NewTransaction() {
                                             className="w-[12rem] p-1 text-black rounded bg-white"
                                             type="text"
                                             name="price"
-                                            value={selectedServicePrice}
                                             disabled
                                         />
                                     </div>
