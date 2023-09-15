@@ -5,10 +5,13 @@ import {
     deleteDiscount,
     editDiscount,
 } from '../services/DiscountServices'
+import Draggable from 'react-draggable'
 
 export default function Discounts() {
     const [showButton, setShowButton] = useState(false)
     const [discounts, setDiscounts] = useState([])
+
+    const [isDragging, setIsDragging] = useState(false)
 
     // This handles the selection of a discount
     const [showDiscountCreateForm, setShowDiscountCreateForm] = useState(false) // This handles the selection of a discount (1/6)
@@ -36,6 +39,11 @@ export default function Discounts() {
     const handleShowButton = () => {
         setShowSelectedDiscount(false)
         setShowDiscountCreateForm((prev) => !prev)
+
+        // Allow the button click only if not currently dragging
+        if (!isDragging) {
+            setShowButton((prev) => !prev)
+        }
     }
 
     //    DiscountAdd (2/3)
@@ -105,6 +113,14 @@ export default function Discounts() {
         }
     }
 
+    const handleDragStart = () => {
+        setIsDragging(true)
+    }
+
+    const handleDragStop = () => {
+        setIsDragging(false)
+    }
+
     // Function to toggle the confirmation dialog
     const toggleDeleteConfirmation = (discount) => {
         setDiscountToDelete(discount)
@@ -150,27 +166,33 @@ export default function Discounts() {
         }))
     }
 
+    // Calculate the width for each column
+    const columnWidth = 'calc(25rem / 3)' // This divides the available width by 3
+
     return (
         <>
-            <div className="flex flex-col items-center justify-start h-screen pt-16 bg-gray-10">
-                {/* DiscountList */}
-                <div className="flex flex-col w-[25rem] p-2 bg-slate-500">
-                    <div className="flex text-[0.8rem] w-full justify-around text-white bg-slate-500">
-                        <div>Discount Code</div>
-                        <div>Discount Description</div>
-                        <div>Percentage</div>
-                    </div>
-
+            <div className="flex flex-col items-center justify-start h-screen pt-16 ">
+                <div className="flex flex-wrap w-[25rem]">
+                    {/* DiscountList */}
                     {discounts ? (
                         discounts.map((discount, index) => (
                             <div
                                 key={index}
-                                onClick={() => handleSelectDiscount(discount)} // This onClick handler triggers the selection of a discount (5/5)
-                                className="flex text-[0.8rem] w-full justify-around text-black bg-white mt-2"
+                                className={`w-[25rem] md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth}`}
                             >
-                                <div>{discount.discount_code}</div>
-                                <div>{discount.discount_description}</div>
-                                <div>{discount.percentage}</div>
+                                <div
+                                    onClick={() =>
+                                        handleSelectDiscount(discount)
+                                    }
+                                    className="bg-white border border-gray-400 rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                >
+                                    <div className="text-sm font-bold">
+                                        {discount.discount_description}
+                                    </div>
+                                    <div className="text-gray-500">
+                                        {discount.percentage * 100}%
+                                    </div>
+                                </div>
                             </div>
                         ))
                     ) : (
@@ -179,82 +201,111 @@ export default function Discounts() {
                 </div>
                 {/* End of DiscountList */}
 
-                <div className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex">
-                    <div className="flex items-center justify-center w-10 h-10 border border-white rounded-full bg-amber-500">
-                        <button onClick={handleShowButton}>+</button>
-                    </div>
-                </div>
-
-                {showDiscountCreateForm && (
-                    <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
-                        onSubmit={handleOnSubmit}
+                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
+                    <div
+                        className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
+                        style={{
+                            cursor: 'move',
+                        }}
                     >
-                        <div className="flex items-center justify-center w-full">
-                            <h1 className="mb-2 text-xl ">Discounts</h1>
-                        </div>
+                        <button
+                            onDoubleClick={handleShowButton}
+                            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
+                        >
+                            +
+                        </button>
+                    </div>
+                </Draggable>
 
-                        <div className="flex justify-between w-full space-y-2">
-                            <label className="self-center">Discount Code</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    onChange={handleOnChange}
-                                    className="p-1 text-black rounded"
-                                    type="text"
-                                    name="discount_code"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-between w-full space-y-2">
-                            <label className="self-center">Description:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    onChange={handleOnChange}
-                                    className="p-1 text-black rounded "
-                                    type="text"
-                                    name="discount_description"
-                                />
-                            </div>
-                        </div>
+                <div className="relative flex flex-col items-center justify-start h-screen pt-16">
+                    {showDiscountCreateForm && (
+                        <div className="fixed inset-0 flex items-center justify-center">
+                            <form
+                                // className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
+                                className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white"
+                                onSubmit={handleOnSubmit}
+                            >
+                                <div className="flex items-center w-full text-lg font-bold text-orange-500">
+                                    <h1 className="mb-2 text-xl ">Discounts</h1>
+                                </div>
 
-                        <div className="flex justify-between w-full space-y-2">
-                            <label className="self-center">Percentage:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    onChange={handleOnChange}
-                                    className="p-1 text-black rounded"
-                                    type="text"
-                                    name="percentage"
-                                />
-                            </div>
-                        </div>
+                                <div className="flex justify-between w-full space-y-2 text-black">
+                                    <label className="self-center">
+                                        Discount Code
+                                    </label>
+                                    <div className="flex flex-col ">
+                                        <input
+                                            onChange={handleOnChange}
+                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            type="text"
+                                            name="discount_code"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex justify-between w-full space-y-2 text-black ">
+                                    <label className="self-center">
+                                        Description:
+                                    </label>
+                                    <div className="flex flex-col ">
+                                        <input
+                                            onChange={handleOnChange}
+                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
+                                            type="text"
+                                            name="discount_description"
+                                        />
+                                    </div>
+                                </div>
 
-                        <div className="flex items-center justify-center w-full px-6 mt-4">
-                            <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600"
-                                type="submit"
-                                value="Submit"
-                            />
+                                <div className="flex justify-between w-full space-y-2 text-black">
+                                    <label className="self-center">
+                                        Percentage:
+                                    </label>
+                                    <div className="flex flex-col ">
+                                        <input
+                                            onChange={handleOnChange}
+                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            type="text"
+                                            name="percentage"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-center w-full mt-4">
+                                    <input
+                                        className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
+                                        type="submit"
+                                        value="Submit"
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between w-full mt-4 ">
+                                    <input
+                                        className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                        type="button"
+                                        onClick={handleShowButton}
+                                        value="Cancel"
+                                    />
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                )}
+                    )}
+                </div>
 
                 {showSelectedDiscount && (
                     <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
+                        className="flex flex-col justify-around w-[25rem] p-6 text-white  rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
                         onSubmit={handleEditSubmit}
                     >
-                        <div className="flex items-center justify-center w-full">
+                        <div className="flex items-center w-full text-lg font-bold text-orange-500">
                             <h1 className="mb-2 text-xl ">Discounts</h1>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Discount Code</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={discount_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="discount_code"
                                     defaultValue={
@@ -265,13 +316,13 @@ export default function Discounts() {
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Description:</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={discount_description_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="discount_description"
                                     defaultValue={
@@ -283,13 +334,13 @@ export default function Discounts() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Percentage:</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={percentage_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="percentage"
                                     defaultValue={
@@ -301,25 +352,29 @@ export default function Discounts() {
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-around w-full gap-2 px-6 mt-4 ">
+                        <div className="flex items-center justify-center w-full mt-4">
                             <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
+                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
                                 type="submit"
                                 value="Update"
                             />
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-4">
                             <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
+                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                type="button"
+                                onClick={handleOnCancelEdit}
+                                value="Cancel"
+                            />
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-4">
+                            <input
+                                className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
                                 type="button"
                                 value="Delete"
                                 onClick={() =>
                                     toggleDeleteConfirmation(selectedDiscount)
                                 }
-                            />
-                            <input
-                                className="w-1/3 p-1 rounded-full bg-slate-900 hover:bg-teal-600 "
-                                type="button"
-                                onClick={handleOnCancelEdit}
-                                value="Cancel"
                             />
                         </div>
                     </form>

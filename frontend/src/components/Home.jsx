@@ -16,10 +16,10 @@ export default function Home() {
     return (
         <div style={backgroundStyle}>
             <div>
-                <button className="px-4 py-2 mr-4 font-bold text-white bg-orange-600 rounded rounded-3xl hover:bg-blue-700">
+                <button className="px-4 py-2 mr-4 font-bold text-white bg-orange-600 rounded-3xl hover:bg-blue-700">
                     Book Now
                 </button>
-                <button className="px-4 py-2 font-bold text-white bg-orange-600 rounded rounded-3xl hover:bg-green-700">
+                <button className="px-4 py-2 font-bold text-white bg-orange-600 rounded-3xl hover:bg-green-700">
                     Learn More
                 </button>
                 ;

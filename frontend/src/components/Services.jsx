@@ -5,11 +5,14 @@ import {
     deleteService,
     // editService,
 } from '../services/SpaServices'
+import Draggable from 'react-draggable'
 
 export default function Services() {
     const [showButton, setShowButton] = useState(false)
     const [services, setServices] = useState([])
     const [isDeleted, setIsDeleted] = useState(false)
+
+    const [isDragging, setIsDragging] = useState(false)
 
     // This handles the selection of a discount
     const [showServiceCreateForm, setShowServiceCreateForm] = useState(false) // This handles the selection of a discount (1/6)
@@ -23,6 +26,11 @@ export default function Services() {
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
         setShowServiceCreateForm((prev) => !prev)
+
+        // Allow the button click only if not currently dragging
+        if (!isDragging) {
+            setShowButton((prev) => !prev)
+        }
     }
 
     //ServicesAdd
@@ -55,6 +63,14 @@ export default function Services() {
                 console.log('Error creating or fetching services:', error)
                 throw error // Rethrow the error to handle it in the main component if needed
             })
+    }
+
+    const handleDragStart = () => {
+        setIsDragging(true)
+    }
+
+    const handleDragStop = () => {
+        setIsDragging(false)
     }
 
     useEffect(() => {
@@ -136,36 +152,35 @@ export default function Services() {
         setShowSelectedService((prev) => !prev)
     }
 
+    // Calculate the width for each column
+    const columnWidth = 'calc(25rem / 3)' // This divides the available width by 3
+
     return (
         <>
-            <div className="flex flex-col items-center justify-start h-screen pt-16 bg-gray-10">
-                <div className="flex flex-col w-[25rem] p-2 bg-slate-500 ">
-                    <div className="flex text-[0.8rem] w-full justify-around text-white ">
-                        <div>Service ID</div>
-                        <div>Service Name</div>
-                        <div>Service Type</div>
-                        <div>Price</div>
-                        <div>Minutes</div>
-                        <div>Commission</div>
-                    </div>
+            {/* <div>{service.service_id}</div> */}
+            {/* <div>{service.service_type}</div> */}
+            {/* <div>{service.minutes}</div> */}
+            {/* <div>{service.commission}</div> */}
 
+            <div className="flex flex-col items-center justify-start h-screen pt-16">
+                <div className="flex flex-wrap w-[25rem]">
                     {services ? (
-                        services.map((service, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    onClick={() => handleSelectService(service)} // Add this line
-                                    className="flex text-[0.8rem] w-full justify-around text-black bg-white mt-2"
-                                >
-                                    <div>{service.service_id}</div>
-                                    <div>{service.service_name}</div>
-                                    <div>{service.service_type}</div>
-                                    <div>{service.price}</div>
-                                    <div>{service.minutes}</div>
-                                    <div>{service.commission}</div>
+                        services.map((service, index) => (
+                            <div
+                                key={index}
+                                onClick={() => handleSelectService(service)}
+                                className="w-1/3 p-2"
+                            >
+                                <div className="bg-white border border-gray-400 rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center">
+                                    <div className="text-sm font-bold">
+                                        {service.service_name}
+                                    </div>
+                                    <div className="text-gray-500">
+                                        {service.price}
+                                    </div>
                                 </div>
-                            )
-                        })
+                            </div>
+                        ))
                     ) : (
                         <>
                             <div>Loading...</div>
@@ -173,47 +188,62 @@ export default function Services() {
                     )}
                 </div>
 
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500">
+                {/* <div className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600">
                     <button onClick={handleShowButton}>+</button>
-                </div>
+                </div> */}
+                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
+                    <div
+                        className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
+                        style={{
+                            cursor: 'move',
+                        }}
+                    >
+                        <button
+                            onDoubleClick={handleShowButton}
+                            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
+                        >
+                            +
+                        </button>
+                    </div>
+                </Draggable>
                 {showButton && (
                     <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
+                        className="flex flex-col justify-around w-[25rem] p-6 text-white  rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
                         onSubmit={handleOnSubmit}
                     >
-                        <div className="flex items-center justify-center w-full">
+                        <div className="flex items-center w-full text-lg font-bold text-left text-orange-600">
                             <h1 className="mb-2 text-xl">Services</h1>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Service ID</label>
                             <div className="flex flex-col ">
                                 <input
                                     onChange={handleOnChange}
-                                    className="p-1 text-black rounded"
+                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                     type="text"
                                     name="service_id"
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-base text-black">
                             <label className="self-center">Service Name:</label>
                             <div className="flex flex-col ">
                                 <input
                                     onChange={handleOnChange}
-                                    className="p-1 text-black rounded "
+                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
                                     type="text"
                                     name="service_name"
                                 />
                             </div>
                         </div>
 
-                        <div className="relative flex justify-between w-full space-y-2">
+                        <div className="relative flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Service Type:</label>
-                            <div className="flex flex-col w-1/2">
+                            <div className="flex flex-col ">
                                 <select
                                     onChange={handleOnChange}
-                                    className="w-full p-1 text-black rounded"
+                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                     name="service_type"
                                 >
                                     <option value="optMassage">Massage</option>
@@ -223,48 +253,56 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Price:</label>
                             <div className="flex flex-col ">
                                 <input
                                     onChange={handleOnChange}
-                                    className="p-1 text-black rounded"
+                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                     type="text"
                                     name="price"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Minutes:</label>
                             <div className="flex flex-col ">
                                 <input
                                     onChange={handleOnChange}
-                                    className="p-1 text-black rounded"
+                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                     type="text"
                                     name="minutes"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Commission:</label>
                             <div className="flex flex-col ">
                                 <input
                                     onChange={handleOnChange}
-                                    className="p-1 text-black rounded"
+                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                     type="text"
                                     name="commission"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-center w-full px-6 mt-4">
+                        <div className="flex items-center justify-center w-full mt-4">
                             <input
                                 onChange={handleOnChange}
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600"
+                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
                                 type="submit"
                                 value="Submit"
+                            />
+                        </div>
+                        <div className="flex items-center justify-between w-full mt-4 ">
+                            <input
+                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                type="button"
+                                onClick={handleShowButton}
+                                value="Cancel"
                             />
                         </div>
                     </form>
@@ -272,20 +310,20 @@ export default function Services() {
 
                 {showSelectedService && (
                     <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
+                        className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
                         // onSubmit={handleEditSubmit}
                     >
-                        <div className="flex items-center justify-center w-full">
+                        <div className="flex items-center w-full text-lg font-bold text-orange-500">
                             <h1 className="mb-2 text-xl">Services</h1>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Service ID</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={service_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     // onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="service_id"
                                     defaultValue={
@@ -296,13 +334,13 @@ export default function Services() {
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Service Name:</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={service_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="service_name"
                                     defaultValue={
@@ -314,13 +352,13 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="relative flex justify-between w-full space-y-2">
+                        <div className="relative flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Service Type:</label>
-                            <div className="flex flex-col w-1/2">
+                            <div className="flex flex-col ">
                                 <select
                                     ref={service_type_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     // onChange={handleOnChangeEdit}
-                                    className="w-full p-1 text-black rounded"
+                                    className=" p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="service_type"
                                     value={
@@ -336,13 +374,13 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Price:</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={price_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     // onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="price"
                                     defaultValue={
@@ -354,13 +392,13 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Minutes:</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={minutes_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     // onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="minutes"
                                     defaultValue={
@@ -372,13 +410,13 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="flex justify-between w-full space-y-2">
+                        <div className="flex justify-between w-full space-y-2 text-black">
                             <label className="self-center">Commission:</label>
                             <div className="flex flex-col ">
                                 <input
                                     ref={commission_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                     // onChange={handleOnChangeEdit}
-                                    className="p-1 text-black rounded"
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                     type="text"
                                     name="commission"
                                     defaultValue={
@@ -390,25 +428,29 @@ export default function Services() {
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-around w-full gap-2 px-6 mt-4 ">
+                        <div className="flex items-center justify-center w-full mt-4">
                             <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
+                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
                                 type="submit"
                                 value="Update"
                             />
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-4">
                             <input
-                                className="w-1/3 p-1 rounded-full bg-cyan-900 hover:bg-teal-600 "
+                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                type="button"
+                                onClick={handleOnCancelEdit}
+                                value="Cancel"
+                            />
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-4">
+                            <input
+                                className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
                                 type="button"
                                 value="Delete"
                                 onClick={() =>
                                     toggleDeleteConfirmation(selectedService)
                                 }
-                            />
-                            <input
-                                className="w-1/3 p-1 rounded-full bg-slate-900 hover:bg-teal-600 "
-                                type="button"
-                                onClick={handleOnCancelEdit}
-                                value="Cancel"
                             />
                         </div>
                     </form>

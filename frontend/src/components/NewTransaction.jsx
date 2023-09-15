@@ -5,6 +5,7 @@ import {
     createdTransaction,
     deleteTransaction,
 } from '../services/TransactionServices'
+import { MdDeleteForever } from 'react-icons/md'
 
 export default function NewTransaction() {
     const [transactions, setTransactions] = useState([])
@@ -76,6 +77,7 @@ export default function NewTransaction() {
     // Function to handle delete confirmation
     const handleDeleteConfirmation = (transaction_id) => {
         // console.log(transaction_id)
+        alert('Delete Confirmation')
         console.log('transactionToDelete:', transactionToDelete) // Add this line
         if (transactionToDelete) {
             console.log('hello')
@@ -317,17 +319,15 @@ export default function NewTransaction() {
                                 </div>
                                 {/* End of Transaction */}
 
-                                <div className="flex items-start justify-center w-1/12 bg-gray-200 ">
-                                    <button
-                                        className="font-bold "
+                                <div className="flex items-center justify-center w-1/12">
+                                    <MdDeleteForever
+                                        className="text-xl text-center text-orange-500"
                                         onClick={() =>
                                             handleDeleteConfirmation(
                                                 transaction.transaction_id
                                             )
                                         }
-                                    >
-                                        x
-                                    </button>
+                                    />
                                 </div>
                             </div>
                         ))
@@ -430,9 +430,17 @@ export default function NewTransaction() {
 
                             <div className="flex items-center justify-center w-full mt-4">
                                 <input
-                                    className="w-[30rem] p-1 bg-orange-600 rounded-lg hover:bg-orange-400"
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
                                     type="submit"
                                     value="Submit"
+                                />
+                            </div>
+                            <div className="flex items-center justify-between w-full mt-4 ">
+                                <input
+                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                    type="button"
+                                    onClick={handleShowButton}
+                                    value="Cancel"
                                 />
                             </div>
                         </form>

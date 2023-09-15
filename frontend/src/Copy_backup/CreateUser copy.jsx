@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { createUser } from '../services/Users'
-import Draggable from 'react-draggable'
 
 export const CreateUser = ({ handleCreatedAlertClose }) => {
     const user_name_value = useRef(null)
@@ -11,19 +10,6 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
 
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
-
-        // Allow the button click only if not currently dragging
-        if (!isDragging) {
-            setShowButton((prev) => !prev)
-        }
-    }
-
-    const handleDragStart = () => {
-        setIsDragging(true)
-    }
-
-    const handleDragStop = () => {
-        setIsDragging(false)
     }
 
     const [userDetails, setUserDetails] = useState({
@@ -104,37 +90,23 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     return (
         <>
             <div>
-                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
-                    <div
-                        className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
-                        style={{
-                            cursor: 'move',
-                        }}
-                    >
-                        <button
-                            onDoubleClick={handleShowButton}
-                            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
-                        >
-                            +
-                        </button>
-                    </div>
-                </Draggable>
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500">
+                    <button onClick={handleShowButton}>+</button>
+                </div>
                 {showButton && (
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white border-2 border-gray-500  rounded-lg px-15 items-left h-9/12"
+                        className="flex flex-col justify-around w-10/12 p-6 text-white bg-orange-600 rounded px-15 items-left h-9/12"
                     >
-                        <div className="flex items-center w-full">
-                            <h1 className="mb-2 text-lg font-bold text-left text-orange-600">
-                                Create User
-                            </h1>
+                        <div className="flex items-center justify-center w-full">
+                            <h1 className="mb-2 text-xl ">Create User</h1>
                         </div>
 
-                        <div className="flex justify-between w-full text-black">
+                        <div className="flex justify-between w-full ">
                             <label>Username:</label>
                             <div className="flex flex-col ">
                                 <input
-                                    className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
+                                    className="p-1 text-black rounded"
                                     type="text"
                                     name="user_name"
                                     // defaultValue={userDetails.user_name}
@@ -146,11 +118,11 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-between w-full text-black ">
+                        <div className="flex justify-between w-full ">
                             <label>Password:</label>
                             <div className="flex flex-col ">
                                 <input
-                                    className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg "
+                                    className="p-1 text-black rounded "
                                     type="password"
                                     name="password"
                                     // defaultValue={userDetails.password}
@@ -162,11 +134,11 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-between w-full text-black">
+                        <div className="flex justify-between w-full">
                             <label className="">Usertype:</label>
                             <div className="flex flex-col ">
                                 <input
-                                    className="w-[12rem]  p-1 text-black border border-gray-600 rounded-lg "
+                                    className="p-1 text-black rounded"
                                     type="text"
                                     name="user_type"
                                     // defaultValue={userDetails.user_type}
@@ -180,17 +152,9 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                         </div>
                         <div className="flex items-center justify-center w-full">
                             <input
-                                className="w-[30rem] p-1 border bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 hover:border-orange-500"
+                                className="w-1/3 p-1 rounded-full bg-amber-700 hover:amber-600"
                                 type="submit"
                                 value="Submit"
-                            />
-                        </div>
-                        <div className="flex items-center justify-between w-full mt-4 ">
-                            <input
-                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
-                                type="button"
-                                onClick={handleShowButton}
-                                value="Cancel"
                             />
                         </div>
                     </form>
