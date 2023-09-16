@@ -5,8 +5,6 @@ import Draggable from 'react-draggable'
 export const CreateUser = ({ handleCreatedAlertClose }) => {
     const user_name_value = useRef(null)
     const password_value = useRef(null)
-    const first_name_value = useRef(null)
-    const last_name_value = useRef(null)
     const user_type_value = useRef(null)
 
     const [showButton, setShowButton] = useState(false)
@@ -33,8 +31,6 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     const [userDetails, setUserDetails] = useState({
         user_name: '',
         password: '',
-        first_name: '', // Corrected field name
-        last_name: '',
         user_type: '',
     })
 
@@ -58,15 +54,11 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                     // alert('Registered Successfully', res)
                     user_name_value.current.value = ''
                     password_value.current.value = ''
-                    first_name_value.current.value = ''
-                    last_name_value.current.value = ''
                     user_type_value.current.value = ''
                     handleCreatedAlertClose()
                     setUserDetails({
                         user_name: '',
                         password: '',
-                        first_name: '',
-                        last_name: '',
                         user_type: '',
                     })
                 })
@@ -76,8 +68,6 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                     setUserDetails({
                         user_name: '',
                         password: '',
-                        first_name: '',
-                        last_name: '',
                         user_type: '',
                     })
                 })
@@ -115,8 +105,13 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center ">
-                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
+            <div className="">
+                <Draggable
+                    // grid={[10, 5]}
+                    // bounds="parent"
+                    onStart={handleDragStart}
+                    onStop={handleDragStop}
+                >
                     <div
                         className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
                         style={{
@@ -143,6 +138,17 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                             </h1>
                         </div>
 
+                        <div className="flex justify-between w-full text-black">
+                            <label>User ID:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
+                                    type="text"
+                                    name="user_id"
+                                />
+                                <div className="text-red-400 x-[0.65rem] font-semibold my-1 "></div>
+                            </div>
+                        </div>
                         <div className="flex justify-between w-full text-black">
                             <label>Username:</label>
                             <div className="flex flex-col ">
@@ -182,10 +188,7 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                                     className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
                                     type="text"
                                     name="first_name"
-                                    ref={first_name_value}
-                                    onChange={handleUserChange}
                                 />
-
                                 <div className="text-red-400 x-[0.65rem] font-semibold my-1 "></div>
                             </div>
                         </div>
@@ -195,9 +198,7 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                                 <input
                                     className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
                                     type="text"
-                                    name="last_name"
-                                    ref={last_name_value}
-                                    onChange={handleUserChange}
+                                    name="last_nam"
                                 />
                                 <div className="text-red-400 x-[0.65rem] font-semibold my-1 "></div>
                             </div>

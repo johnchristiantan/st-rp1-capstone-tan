@@ -171,7 +171,7 @@ export default function Services() {
                                 onClick={() => handleSelectService(service)}
                                 className="w-1/3 p-2"
                             >
-                                <div className="bg-white border border-gray-400 rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center">
+                                <div className="bg-white border border-gray-400 rounded p-4 cursor-pointer h-[10rem]  flex flex-col justify-center items-center text-center">
                                     <div className="text-sm font-bold">
                                         {service.service_name}
                                     </div>

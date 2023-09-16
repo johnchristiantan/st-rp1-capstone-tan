@@ -28,10 +28,27 @@ app.put('/users/:user_id', async (req, res) => {
     try {
         const { user_id } = req.params
 
-        const { user_name, password, user_type } = req.body
+        const { user_name, password, first_name, last_name, user_type } =
+            req.body
+
+        // Hash the password if it's provided
+        let hashedPassword = null
+        if (password) {
+            const salt = bcrypt.genSaltSync(10)
+            hashedPassword = bcrypt.hashSync(password, salt)
+        }
+
+        // Update user information in the database
         const updateUser = await pool.query(
-            'UPDATE users SET user_name = $1, password = $2, user_type = $3 WHERE user_id = $4 RETURNING *',
-            [user_name, password, user_type, user_id]
+            'UPDATE users SET user_name = $1, password = $2, first_name = $3, last_name = $4, user_type = $5 WHERE user_id = $6 RETURNING *',
+            [
+                user_name,
+                hashedPassword,
+                first_name,
+                last_name,
+                user_type,
+                user_id,
+            ]
         )
 
         res.json(updateUser.rows[0])
@@ -42,12 +59,13 @@ app.put('/users/:user_id', async (req, res) => {
 
 app.post('/user', async (req, res) => {
     try {
-        const { user_name, password, user_type } = req.body
+        const { user_name, password, first_name, last_name, user_type } =
+            req.body
         const salt = bcrypt.genSaltSync(10)
         const hashedPassword = bcrypt.hashSync(password, salt)
         const newUser = await pool.query(
-            'INSERT INTO users (user_name, password, user_type) VALUES($1, $2, $3) RETURNING *',
-            [user_name, hashedPassword, user_type]
+            'INSERT INTO users (user_name, password, first_name, last_name, user_type) VALUES($1, $2, $3, $4, $5) RETURNING *',
+            [user_name, hashedPassword, first_name, last_name, user_type]
         )
         res.json(newUser.rows[0])
     } catch (err) {
@@ -62,7 +80,7 @@ app.delete('/users/:id', async (req, res) => {
             'DELETE FROM users WHERE user_id = $1',
             [id]
         )
-        res.json('User was deleted!')
+        res.json('User has been deleted!')
     } catch (err) {
         console.error(err.message)
     }

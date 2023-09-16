@@ -14,7 +14,6 @@ export async function createUser(userDetails) {
 
 // READ Users
 export async function getUsers() {
-    // alert('Paghugot nang data')
     try {
         const response = await fetch('http://localhost:8000/users')
         return response.json()

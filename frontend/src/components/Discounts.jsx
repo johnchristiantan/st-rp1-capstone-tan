@@ -172,19 +172,19 @@ export default function Discounts() {
     return (
         <>
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
-                <div className="flex flex-wrap w-[25rem]">
+                <div className="flex flex-wrap w-[25rem] max-w-md">
                     {/* DiscountList */}
                     {discounts ? (
                         discounts.map((discount, index) => (
                             <div
                                 key={index}
-                                className={`w-[25rem] md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth}`}
+                                className={`w-[25rem] md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth} `}
                             >
                                 <div
                                     onClick={() =>
                                         handleSelectDiscount(discount)
                                     }
-                                    className="bg-white border border-gray-400 rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                    className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
                                 >
                                     <div className="text-sm font-bold">
                                         {discount.discount_description}
@@ -219,13 +219,13 @@ export default function Discounts() {
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
                     {showDiscountCreateForm && (
-                        <div className="fixed inset-0 flex items-center justify-center">
+                        <div className=" flex items-center justify-center shadow-lg">
                             <form
                                 // className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
-                                className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white"
+                                className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white "
                                 onSubmit={handleOnSubmit}
                             >
-                                <div className="flex items-center w-full text-lg font-bold text-orange-500">
+                                <div className="flex items-center w-full text-lg font-bold text-orange-500 ">
                                     <h1 className="mb-2 text-xl ">Discounts</h1>
                                 </div>
 

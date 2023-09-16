@@ -271,6 +271,12 @@ export default function NewTransaction() {
         }
     }
 
+    const handleUserNameChange = (event) => {
+        const userName = event.target.value
+        setSelectedUserName(userName)
+        console.log('Selected UserName:', userName)
+    }
+
     return (
         <>
             <div className="flex flex-col justify-around pt-16 ">
