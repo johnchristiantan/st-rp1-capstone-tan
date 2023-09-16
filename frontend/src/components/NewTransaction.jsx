@@ -7,6 +7,9 @@ import {
 } from '../services/TransactionServices'
 import { MdDeleteForever } from 'react-icons/md'
 
+import { getUsers } from '../services/Users' // Import any necessary services
+import UserSelect from './UserSelect' // Import the UserSelect component
+
 export default function NewTransaction() {
     const [transactions, setTransactions] = useState([])
     const [isDeleted, setIsDeleted] = useState(false)
@@ -17,6 +20,19 @@ export default function NewTransaction() {
             service_type: '',
         },
     ])
+    // For populating dropdown list of therapist
+    const [userDetails, setUserDetails] = useState([])
+    const [selectedUserName, setSelectedUserName] = useState('')
+
+    useEffect(() => {
+        getUsers()
+            .then((users) => {
+                setUserDetails(users)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [])
 
     const [selectedServiceType, setSelectedServiceType] = useState('') // Add a new state variable to track the selected service type
     const [filteredServiceNames, setFilteredServiceNames] = useState([]) // Add a state variable to store the filtered service names
@@ -611,10 +627,22 @@ export default function NewTransaction() {
                                         Therapist:
                                     </label>
                                     <div className="flex flex-col ">
-                                        <select
+                                        {/* <select
                                             className="w-[12rem] p-1 text-black rounded"
                                             name="user_name"
-                                        ></select>
+                                        ></select> */}
+
+                                        <div className="mb-4 bg-yellow-400">
+                                            <UserSelect
+                                                userDetails={userDetails}
+                                                selectedUserName={
+                                                    selectedUserName
+                                                }
+                                                setSelectedUserName={
+                                                    setSelectedUserName
+                                                }
+                                            />
+                                        </div>
                                     </div>
                                 </div>
 
