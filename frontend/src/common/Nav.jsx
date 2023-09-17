@@ -37,10 +37,10 @@ const Nav = () => {
             name: 'Discounts',
             link: '/discounts',
         },
-        {
-            name: 'Settings',
-            link: '/settings',
-        },
+        // {
+        //     name: 'Settings',
+        //     link: '/settings',
+        // },
         {
             name: 'Logout',
             link: '/logout',

@@ -183,6 +183,15 @@ export default function NewTransaction() {
         }))
     }
 
+    const handleOnCancelEdit = () => {
+        setshowAddServices((prev) => !prev)
+        setShowSelectedTransaction((prev) => !prev)
+    }
+
+    const handleOnCancelAdd = () => {
+        setShowSelectedTransaction((prev) => !prev)
+    }
+
     //    TransactionAdd (3/3)
 
     const handleOnSubmit = (e) => {
@@ -469,7 +478,8 @@ export default function NewTransaction() {
                     )}
 
                     {showSelectedTransaction && (
-                        <form className=" flex-col  w-[25rem] p-6 text-black rounded border border-gray-700  px-15 items-left h-9/12">
+                        // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form className=" flex-col  bg-white w-[25rem] p-6 text-black rounded border border-gray-700  px-15 items-left h-9/12">
                             <div className="w-full space-y-2 ">
                                 <div className="flex flex-col justify-center text-lg font-bold text-center ">
                                     <input
@@ -531,19 +541,27 @@ export default function NewTransaction() {
 
                             <div className="flex items-center justify-center w-full mt-2">
                                 <input
-                                    // className="w-[30rem] p-1 text-white bg-orange-500 rounded-lg hover:bg-orange-400"
-                                    className="w-1/3 p-1 font-bold text-orange-400 rounded-full hover:text-orange-500 "
+                                    className="w-[30rem] p-1 text-white bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500 hover:font-bold"
                                     onClick={handleAddServices}
                                     type="button"
                                     value="Add Services"
                                 />
                             </div>
+                            <div className="flex items-center justify-center w-full mt-4">
+                                <input
+                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white hover:font-bold"
+                                    type="button"
+                                    onClick={handleOnCancelAdd}
+                                    value="Cancel"
+                                />
+                            </div>
                         </form>
+                        // </div>
                     )}
                     {showAddServices && (
-                        <div>
+                        <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
-                                className="flex flex-col justify-around w-[25rem] p-6 m-4 bg-red-100 text-white border border-gray-500 rounded form1 px-15 items-left h-9/12"
+                                className="flex flex-col justify-around w-[25rem] p-6 m-4 bg-white text-white border border-gray-500 rounded form1 px-15 items-left h-9/12"
                                 // onSubmit={handleOnSubmit}
                             >
                                 <div className="flex w-full">
@@ -648,9 +666,17 @@ export default function NewTransaction() {
 
                                 <div className="flex items-center justify-center w-full mt-4">
                                     <input
-                                        className="w-[30rem] p-1 bg-orange-500 rounded-lg hover:bg-orange-400"
+                                        className="w-[30rem] p-1 text-white bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500 hover:font-bold"
                                         type="button"
                                         value="Add"
+                                    />
+                                </div>
+                                <div className="flex items-center justify-center w-full mt-4">
+                                    <input
+                                        className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                        type="button"
+                                        onClick={handleOnCancelEdit}
+                                        value="Cancel"
                                     />
                                 </div>
                             </form>

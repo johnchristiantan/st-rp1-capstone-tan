@@ -127,13 +127,13 @@ const EditUser = ({ user, handleEditAlertClose }) => {
                                     </div>
 
                                     <div className="flex items-center justify-between w-full mt-4 ">
-                                        <button className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500">
+                                        <button className="hover:font-bold w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500">
                                             Update
                                         </button>
                                     </div>
                                     <div className="flex items-center justify-between w-full mt-4 ">
                                         <button
-                                            className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                            className="hover:font-bold w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
                                             onClick={toggleModal}
                                         >
                                             Cancel

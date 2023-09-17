@@ -100,19 +100,19 @@ export const ShowUsers = () => {
                         userDetails.map((user, index) => (
                             <div
                                 key={index}
-                                className={`w-[25rem]    p-4 flex flex-col items-center `}
+                                className={`w-[25rem] p-1 flex flex-col items-center `}
                             >
                                 <div
                                     // onClick={() => handleSelectDiscount(discount)}
-                                    className="w-[25rem] bg-white border border-gray-400 shadow-lg rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
+                                    className=" w-[25rem] bg-white border border-gray-400  rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
                                 >
-                                    <div className="text-sm font-bold">
+                                    <div className="text-lg font-bold">
                                         {user.last_name} {user.first_name}
                                     </div>
-                                    <div className="text-gray-500">
+                                    <div className="text-black text-base">
                                         {user.user_type}
                                     </div>
-                                    <div className="flex flex-row ">
+                                    <div className="flex flex-row text-sm text-gray-500 ">
                                         <div className="">
                                             <EditUser
                                                 user={user}
@@ -121,10 +121,13 @@ export const ShowUsers = () => {
                                                 }
                                             />
                                         </div>
-                                        <div className="ml-2 mr-2"> | </div>
+                                        <div className="ml-2 mr-2 text-sm text-gray-500">
+                                            {' '}
+                                            |{' '}
+                                        </div>
                                         <div className="">
                                             <button
-                                                className="hover:text-red-600"
+                                                className="hover:text-red-600 text-sm text-gray-500"
                                                 onClick={() =>
                                                     handleDelete(
                                                         user.user_id,

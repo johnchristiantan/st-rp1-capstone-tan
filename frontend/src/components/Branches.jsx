@@ -22,6 +22,8 @@ export default function Branches() {
 
     const [isDragging, setIsDragging] = useState(false)
 
+    const [showButton, setShowButton] = useState(false)
+
     const handleShowButton = () => {
         setShowSelectedBranch(false)
         setShowCreateForm((prev) => !prev)
@@ -110,6 +112,7 @@ export default function Branches() {
             .then((res) => {
                 alert('Deleted successfully')
                 setIsDeleted((prev) => !prev)
+                setShowSelectedBranch(false)
             })
             .catch((error) => {
                 console.log(error)
@@ -128,6 +131,8 @@ export default function Branches() {
                 alert('Edited successfully')
                 console.log(res)
                 setIsEdited((prev) => !prev)
+
+                setShowSelectedBranch(false)
             })
             .catch((error) => {
                 console.log(error)
@@ -188,170 +193,182 @@ export default function Branches() {
                 </Draggable>
 
                 {showCreateForm && (
-                    <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white border-2 border-gray-500 rounded px-15 items-left h-9/12"
-                        onSubmit={handleOnSubmit}
-                    >
-                        <div className="flex items-center w-full">
-                            <h1 className="mb-2 text-lg font-bold text-left text-orange-600">
-                                Create Branch
-                            </h1>
-                        </div>
+                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form
+                            className="flex flex-col justify-around bg-white w-[25rem] p-6 text-white border-2 border-gray-500 rounded px-15 items-left h-9/12"
+                            onSubmit={handleOnSubmit}
+                        >
+                            <div className="flex items-center w-full">
+                                <h1 className="mb-2 text-lg font-bold text-left text-orange-600">
+                                    Create Branch
+                                </h1>
+                            </div>
 
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Branch Code</label>
-                            <div className="flex flex-col ">
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Branch Code
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={branch_code_ur}
+                                        onChange={handleOnChange}
+                                        className="p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="branch_code"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Branch Name:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={branch_name_ur}
+                                        onChange={handleOnChange}
+                                        className="p-1 text-black border border-gray-500 rounded-lg "
+                                        type="text"
+                                        name="branch_name"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Percent Share:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={percent_share_ur}
+                                        onChange={handleOnChange}
+                                        className="p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="percent_share"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between w-full mt-4 ">
                                 <input
-                                    ref={branch_code_ur}
-                                    onChange={handleOnChange}
-                                    className="p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="branch_code"
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
+                                    type="submit"
+                                    value="Submit"
                                 />
                             </div>
-                        </div>
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Branch Name:</label>
-                            <div className="flex flex-col ">
+                            <div className="flex items-center justify-between w-full mt-4 ">
                                 <input
-                                    ref={branch_name_ur}
-                                    onChange={handleOnChange}
-                                    className="p-1 text-black border border-gray-500 rounded-lg "
-                                    type="text"
-                                    name="branch_name"
+                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                    type="button"
+                                    onClick={handleShowButton}
+                                    value="Cancel"
                                 />
                             </div>
-                        </div>
-
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">
-                                Percent Share:
-                            </label>
-                            <div className="flex flex-col ">
-                                <input
-                                    ref={percent_share_ur}
-                                    onChange={handleOnChange}
-                                    className="p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="percent_share"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-between w-full mt-4 ">
-                            <input
-                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
-                                type="submit"
-                                value="Submit"
-                            />
-                        </div>
-                        <div className="flex items-center justify-between w-full mt-4 ">
-                            <input
-                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
-                                type="button"
-                                onClick={handleShowButton}
-                                value="Cancel"
-                            />
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 )}
                 {showSelectedBranch && (
-                    <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white  rounded-lg border-2 border-gray-600 px-15 items-left h-9/12"
-                        onSubmit={handleEditSubmit}
-                    >
-                        <div className="flex items-center w-full">
-                            <h1 className="mb-2  text-[1.2rem] text-lg font-bold text-left text-orange-500">
-                                Edit/Delete Branch
-                            </h1>
-                        </div>
+                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form
+                            className="flex flex-col justify-around w-[25rem] p-6 bg-white text-white  rounded-lg border-2 border-gray-600 px-15 items-left h-9/12"
+                            onSubmit={handleEditSubmit}
+                        >
+                            <div className="flex items-center w-full">
+                                <h1 className="mb-2  text-[1.2rem] text-lg font-bold text-left text-orange-500">
+                                    Edit/Delete Branch
+                                </h1>
+                            </div>
 
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Branch Code</label>
-                            <div className="flex flex-col ">
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Branch Code
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={branch_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="branch_code"
+                                        defaultValue={
+                                            selectedBranch
+                                                ? selectedBranch.branch_code
+                                                : ''
+                                        }
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Branch Name:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={branch_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
+                                        type="text"
+                                        name="branch_name"
+                                        defaultValue={
+                                            selectedBranch
+                                                ? selectedBranch.branch_name
+                                                : ''
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full space-y-2 text-black ">
+                                <label className="self-center">
+                                    Percent Share:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={percent_share_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="percent_share"
+                                        defaultValue={
+                                            selectedBranch
+                                                ? selectedBranch.percent_share
+                                                : ''
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-center w-full mt-4">
                                 <input
-                                    ref={branch_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                    onChange={handleOnChangeEdit}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="branch_code"
-                                    defaultValue={
-                                        selectedBranch
-                                            ? selectedBranch.branch_code
-                                            : ''
-                                    }
-                                    disabled
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
+                                    type="submit"
+                                    value="Update"
                                 />
                             </div>
-                        </div>
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Branch Name:</label>
-                            <div className="flex flex-col ">
+
+                            <div className="flex items-center justify-center w-full mt-4">
                                 <input
-                                    ref={branch_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                    onChange={handleOnChangeEdit}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
-                                    type="text"
-                                    name="branch_name"
-                                    defaultValue={
-                                        selectedBranch
-                                            ? selectedBranch.branch_name
-                                            : ''
+                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                    type="button"
+                                    onClick={handleOnCancelEdit}
+                                    value="Cancel"
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-center w-full mt-4">
+                                <input
+                                    className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
+                                    type="button"
+                                    value="Delete"
+                                    onClick={() =>
+                                        handleDeleteBranch(
+                                            selectedBranch.branch_code
+                                        )
                                     }
                                 />
                             </div>
-                        </div>
-
-                        <div className="flex justify-between w-full space-y-2 text-black ">
-                            <label className="self-center">
-                                Percent Share:
-                            </label>
-                            <div className="flex flex-col ">
-                                <input
-                                    ref={percent_share_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                    onChange={handleOnChangeEdit}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="percent_share"
-                                    defaultValue={
-                                        selectedBranch
-                                            ? selectedBranch.percent_share
-                                            : ''
-                                    }
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
-                                type="submit"
-                                value="Update"
-                            />
-                        </div>
-
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
-                                type="button"
-                                onClick={handleOnCancelEdit}
-                                value="Cancel"
-                            />
-                        </div>
-
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
-                                type="button"
-                                value="Delete"
-                                onClick={() =>
-                                    handleDeleteBranch(
-                                        selectedBranch.branch_code
-                                    )
-                                }
-                            />
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 )}
             </div>
         </>

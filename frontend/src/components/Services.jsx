@@ -12,7 +12,7 @@ export default function Services() {
     const [services, setServices] = useState([])
     const [isDeleted, setIsDeleted] = useState(false)
 
-    const [isDragging, setIsDragging] = useState(false)
+    // const [isDragging, setIsDragging] = useState(false)
 
     // This handles the selection of a discount
     const [showServiceCreateForm, setShowServiceCreateForm] = useState(false) // This handles the selection of a discount (1/6)
@@ -26,6 +26,8 @@ export default function Services() {
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
         setShowServiceCreateForm((prev) => !prev)
+        // setShowSelectedService((prev) => !prev)
+        setShowSelectedService(false)
 
         // Allow the button click only if not currently dragging
         if (!isDragging) {
@@ -199,7 +201,7 @@ export default function Services() {
                         }}
                     >
                         <button
-                            onDoubleClick={handleShowButton}
+                            onClick={handleShowButton}
                             className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
                         >
                             +
@@ -207,110 +209,125 @@ export default function Services() {
                     </div>
                 </Draggable>
                 {showButton && (
-                    <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white  rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
-                        onSubmit={handleOnSubmit}
-                    >
-                        <div className="flex items-center w-full text-lg font-bold text-left text-orange-600">
-                            <h1 className="mb-2 text-xl">Services</h1>
-                        </div>
+                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form
+                            className="flex flex-col justify-around bg-white w-[25rem] p-6 text-white  rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
+                            onSubmit={handleOnSubmit}
+                        >
+                            <div className="flex items-center w-full text-lg font-bold text-left text-orange-600">
+                                <h1 className="mb-2 text-xl">Services</h1>
+                            </div>
 
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Service ID</label>
-                            <div className="flex flex-col ">
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Service ID
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        onChange={handleOnChange}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="service_id"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-between w-full space-y-2 text-base text-black">
+                                <label className="self-center">
+                                    Service Name:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        onChange={handleOnChange}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
+                                        type="text"
+                                        name="service_name"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="relative flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Service Type:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <select
+                                        onChange={handleOnChange}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        name="service_type"
+                                    >
+                                        <option value="optMassage">
+                                            Massage
+                                        </option>
+                                        <option value="optSpa">Spa</option>
+                                        <option value="optPackage">
+                                            Package
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">Price:</label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        onChange={handleOnChange}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="price"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">Minutes:</label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        onChange={handleOnChange}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="minutes"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Commission:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        onChange={handleOnChange}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="commission"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-center w-full mt-4">
                                 <input
                                     onChange={handleOnChange}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="service_id"
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
+                                    type="submit"
+                                    value="Submit"
                                 />
                             </div>
-                        </div>
-                        <div className="flex justify-between w-full space-y-2 text-base text-black">
-                            <label className="self-center">Service Name:</label>
-                            <div className="flex flex-col ">
+                            <div className="flex items-center justify-between w-full mt-4 ">
                                 <input
-                                    onChange={handleOnChange}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
-                                    type="text"
-                                    name="service_name"
+                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                    type="button"
+                                    onClick={handleShowButton}
+                                    value="Cancel"
                                 />
                             </div>
-                        </div>
-
-                        <div className="relative flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Service Type:</label>
-                            <div className="flex flex-col ">
-                                <select
-                                    onChange={handleOnChange}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    name="service_type"
-                                >
-                                    <option value="optMassage">Massage</option>
-                                    <option value="optSpa">Spa</option>
-                                    <option value="optPackage">Package</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Price:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    onChange={handleOnChange}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="price"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Minutes:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    onChange={handleOnChange}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="minutes"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Commission:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    onChange={handleOnChange}
-                                    className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="commission"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                onChange={handleOnChange}
-                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
-                                type="submit"
-                                value="Submit"
-                            />
-                        </div>
-                        <div className="flex items-center justify-between w-full mt-4 ">
-                            <input
-                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
-                                type="button"
-                                onClick={handleShowButton}
-                                value="Cancel"
-                            />
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 )}
 
                 {showSelectedService && (
+                    // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                     <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
+                        className=" flex flex-col justify-around bg-white w-[25rem]  p-6 text-white rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
                         // onSubmit={handleEditSubmit}
                     >
                         <div className="flex items-center w-full text-lg font-bold text-orange-500">
@@ -454,6 +471,7 @@ export default function Services() {
                             />
                         </div>
                     </form>
+                    // </div>
                 )}
                 {/* Delete confirmation dialog */}
                 {showDeleteConfirmation && (

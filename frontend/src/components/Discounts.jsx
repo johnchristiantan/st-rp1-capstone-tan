@@ -25,6 +25,10 @@ export default function Discounts() {
     const [isCreateDiscountFormSubmitted, setIsCreateDiscountFormSubmitted] =
         useState(false)
 
+    const [discountCode, setDiscountCode] = useState('')
+    const [discountDescription, setDiscountDescription] = useState('')
+    const [percentage, setPercentage] = useState(null)
+
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [discountToDelete, setDiscountToDelete] = useState(null)
@@ -219,7 +223,7 @@ export default function Discounts() {
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
                     {showDiscountCreateForm && (
-                        <div className=" flex items-center justify-center shadow-lg">
+                        <div className="fixed inset-0 flex  z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
                                 // className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
                                 className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white "
@@ -291,8 +295,9 @@ export default function Discounts() {
                 </div>
 
                 {showSelectedDiscount && (
+                    // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                     <form
-                        className="flex flex-col justify-around w-[25rem] p-6 text-white  rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
+                        className="flex flex-col bg-white justify-around w-[25rem] p-6 text-white  rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
                         onSubmit={handleEditSubmit}
                     >
                         <div className="flex items-center w-full text-lg font-bold text-orange-500">
@@ -378,6 +383,7 @@ export default function Discounts() {
                             />
                         </div>
                     </form>
+                    // </div>
                 )}
                 {/* Delete confirmation dialog */}
                 {showDeleteConfirmation && (
