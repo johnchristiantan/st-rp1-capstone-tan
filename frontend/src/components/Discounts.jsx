@@ -223,7 +223,7 @@ export default function Discounts() {
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
                     {showDiscountCreateForm && (
-                        <div className="fixed inset-0 flex  z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
                                 // className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
                                 className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white "
@@ -295,95 +295,108 @@ export default function Discounts() {
                 </div>
 
                 {showSelectedDiscount && (
-                    // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
-                    <form
-                        className="flex flex-col bg-white justify-around w-[25rem] p-6 text-white  rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
-                        onSubmit={handleEditSubmit}
-                    >
-                        <div className="flex items-center w-full text-lg font-bold text-orange-500">
-                            <h1 className="mb-2 text-xl ">Discounts</h1>
-                        </div>
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form
+                            className="flex flex-col bg-white justify-around w-[25rem] p-6 text-white  rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
+                            onSubmit={handleEditSubmit}
+                        >
+                            <div className="flex items-center w-full text-lg font-bold text-orange-500">
+                                <h1 className="mb-2 text-xl ">Discounts</h1>
+                            </div>
 
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Discount Code</label>
-                            <div className="flex flex-col ">
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Discount Code
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={discount_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="discount_code"
+                                        defaultValue={
+                                            selectedDiscount
+                                                ? selectedDiscount.discount_code
+                                                : ''
+                                        }
+                                        // defaultValue={
+                                        //     selectedDiscount
+                                        //         ? selectedDiscount.discount_code_ur
+                                        //         : ''
+                                        // }
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Description:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={discount_description_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="discount_description"
+                                        defaultValue={
+                                            selectedDiscount
+                                                ? selectedDiscount.discount_description
+                                                : ''
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Percentage:
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={percentage_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="percentage"
+                                        defaultValue={
+                                            selectedDiscount
+                                                ? selectedDiscount.percentage
+                                                : ''
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-center w-full mt-4">
                                 <input
-                                    ref={discount_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                    onChange={handleOnChangeEdit}
-                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="discount_code"
-                                    defaultValue={
-                                        selectedDiscount
-                                            ? selectedDiscount.discount_code_ur
-                                            : ''
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
+                                    type="submit"
+                                    value="Update"
+                                />
+                            </div>
+                            <div className="flex items-center justify-center w-full mt-4">
+                                <input
+                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                    type="button"
+                                    onClick={handleOnCancelEdit}
+                                    value="Cancel"
+                                />
+                            </div>
+                            <div className="flex items-center justify-center w-full mt-4">
+                                <input
+                                    className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
+                                    type="button"
+                                    value="Delete"
+                                    onClick={() =>
+                                        toggleDeleteConfirmation(
+                                            selectedDiscount
+                                        )
                                     }
                                 />
                             </div>
-                        </div>
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Description:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    ref={discount_description_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                    onChange={handleOnChangeEdit}
-                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="discount_description"
-                                    defaultValue={
-                                        selectedDiscount
-                                            ? selectedDiscount.discount_description_ur
-                                            : ''
-                                    }
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Percentage:</label>
-                            <div className="flex flex-col ">
-                                <input
-                                    ref={percentage_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                    onChange={handleOnChangeEdit}
-                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                    type="text"
-                                    name="percentage"
-                                    defaultValue={
-                                        selectedDiscount
-                                            ? selectedDiscount.percentage_ur
-                                            : ''
-                                    }
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
-                                type="submit"
-                                value="Update"
-                            />
-                        </div>
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
-                                type="button"
-                                onClick={handleOnCancelEdit}
-                                value="Cancel"
-                            />
-                        </div>
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
-                                type="button"
-                                value="Delete"
-                                onClick={() =>
-                                    toggleDeleteConfirmation(selectedDiscount)
-                                }
-                            />
-                        </div>
-                    </form>
-                    // </div>
+                        </form>
+                    </div>
                 )}
                 {/* Delete confirmation dialog */}
                 {showDeleteConfirmation && (

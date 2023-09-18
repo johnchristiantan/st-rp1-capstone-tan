@@ -46,6 +46,7 @@ export default function NewTransaction() {
     const [selectedTransaction, setSelectedTransaction] = useState(null) // This handles the selection of a transaction (3/6)
 
     const [showAddServices, setshowAddServices] = useState(false)
+    const [isDragging, setIsDragging] = useState(false)
 
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
@@ -478,88 +479,111 @@ export default function NewTransaction() {
                     )}
 
                     {showSelectedTransaction && (
-                        // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
-                        <form className=" flex-col  bg-white w-[25rem] p-6 text-black rounded border border-gray-700  px-15 items-left h-9/12">
-                            <div className="w-full space-y-2 ">
-                                <div className="flex flex-col justify-center text-lg font-bold text-center ">
+                        <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                            <form className=" flex-col  bg-white w-[25rem] p-6 text-black rounded border border-gray-700  px-15 items-left h-9/12">
+                                <div className="w-full space-y-2 ">
+                                    <div className="flex flex-col justify-center text-lg font-bold text-center ">
+                                        <input
+                                            // ref={customer_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                            className="text-center text-black bg-white "
+                                            type="text"
+                                            name="customer_name"
+                                            defaultValue={
+                                                selectedTransaction
+                                                    ? selectedTransaction.customer_name
+                                                    : ''
+                                            }
+                                            disabled
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="w-full ">
+                                    <div className="flex flex-col items-center ">
+                                        <input
+                                            // ref={transaction_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                            className="text-center text-black bg-white "
+                                            type="text"
+                                            name="transaction_id"
+                                            defaultValue={
+                                                selectedTransaction
+                                                    ? selectedTransaction.transaction_id
+                                                    : ''
+                                            }
+                                            disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div className="font-bold text-center">
+                                    10,000
+                                </div>
+
+                                <div className="flex justify-between w-full ">
+                                    <div className="flex flex-col ">
+                                        <input
+                                            // ref={branch_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                            className="p-1 text-black bg-white rounded-xlarge"
+                                            type="text"
+                                            name="branch_code"
+                                            defaultValue={
+                                                selectedTransaction
+                                                    ? selectedTransaction.branch_code
+                                                    : ''
+                                            }
+                                            disabled
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col ">
+                                        <select
+                                            ref={status_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                            className="p-1 text-black rounded"
+                                            name="status"
+                                        >
+                                            <option value="Booked">
+                                                Booked
+                                            </option>
+                                            <option value="Ongoing">
+                                                Ongoing
+                                            </option>
+                                            <option value="Completed">
+                                                Completed
+                                            </option>
+                                            <option value="Cancelled">
+                                                Cancelled
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="text-center">
+                                    ---------------------------
+                                </div>
+
+                                <div className="font-bold">
+                                    Availed Services
+                                </div>
+
+                                <div className="flex items-center justify-center w-full mt-2">
                                     <input
-                                        ref={customer_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        className="text-center text-black bg-white "
-                                        type="text"
-                                        name="customer_name"
-                                        disabled
+                                        className="w-[30rem] p-1 text-white bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500 hover:font-bold"
+                                        onClick={handleAddServices}
+                                        type="button"
+                                        value="Add Services"
                                     />
                                 </div>
-                            </div>
-
-                            <div className="w-full ">
-                                <div className="flex flex-col items-center ">
+                                <div className="flex items-center justify-center w-full mt-4">
                                     <input
-                                        ref={transaction_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        className="text-center text-black bg-white "
-                                        type="text"
-                                        name="transaction_id"
-                                        disabled
+                                        className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white hover:font-bold"
+                                        type="button"
+                                        onClick={handleOnCancelAdd}
+                                        value="Cancel"
                                     />
                                 </div>
-                            </div>
-                            <div className="font-bold text-center">10,000</div>
-
-                            <div className="flex justify-between w-full ">
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={branch_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        className="p-1 text-black bg-white rounded-xlarge"
-                                        type="text"
-                                        name="branch_code"
-                                        disabled
-                                    />
-                                </div>
-
-                                <div className="flex flex-col ">
-                                    <select
-                                        ref={status_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        className="p-1 text-black rounded"
-                                        name="status"
-                                    >
-                                        <option value="Booked">Booked</option>
-                                        <option value="Ongoing">Ongoing</option>
-                                        <option value="Completed">
-                                            Completed
-                                        </option>
-                                        <option value="Cancelled">
-                                            Cancelled
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                ---------------------------
-                            </div>
-
-                            <div className="font-bold">Availed Services</div>
-
-                            <div className="flex items-center justify-center w-full mt-2">
-                                <input
-                                    className="w-[30rem] p-1 text-white bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500 hover:font-bold"
-                                    onClick={handleAddServices}
-                                    type="button"
-                                    value="Add Services"
-                                />
-                            </div>
-                            <div className="flex items-center justify-center w-full mt-4">
-                                <input
-                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white hover:font-bold"
-                                    type="button"
-                                    onClick={handleOnCancelAdd}
-                                    value="Cancel"
-                                />
-                            </div>
-                        </form>
-                        // </div>
+                            </form>
+                        </div>
                     )}
                     {showAddServices && (
-                        <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
                                 className="flex flex-col justify-around w-[25rem] p-6 m-4 bg-white text-white border border-gray-500 rounded form1 px-15 items-left h-9/12"
                                 // onSubmit={handleOnSubmit}
@@ -576,7 +600,7 @@ export default function NewTransaction() {
                                     </label>
                                     <div className="flex flex-col w-[12rem]">
                                         <select
-                                            className="w-[12rem] p-1 text-black rounded"
+                                            className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg"
                                             name="service_type"
                                             value={selectedServiceType}
                                             onChange={(event) =>
@@ -601,7 +625,7 @@ export default function NewTransaction() {
                                     </label>
                                     <div className="flex flex-col w-[12rem]">
                                         <select
-                                            className="w-[12rem] p-1 text-black rounded"
+                                            className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg"
                                             name="service_name"
                                             value={selectedServiceName}
                                             onChange={(event) =>
@@ -631,7 +655,7 @@ export default function NewTransaction() {
                                     </label>
                                     <div className="flex flex-col ">
                                         <input
-                                            className="w-[12rem] p-1 text-black rounded bg-white"
+                                            className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg"
                                             type="text"
                                             name="price"
                                             value={selectedServicePrice}
@@ -650,7 +674,7 @@ export default function NewTransaction() {
                                             name="user_name"
                                         ></select> */}
 
-                                        <div className="mb-4 bg-yellow-400">
+                                        <div className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg">
                                             <UserSelect
                                                 userDetails={userDetails}
                                                 selectedUserName={
