@@ -5,6 +5,9 @@ import {
     createdTransaction,
     deleteTransaction,
 } from '../services/TransactionServices'
+
+import { getAllAvailedServices } from '../services/AvailedServices'
+
 import { MdDeleteForever } from 'react-icons/md'
 
 import { getUsers } from '../services/Users' // Import any necessary services
@@ -38,6 +41,8 @@ export default function NewTransaction() {
     const [filteredServiceNames, setFilteredServiceNames] = useState([]) // Add a state variable to store the filtered service names
     const [selectedServiceName, setSelectedServiceName] = useState('')
     const [selectedServicePrice, setSelectedServicePrice] = useState(0)
+
+    const [availedServices, setAvailedServices] = useState([])
 
     const [showTransactionCreateForm, setShowTransactionCreateForm] =
         useState(false) // This handles the selection of a transaction (1/6)
@@ -97,7 +102,7 @@ export default function NewTransaction() {
         alert('Delete Confirmation')
         console.log('transactionToDelete:', transactionToDelete) // Add this line
         if (transactionToDelete) {
-            console.log('hello')
+            // console.log('hello')
             deleteTransaction(transactionToDelete.transaction_id)
                 .then((response) => {
                     console.log('Delete Transaction Response:', response)
@@ -303,6 +308,52 @@ export default function NewTransaction() {
         console.log('Selected UserName:', userName)
     }
 
+    // Display of availed services (5/6)
+    const availed_service_id_ur = useRef(null)
+    const user_id_ur = useRef(null)
+    const service_id_ur = useRef(null)
+    const discount_code_ur = useRef(null)
+
+    // Display of availed services (6/6)
+    const handleSelectAvailedServices = (aservices) => {
+        console.log('Hello', aservices)
+        // setShowDiscountCreateForm(false)
+        // setSelectedDiscount(discount)
+        // setShowSelectedDiscount(true)
+
+        // Make sure to check if the refs are defined before setting their values
+        if (availed_service_id_ur.current) {
+            availed_service_id_ur.current.value = aservices.availed_service_id
+        }
+
+        if (user_id_ur.current) {
+            user_id_ur.current.value = aservices.user_id
+        }
+
+        if (service_id_ur.current) {
+            service_id_ur.current.value = aservices.service_id
+        }
+
+        if (discount_code_ur.current) {
+            discount_code_ur.current.value = aservices.discount_code
+        }
+    }
+
+    // Availed services Data fetching
+    useEffect(() => {
+        getAllAvailedServices()
+            .then((res) => {
+                console.log('Availed Services Data:', res)
+                setAvailedServices(res)
+            })
+            .catch((error) => {
+                console.log('Error fetching availed services:', error)
+            })
+    }, [])
+
+    // Calculate the width for each column
+    const columnWidth = 'calc(25rem / 3)' // This divides the available width by 3
+
     return (
         <>
             <div className="flex flex-col justify-around pt-16 ">
@@ -356,7 +407,7 @@ export default function NewTransaction() {
                                         className="text-xl text-center text-orange-500"
                                         onClick={() =>
                                             handleDeleteConfirmation(
-                                                transaction.transaction_id
+                                                transaction.transaction_id_ur
                                             )
                                         }
                                     />
@@ -561,6 +612,47 @@ export default function NewTransaction() {
 
                                 <div className="font-bold">
                                     Availed Services
+                                </div>
+                                <div className="availedlist flex flex-wrap w-[25rem] max-w-md bg-red-200">
+                                    here
+                                    {availedServices ? (
+                                        availedServices.map(
+                                            (aservices, index) => (
+                                                <div
+                                                    key={index}
+                                                    className={`w-[25rem] md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth} `}
+                                                >
+                                                    <div
+                                                        onClick={() =>
+                                                            handleSelectAvailedServices(
+                                                                aservices
+                                                            )
+                                                        }
+                                                        className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                                    >
+                                                        <div className="text-sm font-bold">
+                                                            Service ID:{' '}
+                                                            {
+                                                                aservices.availed_service_id
+                                                            }
+                                                        </div>
+                                                        <div className="text-sm font-bold">
+                                                            User ID:{' '}
+                                                            {aservices.user_id}
+                                                        </div>
+                                                        <div className="text-sm font-bold">
+                                                            Discount Code:{' '}
+                                                            {
+                                                                aservices.discount_code
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        )
+                                    ) : (
+                                        <div>Loading...</div>
+                                    )}
                                 </div>
 
                                 <div className="flex items-center justify-center w-full mt-2">

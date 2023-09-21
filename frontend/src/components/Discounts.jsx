@@ -176,7 +176,7 @@ export default function Discounts() {
     return (
         <>
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
-                <div className="flex flex-wrap w-[25rem] max-w-md">
+                <div className="discountlist flex flex-wrap w-[25rem] max-w-md">
                     {/* DiscountList */}
                     {discounts ? (
                         discounts.map((discount, index) => (

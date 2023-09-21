@@ -31,3 +31,34 @@ export async function deleteTransaction(transaction_id) {
         // res.status(500).json({ error: 'Failed to delete transaction' })
     }
 }
+
+//EDIT
+// export async function editTransaction(transactionsInputs) {
+//     console.log(transactionsInputs)
+//     try {
+//         const editTransaction = await axios.put(
+//             `${baseURL}/${transactionsInputs.transaction_id}`,
+//             transactionsInputs
+//         )
+//         return editTransaction.data
+//     } catch (error) {
+//         console.log('Error: ', error)
+//     }
+// }
+
+//editTransaction
+export async function editTransaction(transactionsInputs) {
+    try {
+        const editTransaction = await axios.put(
+            `${baseURL}/${transactionsInputs.transaction_id}`,
+            {
+                status: transactionsInputs.status,
+            }
+        )
+
+        return editTransaction.data
+    } catch (error) {
+        console.error('Error: ', error)
+        throw new Error('Failed to edit transaction: ' + error.message)
+    }
+}
