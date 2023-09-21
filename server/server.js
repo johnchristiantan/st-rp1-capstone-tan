@@ -336,6 +336,53 @@ app.delete('/new-transaction/:transaction_id', async (req, res) => {
     }
 })
 
+app.put('/new-transaction/:transaction_id', async (req, res) => {
+    try {
+        console.log(req.params.transaction_id)
+        const { transaction_id } = req.params
+        const {
+            // voucher_number,
+            // transaction_date,
+            // total_amount,
+            status,
+            // branch_code,
+            // customer_name,
+        } = req.body
+
+        const updateTransaction = await pool.query(
+            // 'UPDATE transactions SET voucher_number = $1, transaction_date = $2, total_amount = $3, status = $4, branch_code = $5, customer_name = $6 WHERE transaction_id = $7 RETURNING *',
+            'UPDATE transactions SET status = $1 WHERE transaction_id = $2 RETURNING *',
+            [
+                // voucher_number,
+                // transaction_date,
+                // total_amount,
+                status,
+                // branch_code,
+                // customer_name,
+                transaction_id,
+            ]
+        )
+
+        res.json(updateTransaction.rows[0])
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).json({ error: 'An error occurred.' })
+    }
+})
+
+// availed_services----------------------------------------------------------------
+
+app.get('/new-transaction', async (req, res) => {
+    try {
+        const availed_services = await pool.query(
+            'SELECT * FROM availed_services ORDER BY availed_service_id ASC'
+        )
+        res.json(availed_services.rows)
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
 // ALWAYS AT THE END OF THIS
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
