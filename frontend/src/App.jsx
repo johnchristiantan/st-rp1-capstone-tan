@@ -3,7 +3,7 @@ import { ShowUsers } from './components/ShowUsers'
 import { Dashboard } from './components/Dashboard'
 import Nav from './common/Nav'
 import { Route, Routes } from 'react-router-dom'
-import NewTransaction from './components/NewTransaction'
+import NewTransaction from './components/new_transactions/NewTransaction'
 import Branches from './components/Branches'
 import Services from './components/Services'
 import Discounts from './components/Discounts'
@@ -18,7 +18,7 @@ function App() {
             {/* <ShowUsers /> */}
             <Nav />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/new-transaction" element={<NewTransaction />} />
                 <Route path="/login" element={<LoginForm />} />

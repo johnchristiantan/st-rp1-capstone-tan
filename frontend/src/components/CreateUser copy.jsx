@@ -6,6 +6,7 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     const user_name_value = useRef(null)
     const password_value = useRef(null)
     const user_type_value = useRef(null)
+    const [isDragging, setIsDragging] = useState(false)
 
     const [showButton, setShowButton] = useState(false)
 

@@ -24,6 +24,7 @@ export default function Branches() {
 
     const [showButton, setShowButton] = useState(false)
 
+
     const handleShowButton = () => {
         setShowSelectedBranch(false)
         setShowCreateForm((prev) => !prev)
@@ -193,7 +194,7 @@ export default function Branches() {
                 </Draggable>
 
                 {showCreateForm && (
-                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form
                             className="flex flex-col justify-around bg-white w-[25rem] p-6 text-white border-2 border-gray-500 rounded px-15 items-left h-9/12"
                             onSubmit={handleOnSubmit}
@@ -267,7 +268,7 @@ export default function Branches() {
                     </div>
                 )}
                 {showSelectedBranch && (
-                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form
                             className="flex flex-col justify-around w-[25rem] p-6 bg-white text-white  rounded-lg border-2 border-gray-600 px-15 items-left h-9/12"
                             onSubmit={handleEditSubmit}

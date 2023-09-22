@@ -18,16 +18,19 @@ export default function Services() {
     const [showServiceCreateForm, setShowServiceCreateForm] = useState(false) // This handles the selection of a discount (1/6)
     const [showSelectedService, setShowSelectedService] = useState(false) // This handles the selection of a discount (2/6)
     const [selectedService, setSelectedService] = useState(null) // This handles the selection of a discount (3/6)
+    const [isDragging, setIsDragging] = useState(false)
 
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [serviceToDelete, setServiceToDelete] = useState(null)
+    const [trigger, setTrigger] = useState(false)
 
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
         setShowServiceCreateForm((prev) => !prev)
         // setShowSelectedService((prev) => !prev)
         setShowSelectedService(false)
+        
 
         // Allow the button click only if not currently dragging
         if (!isDragging) {
@@ -95,29 +98,43 @@ export default function Services() {
 
     // This handles the selection of a service (1/2)
     const handleSelectService = (service) => {
+        console.log("Selected")
         setShowServiceCreateForm(false)
         setSelectedService(service)
         setShowSelectedService(true)
 
-        if (service_id_ur.current) {
-            service_id_ur.current.value = service.service_id
-        }
-        if (service_name_ur.current) {
-            service_name_ur.current.value = service.service_name
-        }
-        if (service_type_ur.current) {
-            service_type_ur.current.value = service.service_type
-        }
+        service_id_ur.current.value = service.service_id
+        service_name_ur.current.value = service.service_name
+        // service_id_ur.current && (service_id_ur.current.value = service.service_id);
+        // service_name_ur.current && (service_name_ur.current.value = service.service_name);
 
-        if (price_ur.current) {
-            price_ur.current.value = service.price
-        }
-        if (minutes_ur.current) {
-            minutes_ur.current.value = service.minutes
-        }
-        if (commission_ur.current) {
-            commission_ur.current.value = service.commission
-        }
+        
+        // if (service_name_ur.current) {
+        //     service_name_ur.current.value = service.service_name
+        // }
+        // if (service_type_ur.current) {
+        //     service_type_ur.current.value = service.service_type
+        // }
+
+        // if (price_ur.current) {
+        //     price_ur.current.value = service.price
+        // }
+        // if (minutes_ur.current) {
+        //     minutes_ur.current.value = service.minutes
+        // }
+        // if (commission_ur.current) {
+        //     commission_ur.current.value = service.commission
+        // }
+        
+        handleReRender()
+    
+    }
+
+    const handleReRender = () => {
+        setTrigger(prev => {
+            !prev
+            console.log("Restart")
+        })
     }
 
     // Function to toggle the confirmation dialog
@@ -209,7 +226,7 @@ export default function Services() {
                     </div>
                 </Draggable>
                 {showButton && (
-                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form
                             className="flex flex-col justify-around bg-white w-[25rem] p-6 text-white  rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
                             onSubmit={handleOnSubmit}
@@ -325,7 +342,7 @@ export default function Services() {
                 )}
 
                 {showSelectedService && (
-                    // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                    // <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                     <form
                         className=" flex flex-col justify-around bg-white w-[25rem]  p-6 text-white rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
                         // onSubmit={handleEditSubmit}

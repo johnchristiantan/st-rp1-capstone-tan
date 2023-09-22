@@ -10,6 +10,8 @@ import { MdDeleteForever } from 'react-icons/md'
 import { getUsers } from '../services/Users' // Import any necessary services
 import UserSelect from './UserSelect' // Import the UserSelect component
 
+import Draggable from 'react-draggable'
+
 export default function NewTransaction() {
     const [transactions, setTransactions] = useState([])
     const [isDeleted, setIsDeleted] = useState(false)
@@ -53,6 +55,15 @@ export default function NewTransaction() {
 
     // Use useState to manage specificServices
     const [specificServices, setSpecificServices] = useState([])
+    const [isDragging, setIsDragging] = useState(false)
+
+    const handleDragStart = () => {
+        setIsDragging(true)
+    }
+
+    const handleDragStop = () => {
+        setIsDragging(false)
+    }
 
     useEffect(() => {
         getAllServices()
@@ -366,12 +377,15 @@ export default function NewTransaction() {
                         <div>Loading...</div>
                     )}
                     {/* End of Transaction List */}
-
-                    <div className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex">
+                    <Draggable onStart={handleDragStart} onStop={handleDragStop}>
+                    <div className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"  style={{
+                            cursor: 'move',
+                        }}>
                         <div className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600">
                             <button onClick={handleShowButton}>+</button>
                         </div>
                     </div>
+                    </Draggable>
                     {showTransactionCreateForm && (
                         <form
                             className="flex flex-col justify-around w-[25rem] p-6 m-4  text-white border border-gray-500 rounded form1 px-15 items-left h-9/12"
@@ -478,7 +492,7 @@ export default function NewTransaction() {
                     )}
 
                     {showSelectedTransaction && (
-                        // <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        // <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form className=" flex-col  bg-white w-[25rem] p-6 text-black rounded border border-gray-700  px-15 items-left h-9/12">
                             <div className="w-full space-y-2 ">
                                 <div className="flex flex-col justify-center text-lg font-bold text-center ">
@@ -559,7 +573,7 @@ export default function NewTransaction() {
                         // </div>
                     )}
                     {showAddServices && (
-                        <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
                                 className="flex flex-col justify-around w-[25rem] p-6 m-4 bg-white text-white border border-gray-500 rounded form1 px-15 items-left h-9/12"
                                 // onSubmit={handleOnSubmit}

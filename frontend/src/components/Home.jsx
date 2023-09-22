@@ -1,7 +1,11 @@
 import React from 'react'
 import SpaHome from '../assets/images/Spa2.webp'
+import useStore from '../data/Store';
 
 export default function Home() {
+
+    const { prioTransactionInputField, setPrioTransactionInputField } = useStore()
+    
     const backgroundStyle = {
         backgroundImage: `url(${SpaHome})`,
         backgroundSize: 'cover',
@@ -13,6 +17,7 @@ export default function Home() {
         justifyContent: 'center',
         color: 'white',
     }
+    
     return (
         <div style={backgroundStyle}>
             <div>

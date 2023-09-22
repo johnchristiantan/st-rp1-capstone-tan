@@ -8,6 +8,7 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     const first_name_value = useRef(null)
     const last_name_value = useRef(null)
     const user_type_value = useRef(null)
+    const [isDragging, setIsDragging] = useState(false)
 
     const [showButton, setShowButton] = useState(false)
 
@@ -133,7 +134,7 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                 </Draggable>
 
                 {showButton && (
-                    <div className="fixed flex inset-0 z-20 items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form
                             onSubmit={handleSubmit}
                             className="flex flex-col bg-white justify-around w-[25rem] p-6 text-white border-2 border-gray-500  rounded-lg px-15 items-left h-9/12"

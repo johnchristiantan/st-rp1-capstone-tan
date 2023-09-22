@@ -1,6 +1,6 @@
 // #service
 import axios from 'axios'
-const baseURL = 'http://localhost:8000/services'
+const baseURL = 'http://localhost:8000/api/v1/services'
 
 export async function getAllServices() {
     try {
