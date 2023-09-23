@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:8000/branches'
+const baseURL = 'http://localhost:8000/api/v1/branches'
 
 export async function getAllBranches() {
     try {

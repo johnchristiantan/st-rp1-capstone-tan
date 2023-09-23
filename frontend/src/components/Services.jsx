@@ -18,10 +18,12 @@ export default function Services() {
     const [showServiceCreateForm, setShowServiceCreateForm] = useState(false) // This handles the selection of a discount (1/6)
     const [showSelectedService, setShowSelectedService] = useState(false) // This handles the selection of a discount (2/6)
     const [selectedService, setSelectedService] = useState(null) // This handles the selection of a discount (3/6)
+    const [isDragging, setIsDragging] = useState(false)
 
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [serviceToDelete, setServiceToDelete] = useState(null)
+    const [trigger, setTrigger] = useState(false)
 
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
@@ -95,29 +97,41 @@ export default function Services() {
 
     // This handles the selection of a service (1/2)
     const handleSelectService = (service) => {
+        console.log('Selected')
         setShowServiceCreateForm(false)
         setSelectedService(service)
         setShowSelectedService(true)
 
-        if (service_id_ur.current) {
-            service_id_ur.current.value = service.service_id
-        }
-        if (service_name_ur.current) {
-            service_name_ur.current.value = service.service_name
-        }
-        if (service_type_ur.current) {
-            service_type_ur.current.value = service.service_type
-        }
+        service_id_ur.current.value = service.service_id
+        service_name_ur.current.value = service.service_name
+        // service_id_ur.current && (service_id_ur.current.value = service.service_id);
+        // service_name_ur.current && (service_name_ur.current.value = service.service_name);
 
-        if (price_ur.current) {
-            price_ur.current.value = service.price
-        }
-        if (minutes_ur.current) {
-            minutes_ur.current.value = service.minutes
-        }
-        if (commission_ur.current) {
-            commission_ur.current.value = service.commission
-        }
+        // if (service_name_ur.current) {
+        //     service_name_ur.current.value = service.service_name
+        // }
+        // if (service_type_ur.current) {
+        //     service_type_ur.current.value = service.service_type
+        // }
+
+        // if (price_ur.current) {
+        //     price_ur.current.value = service.price
+        // }
+        // if (minutes_ur.current) {
+        //     minutes_ur.current.value = service.minutes
+        // }
+        // if (commission_ur.current) {
+        //     commission_ur.current.value = service.commission
+        // }
+
+        handleReRender()
+    }
+
+    const handleReRender = () => {
+        setTrigger((prev) => {
+            !prev
+            console.log('Restart')
+        })
     }
 
     // Function to toggle the confirmation dialog
@@ -325,163 +339,153 @@ export default function Services() {
                 )}
 
                 {showSelectedService && (
-                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
-                        <form
-                            className=" flex flex-col justify-around bg-white w-[25rem]  p-6 text-white rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
-                            // onSubmit={handleEditSubmit}
-                        >
-                            <div className="flex items-center w-full text-lg font-bold text-orange-500">
-                                <h1 className="mb-2 text-xl">Services</h1>
-                            </div>
+                    // <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                    <form
+                        className=" flex flex-col justify-around bg-white w-[25rem]  p-6 text-white rounded-lg border-2 border-gray-500 px-15 items-left h-9/12"
+                        // onSubmit={handleEditSubmit}
+                    >
+                        <div className="flex items-center w-full text-lg font-bold text-orange-500">
+                            <h1 className="mb-2 text-xl">Services</h1>
+                        </div>
 
-                            <div className="flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">
-                                    Service ID
-                                </label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={service_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        // onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="service_id"
-                                        defaultValue={
-                                            selectedService
-                                                ? selectedService.service_id
-                                                : ''
-                                        }
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">
-                                    Service Name:
-                                </label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={service_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="service_name"
-                                        defaultValue={
-                                            selectedService
-                                                ? selectedService.service_name
-                                                : ''
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="relative flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">
-                                    Service Type:
-                                </label>
-                                <div className="flex flex-col ">
-                                    <select
-                                        ref={service_type_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        // onChange={handleOnChangeEdit}
-                                        className=" p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="service_type"
-                                        value={
-                                            selectedService
-                                                ? selectedService.service_type
-                                                : ''
-                                        }
-                                    >
-                                        <option value="Massage">Massage</option>
-                                        <option value="Spa">Spa</option>
-                                        <option value="Package">Package</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">Price:</label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={price_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        // onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="price"
-                                        defaultValue={
-                                            selectedService
-                                                ? selectedService.price
-                                                : ''
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">Minutes:</label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={minutes_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        // onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="minutes"
-                                        defaultValue={
-                                            selectedService
-                                                ? selectedService.minutes
-                                                : ''
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">
-                                    Commission:
-                                </label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={commission_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        // onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="commission"
-                                        defaultValue={
-                                            selectedService
-                                                ? selectedService.commission
-                                                : ''
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex items-center justify-center w-full mt-4">
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Service ID</label>
+                            <div className="flex flex-col ">
                                 <input
-                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
-                                    type="submit"
-                                    value="Update"
-                                />
-                            </div>
-                            <div className="flex items-center justify-center w-full mt-4">
-                                <input
-                                    className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
-                                    type="button"
-                                    onClick={handleOnCancelEdit}
-                                    value="Cancel"
-                                />
-                            </div>
-                            <div className="flex items-center justify-center w-full mt-4">
-                                <input
-                                    className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
-                                    type="button"
-                                    value="Delete"
-                                    onClick={() =>
-                                        toggleDeleteConfirmation(
-                                            selectedService
-                                        )
+                                    ref={service_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    // onChange={handleOnChangeEdit}
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                    type="text"
+                                    name="service_id"
+                                    defaultValue={
+                                        selectedService
+                                            ? selectedService.service_id_ur
+                                            : ''
                                     }
                                 />
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Service Name:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    ref={service_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    onChange={handleOnChangeEdit}
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                    type="text"
+                                    name="service_name"
+                                    defaultValue={
+                                        selectedService
+                                            ? selectedService.service_name_ur
+                                            : ''
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        <div className="relative flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Service Type:</label>
+                            <div className="flex flex-col ">
+                                <select
+                                    ref={service_type_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    // onChange={handleOnChangeEdit}
+                                    className=" p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                    type="text"
+                                    name="service_type"
+                                    value={
+                                        selectedService
+                                            ? selectedService.service_type_ur
+                                            : ''
+                                    }
+                                >
+                                    <option value="Massage">Massage</option>
+                                    <option value="Spa">Spa</option>
+                                    <option value="Package">Package</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Price:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    ref={price_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    // onChange={handleOnChangeEdit}
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                    type="text"
+                                    name="price"
+                                    defaultValue={
+                                        selectedService
+                                            ? selectedService.price_ur
+                                            : ''
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Minutes:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    ref={minutes_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    // onChange={handleOnChangeEdit}
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                    type="text"
+                                    name="minutes"
+                                    defaultValue={
+                                        selectedService
+                                            ? selectedService.minutes_ur
+                                            : ''
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Commission:</label>
+                            <div className="flex flex-col ">
+                                <input
+                                    ref={commission_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                    // onChange={handleOnChangeEdit}
+                                    className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                    type="text"
+                                    name="commission"
+                                    defaultValue={
+                                        selectedService
+                                            ? selectedService.commission_ur
+                                            : ''
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-center w-full mt-4">
+                            <input
+                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 border-2 hover:border-orange-500"
+                                type="submit"
+                                value="Update"
+                            />
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-4">
+                            <input
+                                className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
+                                type="button"
+                                onClick={handleOnCancelEdit}
+                                value="Cancel"
+                            />
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-4">
+                            <input
+                                className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
+                                type="button"
+                                value="Delete"
+                                onClick={() =>
+                                    toggleDeleteConfirmation(selectedService)
+                                }
+                            />
+                        </div>
+                    </form>
+                    // </div>
                 )}
                 {/* Delete confirmation dialog */}
                 {showDeleteConfirmation && (
