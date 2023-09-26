@@ -1,11 +1,11 @@
 import React from 'react'
 import SpaHome from '../assets/images/Spa2.webp'
-import useStore from '../data/Store';
+import useStore from '../data/Store'
 
 export default function Home() {
+    const { prioTransactionInputField, setPrioTransactionInputField } =
+        useStore()
 
-    const { prioTransactionInputField, setPrioTransactionInputField } = useStore()
-    
     const backgroundStyle = {
         backgroundImage: `url(${SpaHome})`,
         backgroundSize: 'cover',
@@ -17,7 +17,7 @@ export default function Home() {
         justifyContent: 'center',
         color: 'white',
     }
-    
+
     return (
         <div style={backgroundStyle}>
             <div>
@@ -27,7 +27,6 @@ export default function Home() {
                 <button className="px-4 py-2 font-bold text-white bg-orange-600 rounded-3xl hover:bg-green-700">
                     Learn More
                 </button>
-                ;
             </div>
         </div>
     )

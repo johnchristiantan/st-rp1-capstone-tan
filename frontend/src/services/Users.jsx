@@ -1,3 +1,6 @@
+import axios from 'axios'
+const baseURL = 'http://localhost:8000/api/v1/users'
+
 // CREATE/POST User
 export async function createUser(userDetails) {
     try {
