@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react'
 import { getAllServices } from '../../services/SpaServices'
+import useTransactionFormStore from '../../data/Store'
 
 export default function AvailedServiceLists() {
     const [services, setServices] = useState([])
-    const [selectedService, setSelectedService] = useState('') // State to track the selected 
+    const [selectedService, setSelectedService] = useState('') // State to track the selected
     const [specificServices, setSpecificServices] = useState([])
     const [selectedServiceType, setSelectedServiceType] = useState('') // Add a new state variable to track the selected service type
     const [filteredServiceNames, setFilteredServiceNames] = useState([]) // Add a state variable to store the filtered service names
     const [selectedServiceName, setSelectedServiceName] = useState('')
     const [selectedServicePrice, setSelectedServicePrice] = useState(0)
 
+    const { createTransactionInputField, setCreateTransactionInputField } =
+        useTransactionFormStore()
+
     let uniqueServices = services.filter(
         (service, index, self) =>
             index ===
             self.findIndex((s) => s.service_type === service.service_type)
     )
-    
+
     useEffect(() => {
         async function fetchServices() {
             try {
@@ -71,6 +75,15 @@ export default function AvailedServiceLists() {
         }
     }
 
+    const handleOnChange = (e) => {
+        const { name, value } = e.target
+        setSelectedService(value)
+        setCreateTransactionInputField(name, value)
+
+        console.log(name, value)
+        console.log(createTransactionInputField)
+    }
+
     return (
         // <div className="flex justify-between w-full space-y-2 text-black">
         //     <label className="self-center">Service:</label>
@@ -88,17 +101,13 @@ export default function AvailedServiceLists() {
         // </div>
         <>
             <div className="relative flex justify-between space-y-2 text-black">
-                <label className="self-center">
-                    Service Type:
-                </label>
+                <label className="self-center">Service Type:</label>
                 <div className="flex flex-col w-[12rem]">
                     <select
                         className="w-[12rem] p-1 text-black rounded"
                         name="service_type"
                         value={selectedServiceType}
-                        onChange={(event) =>
-                            handleServiceTypeChange(event)
-                        }
+                        onChange={(event) => handleServiceTypeChange(event)}
                     >
                         {uniqueServices.map((service) => (
                             <option
@@ -113,36 +122,24 @@ export default function AvailedServiceLists() {
             </div>
 
             <div className="relative flex justify-between space-y-2 text-black">
-                <label className="self-center">
-                    Service:
-                </label>
+                <label className="self-center">Service:</label>
                 <div className="flex flex-col w-[12rem]">
                     <select
                         className="w-[12rem] p-1 text-black rounded"
                         name="service_name"
                         value={selectedServiceName}
-                        onChange={(event) =>
-                            handleServiceNameChange(event)
-                        }
+                        onChange={(event) => handleServiceNameChange(event)}
                     >
-                        <option value="">
-                            Select a service
-                        </option>
-                        {filteredServiceNames.map(
-                            (serviceName) => (
-                                <option
-                                    key={serviceName}
-                                    value={serviceName}
-                                >
-                                    {serviceName}
-                                </option>
-                            )
-                        )}
+                        <option value="">Select a service</option>
+                        {filteredServiceNames.map((serviceName) => (
+                            <option key={serviceName} value={serviceName}>
+                                {serviceName}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
         </>
-        
     )
 }
 
