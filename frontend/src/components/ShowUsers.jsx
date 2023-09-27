@@ -48,8 +48,8 @@ export const ShowUsers = () => {
 
     return (
         <>
-            <div className="flex-col  flex items-center justify-center ">
-                <div className="flex items-center justify-center mt-20 p-4 ">
+            <div className="flex flex-col items-center justify-center ">
+                <div className="flex items-center justify-center p-4 mt-20 ">
                     {alertCreatedMessage && (
                         <div className="flex flex-row items-center justify-between p-2 text-xs text-left bg-green-100 rounded-lg">
                             <span className="font-semibold text-green-900">
@@ -60,7 +60,7 @@ export const ShowUsers = () => {
                                 type="button"
                                 onClick={handleCreatedAlertClose}
                             >
-                                X
+                                +
                             </button>
                         </div>
                     )}
@@ -104,12 +104,12 @@ export const ShowUsers = () => {
                             >
                                 <div
                                     // onClick={() => handleSelectDiscount(discount)}
-                                    className=" w-[25rem] bg-white border border-gray-400  rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
+                                    className="transition-transform transition-bg hover:scale-110 hover:shadow-md w-[22rem] bg-white border border-gray-400 shadow-lg rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
                                 >
                                     <div className="text-lg font-bold">
                                         {user.last_name} {user.first_name}
                                     </div>
-                                    <div className="text-black text-base">
+                                    <div className="text-base text-black">
                                         {user.user_type}
                                     </div>
                                     <div className="flex flex-row text-sm text-gray-500 ">
@@ -127,7 +127,7 @@ export const ShowUsers = () => {
                                         </div>
                                         <div className="">
                                             <button
-                                                className="hover:text-red-600 text-sm text-gray-500"
+                                                className="text-sm text-gray-500 hover:text-red-600"
                                                 onClick={() =>
                                                     handleDelete(
                                                         user.user_id,

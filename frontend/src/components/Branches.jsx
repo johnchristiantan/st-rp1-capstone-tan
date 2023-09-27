@@ -6,7 +6,6 @@ import {
     editBranch,
 } from '../services/BranchServices'
 import { MdDeleteForever } from 'react-icons/md'
-import Draggable from 'react-draggable'
 
 export default function Branches() {
     const [branches, setBranches] = useState([])
@@ -24,15 +23,9 @@ export default function Branches() {
 
     const [showButton, setShowButton] = useState(false)
 
-
     const handleShowButton = () => {
         setShowSelectedBranch(false)
         setShowCreateForm((prev) => !prev)
-
-        // Allow the button click only if not currently dragging
-        if (!isDragging) {
-            setShowButton((prev) => !prev)
-        }
     }
 
     const handleOnCancelEdit = () => {
@@ -70,14 +63,6 @@ export default function Branches() {
             ...prev,
             [name]: value,
         }))
-    }
-
-    const handleDragStart = () => {
-        setIsDragging(true)
-    }
-
-    const handleDragStop = () => {
-        setIsDragging(false)
     }
 
     useEffect(() => {
@@ -141,12 +126,12 @@ export default function Branches() {
     }
 
     // Calculate the width for each column
-    const columnWidth = 'calc(25rem / 3)' // This divides the available width by 3
+    const columnWidth = 'calc(22rem / 3)' // This divides the available width by 3
 
     return (
         <>
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
-                <div className="flex flex-wrap w-[25rem]">
+                <div className="flex flex-wrap w-[22rem]">
                     {branches ? (
                         branches.map((branch, index) => {
                             return (
@@ -158,7 +143,7 @@ export default function Branches() {
                                         onClick={() =>
                                             handleSelectBranch(branch)
                                         }
-                                        className="bg-white border border-gray-400 rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                        className="transition-transform transition-bg hover:scale-110 hover:shadow-md bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
                                     >
                                         <div className="text-sm font-bold">
                                             {branch.branch_name}
@@ -177,26 +162,17 @@ export default function Branches() {
                     )}
                 </div>
 
-                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
-                    <div
-                        className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
-                        style={{
-                            cursor: 'move',
-                        }}
-                    >
-                        <button
-                            onDoubleClick={handleShowButton}
-                            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
-                        >
-                            +
-                        </button>
-                    </div>
-                </Draggable>
+                <button
+                    onDoubleClick={handleShowButton}
+                    className="w-[30rem] p-1  rounded-lg hover:text-orange-600 text-orange-500   hover:font-bold"
+                >
+                    Create New Branch
+                </button>
 
                 {showCreateForm && (
                     <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form
-                            className="flex flex-col justify-around bg-white w-[25rem] p-6 text-white border-2 border-gray-500 rounded px-15 items-left h-9/12"
+                            className="flex flex-col justify-around bg-white w-[22rem] p-6 text-white border-2 border-gray-500 rounded px-15 items-left h-9/12"
                             onSubmit={handleOnSubmit}
                         >
                             <div className="flex items-center w-full">

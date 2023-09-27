@@ -2,10 +2,12 @@ const pool = new require('../config/db')
 
 const getAllDiscounts = async (req, res) => {
     try {
-        const discounts = await pool.query('SELECT * FROM discounts ORDER BY discount_id ASC')
+        const discounts = await pool.query(
+            'SELECT * FROM discounts ORDER BY discount_id ASC'
+        )
         res.json(discounts.rows)
     } catch (err) {
-        console.error(err.message);
+        console.error(err.message)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 }
@@ -13,14 +15,14 @@ const getAllDiscounts = async (req, res) => {
 const createDiscount = async (req, res) => {
     try {
         const { discount_code, discount_description, percentage } = req.body
-        
+
         const newDiscount = await pool.query(
             'INSERT INTO discounts (discount_code, discount_description, percentage) VALUES($1, $2, $3) RETURNING *',
             [discount_code, discount_description, percentage]
         )
         res.json(newDiscount.rows[0])
     } catch (err) {
-        console.error(err.message);
+        console.error(err.message)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 }
@@ -36,7 +38,7 @@ const updateDiscount = async (req, res) => {
         )
         res.json(updateDiscount.rows[0])
     } catch (err) {
-        console.error(err.message);
+        console.error(err.message)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 }
@@ -44,7 +46,9 @@ const updateDiscount = async (req, res) => {
 const deleteDiscount = async (req, res) => {
     try {
         const { discount_id } = req.params
-        await pool.query("DELETE FROM discounts WHERE discount_id = $1", [discount_id]);
+        await pool.query('DELETE FROM discounts WHERE discount_id = $1', [
+            discount_id,
+        ])
         res.json(`Successfully Deleted Discount: ${discount_id}`)
     } catch (err) {
         console.error(err.message)
@@ -56,5 +60,5 @@ module.exports = {
     getAllDiscounts,
     createDiscount,
     updateDiscount,
-    deleteDiscount
+    deleteDiscount,
 }

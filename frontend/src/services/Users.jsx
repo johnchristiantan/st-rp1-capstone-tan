@@ -4,7 +4,7 @@ const baseURL = 'http://localhost:8000/api/v1/users'
 // CREATE/POST User
 export async function createUser(userDetails) {
     try {
-        const response = await fetch('http://localhost:8000/user', {
+        const response = await fetch(baseURL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userDetails),
@@ -18,7 +18,7 @@ export async function createUser(userDetails) {
 // READ Users
 export async function getUsers() {
     try {
-        const response = await fetch('http://localhost:8000/users')
+        const response = await fetch(baseURL)
         return response.json()
     } catch (error) {
         console.log('Error: ', error)
@@ -49,9 +49,12 @@ export async function editUser(user) {
 // DELETE User
 export async function deleteUser(user_id) {
     try {
-        const response = await fetch(`http://localhost:8000/users/${user_id}`, {
-            method: 'DELETE',
-        })
+        const response = await fetch(
+            `http://localhost:8000/api/v1/users/${user_id}`,
+            {
+                method: 'DELETE',
+            }
+        )
         console.log(response)
         // return await response.json()
     } catch (error) {

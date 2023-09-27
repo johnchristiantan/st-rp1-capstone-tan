@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { createUser } from '../services/Users'
-import Draggable from 'react-draggable'
 
 export const CreateUser = ({ handleCreatedAlertClose }) => {
     const user_name_value = useRef(null)
@@ -8,27 +7,12 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     const first_name_value = useRef(null)
     const last_name_value = useRef(null)
     const user_type_value = useRef(null)
-    const [isDragging, setIsDragging] = useState(false)
 
     const [showButton, setShowButton] = useState(false)
 
-    // const [isDragging, setIsDragging] = useState(false)
-
     const handleShowButton = () => {
         setShowButton((prev) => !prev)
-
-        // Allow the button click only if not currently dragging
-        if (!isDragging) {
-            setShowButton((prev) => !prev)
-        }
-    }
-
-    const handleDragStart = () => {
-        setIsDragging(true)
-    }
-
-    const handleDragStop = () => {
-        setIsDragging(false)
+        // setShowButton(false)
     }
 
     const [userDetails, setUserDetails] = useState({
@@ -56,6 +40,7 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
             createUser(userDetails)
                 .then((res) => {
                     setisSubmit(false)
+                    // setShowButton(false)
                     // alert('Registered Successfully', res)
                     user_name_value.current.value = ''
                     password_value.current.value = ''
@@ -117,27 +102,18 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     return (
         <>
             <div className="flex flex-col items-center justify-center ">
-                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
-                    <div
-                        className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
-                        style={{
-                            cursor: 'move',
-                        }}
-                    >
-                        <button
-                            onDoubleClick={handleShowButton}
-                            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
-                        >
-                            +
-                        </button>
-                    </div>
-                </Draggable>
+                <button
+                    onDoubleClick={handleShowButton}
+                    className="w-[30rem] p-1  rounded-lg hover:text-orange-600 text-orange-500   hover:font-bold"
+                >
+                    Create New User
+                </button>
 
                 {showButton && (
                     <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                         <form
                             onSubmit={handleSubmit}
-                            className="flex flex-col bg-white justify-around w-[25rem] p-6 text-white border-2 border-gray-500  rounded-lg px-15 items-left h-9/12"
+                            className="flex flex-col bg-white justify-around w-[22rem] p-6 text-white border-2 border-gray-500  rounded-lg px-15 items-left h-9/12"
                         >
                             <div className="flex items-center w-full">
                                 <h1 className="mb-2 text-lg font-bold text-left text-orange-600">

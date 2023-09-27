@@ -5,13 +5,11 @@ import {
     deleteDiscount,
     editDiscount,
 } from '../services/DiscountServices'
-import Draggable from 'react-draggable'
+// import Draggable from 'react-draggable'
 
 export default function Discounts() {
     const [showButton, setShowButton] = useState(false)
     const [discounts, setDiscounts] = useState([])
-
-    const [isDragging, setIsDragging] = useState(false)
 
     // This handles the selection of a discount
     const [showDiscountCreateForm, setShowDiscountCreateForm] = useState(false) // This handles the selection of a discount (1/6)
@@ -40,15 +38,25 @@ export default function Discounts() {
         percentage: null,
     })
 
+    // const [isDragging, setIsDragging] = useState(false)
+
     const handleShowButton = () => {
         setShowSelectedDiscount(false)
         setShowDiscountCreateForm((prev) => !prev)
 
         // Allow the button click only if not currently dragging
-        if (!isDragging) {
-            setShowButton((prev) => !prev)
-        }
+        // if (!isDragging) {
+        //     setShowButton((prev) => !prev)
+        // }
     }
+
+    // const handleDragStart = () => {
+    //     setIsDragging(true)
+    // }
+
+    // const handleDragStop = () => {
+    //     setIsDragging(false)
+    // }
 
     //    DiscountAdd (2/3)
     const handleOnChange = (e) => {
@@ -117,14 +125,6 @@ export default function Discounts() {
         }
     }
 
-    const handleDragStart = () => {
-        setIsDragging(true)
-    }
-
-    const handleDragStop = () => {
-        setIsDragging(false)
-    }
-
     // Function to toggle the confirmation dialog
     const toggleDeleteConfirmation = (discount) => {
         setDiscountToDelete(discount)
@@ -171,12 +171,12 @@ export default function Discounts() {
     }
 
     // Calculate the width for each column
-    const columnWidth = 'calc(25rem / 3)' // This divides the available width by 3
+    const columnWidth = 'calc(22rem / 3)' // This divides the available width by 3
 
     return (
         <>
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
-                <div className="discountlist flex flex-wrap w-[25rem] max-w-md">
+                <div className="discountlist flex flex-wrap w-[22rem] max-w-md">
                     {/* DiscountList */}
                     {discounts ? (
                         discounts.map((discount, index) => (
@@ -188,7 +188,7 @@ export default function Discounts() {
                                     onClick={() =>
                                         handleSelectDiscount(discount)
                                     }
-                                    className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                    className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] transition-transform transition-bg hover:scale-110 hover:shadow-md overflow-y-auto flex flex-col justify-center items-center text-center"
                                 >
                                     <div className="text-sm font-bold">
                                         {discount.discount_description}
@@ -205,28 +205,29 @@ export default function Discounts() {
                 </div>
                 {/* End of DiscountList */}
 
-                <Draggable onStart={handleDragStart} onStop={handleDragStop}>
+                {/* <Draggable onStart={handleDragStart} onStop={handleDragStop}>
                     <div
                         className="Frame164 px-2 py-1.5 opacity-80 justify-center items-start gap-2.5 inline-flex"
                         style={{
                             cursor: 'move',
                         }}
-                    >
-                        <button
-                            onDoubleClick={handleShowButton}
-                            className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
-                        >
-                            +
-                        </button>
-                    </div>
-                </Draggable>
+                    > */}
+                <button
+                    onDoubleClick={handleShowButton}
+                    // className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
+                    className="w-[30rem] p-1  rounded-lg hover:text-orange-600 text-orange-500   hover:font-bold"
+                >
+                    Create New Discount
+                </button>
+                {/* </div>
+                </Draggable> */}
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
                     {showDiscountCreateForm && (
                         <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
                                 // className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
-                                className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white "
+                                className="flex flex-col justify-around w-[22rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white "
                                 onSubmit={handleOnSubmit}
                             >
                                 <div className="flex items-center w-full text-lg font-bold text-orange-500 ">
@@ -320,11 +321,6 @@ export default function Discounts() {
                                                 ? selectedDiscount.discount_code
                                                 : ''
                                         }
-                                        // defaultValue={
-                                        //     selectedDiscount
-                                        //         ? selectedDiscount.discount_code_ur
-                                        //         : ''
-                                        // }
                                     />
                                 </div>
                             </div>

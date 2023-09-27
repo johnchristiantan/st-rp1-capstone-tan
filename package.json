@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "chart.js": "^4.4.0",
     "immer": "^10.0.2",
+    "react-chartjs-2": "^5.2.0",
     "zustand": "^4.4.1"
   }
 }

@@ -11,6 +11,7 @@ const serviceRoutes = require('./routes/serviceRoutes')
 const branchRoutes = require('./routes/branchRoutes')
 const discountRoutes = require('./routes/discountRoutes')
 const transactionRoutes = require('./routes/transactionRoutes')
+const chartDataRoutes = require('./routes/chartDataRoutes')
 
 const { authenticateToken } = require('./middleware/authMiddleware')
 
@@ -29,6 +30,7 @@ app.use('/api/v1', serviceRoutes)
 app.use('/api/v1', branchRoutes)
 app.use('/api/v1', discountRoutes)
 app.use('/api/v1', transactionRoutes)
+app.use('/api/v1', chartDataRoutes)
 
 const PORT = process.env.SERVERPORT || 3000
 
