@@ -5,7 +5,6 @@ import {
     deleteBranch,
     editBranch,
 } from '../services/BranchServices'
-import { MdDeleteForever } from 'react-icons/md'
 
 export default function Branches() {
     const [branches, setBranches] = useState([])
@@ -18,10 +17,6 @@ export default function Branches() {
     const [isDeleted, setIsDeleted] = useState(false)
     const [isEdited, setIsEdited] = useState(false)
     const [inputChanges, setInputChanges] = useState(selectedBranch)
-
-    const [isDragging, setIsDragging] = useState(false)
-
-    const [showButton, setShowButton] = useState(false)
 
     const handleShowButton = () => {
         setShowSelectedBranch(false)
@@ -76,7 +71,7 @@ export default function Branches() {
     }, [isCreateBranchFormSubmitted, isDeleted, isEdited]) // auto reload when submitted
 
     // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-    const branch_code_ur = useRef(null)
+    const branch_id_ur = useRef(null)
     const branch_name_ur = useRef(null)
     const percent_share_ur = useRef(null)
 
@@ -87,14 +82,14 @@ export default function Branches() {
         setSelectedBranch(branch)
         setShowSelectedBranch(true)
 
-        branch_code_ur.current.value = branch.branch_code
+        branch_id_ur.current.value = branch.branch_id
         branch_name_ur.current.value = branch.branch_name
         percent_share_ur.current.value = branch.percent_share
     }
 
     //Handle delete (1/1)
-    const handleDeleteBranch = (branch_code) => {
-        deleteBranch(branch_code)
+    const handleDeleteBranch = (branch_id) => {
+        deleteBranch(branch_id)
             .then((res) => {
                 alert('Deleted successfully')
                 setIsDeleted((prev) => !prev)
@@ -187,11 +182,11 @@ export default function Branches() {
                                 </label>
                                 <div className="flex flex-col ">
                                     <input
-                                        ref={branch_code_ur}
+                                        ref={branch_id_ur}
                                         onChange={handleOnChange}
                                         className="p-1 text-black border border-gray-500 rounded-lg"
                                         type="text"
-                                        name="branch_code"
+                                        name="branch_id"
                                     />
                                 </div>
                             </div>
@@ -261,14 +256,14 @@ export default function Branches() {
                                 </label>
                                 <div className="flex flex-col ">
                                     <input
-                                        ref={branch_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        ref={branch_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
                                         className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                         type="text"
-                                        name="branch_code"
+                                        name="branch_id"
                                         defaultValue={
                                             selectedBranch
-                                                ? selectedBranch.branch_code
+                                                ? selectedBranch.branch_id
                                                 : ''
                                         }
                                         disabled
@@ -339,7 +334,7 @@ export default function Branches() {
                                     value="Delete"
                                     onClick={() =>
                                         handleDeleteBranch(
-                                            selectedBranch.branch_code
+                                            selectedBranch.branch_id
                                         )
                                     }
                                 />

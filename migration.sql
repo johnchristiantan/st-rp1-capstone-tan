@@ -49,12 +49,12 @@ CREATE TABLE "availed_services" (
   PRIMARY KEY ("a_service_id")
 );
 CREATE TABLE "services" (
-  "service_id"  serial ,
+  "service_id"  integer ,
   "service_name" character varying  (255),
   "service_type" character varying  (255),
-  "price" decimal (10, 2),
+  "price" double precision,
   "minutes" integer,
-  "commission" decimal (10, 2),
+  "commission" double precision,
   PRIMARY KEY ("service_id")
 );
 

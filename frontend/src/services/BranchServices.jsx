@@ -24,7 +24,7 @@ export async function editBranch(branch_input) {
     console.log(branch_input)
     try {
         const editBranch = await axios.put(
-            `${baseURL}/${branch_input.branch_code}`,
+            `${baseURL}/${branch_input.branch_id}`,
             branch_input
         )
         return editBranch.data

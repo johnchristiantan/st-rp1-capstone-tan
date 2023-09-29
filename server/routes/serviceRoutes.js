@@ -11,4 +11,7 @@ router.post('/services', serviceController.createService)
 // DELETE a service by service ID
 router.delete('/services/:service_id', serviceController.deleteService)
 
+// UPDATE a service by service ID
+router.put('/services/:service_id', serviceController.updateService)
+
 module.exports = router

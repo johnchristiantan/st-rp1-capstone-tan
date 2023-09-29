@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-    FaBars,
-    FaUsers,
-    FaBuilding,
-    FaTools,
-    FaMoneyBillWave,
-} from 'react-icons/fa'
+import { FaBars, FaUsers, FaBuilding, FaPercent } from 'react-icons/fa'
+
+import { FaHandsBound } from 'react-icons/fa6'
 
 import logoImage from '../common/PATH.png'
 import BottomNav from './BottomNav'
@@ -26,19 +22,23 @@ const Nav = () => {
         {
             name: 'Services',
             link: '/services',
-            icon: <FaTools className="mr-2" />,
+            icon: <FaHandsBound className="mr-2 " />,
         },
         {
             name: 'Discounts',
             link: '/discounts',
-            icon: <FaMoneyBillWave className="mr-2 " />,
+            icon: <FaPercent className="mr-2 " />,
         },
     ]
     const [open, setOpen] = useState(true)
 
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
+            <nav
+                className={`fixed top-0 left-0 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 ${
+                    open ? 'h-[4rem]' : 'h-[7rem]'
+                } md:p-0 md-flex ${open ? '' : 'rounded-b-lg'}`}
+            >
                 <span className="absolute top-4 left-4">
                     <Link to="/">
                         <img src={logoImage} alt="Logo" className="mr-2" />

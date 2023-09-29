@@ -33,7 +33,7 @@ export default function Discounts() {
 
     //    DiscountAdd (1/3)
     const [discountsInputs, setDiscountsInputs] = useState({
-        discount_code: '',
+        discount_id: '',
         discount_description: '',
         percentage: null,
     })
@@ -101,7 +101,7 @@ export default function Discounts() {
     }, [isDeleted, isEdited, showDiscountCreateForm]) // [isCreateBranchFormSubmitted, isDeleted, isEdited]) // auto reload when submitted
 
     // This handles the selection of a discount (5/6)
-    const discount_code_ur = useRef(null)
+    const discount_id_ur = useRef(null)
     const discount_description_ur = useRef(null)
     const percentage_ur = useRef(null)
 
@@ -113,8 +113,8 @@ export default function Discounts() {
         setShowSelectedDiscount(true)
 
         // Make sure to check if the refs are defined before setting their values
-        if (discount_code_ur.current) {
-            discount_code_ur.current.value = discount.discount_code
+        if (discount_id_ur.current) {
+            discount_id_ur.current.value = discount.discount_id
         }
         if (discount_description_ur.current) {
             discount_description_ur.current.value =
@@ -134,7 +134,7 @@ export default function Discounts() {
     // Function to handle delete confirmation
     const handleDeleteConfirmation = () => {
         if (discountToDelete) {
-            deleteDiscount(discountToDelete.discount_code)
+            deleteDiscount(discountToDelete.discount_id)
                 .then(() => {
                     setIsDeleted((prev) => !prev)
                     setShowSelectedDiscount(false)
@@ -243,7 +243,7 @@ export default function Discounts() {
                                             onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                             type="text"
-                                            name="discount_code"
+                                            name="discount_id"
                                         />
                                     </div>
                                 </div>
@@ -311,14 +311,14 @@ export default function Discounts() {
                                 </label>
                                 <div className="flex flex-col ">
                                     <input
-                                        ref={discount_code_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        ref={discount_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
                                         className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                         type="text"
-                                        name="discount_code"
+                                        name="discount_id"
                                         defaultValue={
                                             selectedDiscount
-                                                ? selectedDiscount.discount_code
+                                                ? selectedDiscount.discount_id
                                                 : ''
                                         }
                                     />

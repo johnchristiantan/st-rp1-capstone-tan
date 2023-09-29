@@ -35,7 +35,7 @@ export async function editDiscount(discount_input) {
     console.log(discount_input)
     try {
         const editDiscount = await axios.put(
-            `${baseURL}/${discount_input.discount_code}`,
+            `${baseURL}/${discount_input.discount_id}`,
             discount_input
         )
         return editDiscount.data
