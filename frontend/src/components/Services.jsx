@@ -7,7 +7,7 @@ import {
 } from '../services/SpaServices'
 
 export default function Services() {
-    const [showButton, setShowButton] = useState(false)
+    // const [showButton, setShowButton] = useState(false)
     const [services, setServices] = useState([])
 
     // This handles the selection of a service
@@ -18,13 +18,13 @@ export default function Services() {
     const [isDeleted, setIsDeleted] = useState(false)
     const [inputChanges, setInputChanges] = useState(selectedService)
     const [isEdited, setIsEdited] = useState(false)
-    const [createServiceForm, setCreateServiceForm] = useState(false)
-    const [isCreateServiceFormSubmitted, setIsCreateServiceFormSubmitted] =
-        useState(false)
+    // const [createServiceForm, setCreateServiceForm] = useState(false)
+    // const [isCreateServiceFormSubmitted, setIsCreateServiceFormSubmitted] =
+    //     useState(false)
 
-    const [serviceID, setServiceID] = useState('')
-    const [serviceName, setServiceName] = useState('')
-    const [serviceType, setServiceType] = useState(null)
+    // const [serviceID, setServiceID] = useState('')
+    // const [serviceName, setServiceName] = useState('')
+    // const [serviceType, setServiceType] = useState(null)
 
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
@@ -201,19 +201,15 @@ export default function Services() {
 
                 <button
                     onDoubleClick={handleShowButton}
-                    // className="flex items-center justify-center w-10 h-10 text-xl font-bold text-white bg-orange-400 border border-white rounded-full hover:bg-orange-600"
                     className="w-[30rem] p-1  rounded-lg hover:text-orange-600 text-orange-500   hover:font-bold"
                 >
                     Create New Service
                 </button>
-                {/* </div>
-                </Draggable> */}
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
                     {showServiceCreateForm && (
                         <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
                             <form
-                                // className="flex flex-col justify-around w-[25rem] p-6 text-white rounded-lg px-15 items-left h-9/12 border-2 border-gray-500"
                                 className="flex flex-col justify-around w-[22rem] p-6 text-white rounded-lg px-15 items-left border-2 border-gray-500 bg-white "
                                 onSubmit={handleOnSubmit}
                             >
@@ -221,19 +217,6 @@ export default function Services() {
                                     <h1 className="mb-2 text-xl ">Services</h1>
                                 </div>
 
-                                {/* <div className="flex justify-between w-full space-y-2 text-black">
-                                    <label className="self-center">
-                                        Service ID
-                                    </label>
-                                    <div className="flex flex-col ">
-                                        <input
-                                            onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="integer"
-                                            name="service_id"
-                                        />
-                                    </div>
-                                </div> */}
                                 <div className="flex justify-between w-full space-y-2 text-black ">
                                     <label className="self-center">
                                         Service Name:
@@ -253,12 +236,20 @@ export default function Services() {
                                         Service Type:
                                     </label>
                                     <div className="flex flex-col ">
-                                        <input
+                                        <select
                                             onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
                                             name="service_type"
-                                        />
+                                            // value="Massage" // Set a default value
+                                        >
+                                            <option value="Massage">
+                                                Massage
+                                            </option>
+                                            <option value="Spa">Spa</option>
+                                            <option value="Package">
+                                                Package
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -270,7 +261,7 @@ export default function Services() {
                                         <input
                                             // onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="price"
                                         />
                                     </div>
@@ -284,7 +275,7 @@ export default function Services() {
                                         <input
                                             // onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="minutes"
                                         />
                                     </div>
@@ -298,7 +289,7 @@ export default function Services() {
                                         <input
                                             // onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="commission"
                                         />
                                     </div>
@@ -350,6 +341,7 @@ export default function Services() {
                                                 ? selectedService.service_id
                                                 : ''
                                         }
+                                        disabled
                                     />
                                 </div>
                             </div>
@@ -378,18 +370,22 @@ export default function Services() {
                                     Service Type:
                                 </label>
                                 <div className="flex flex-col ">
-                                    <input
+                                    <select
                                         ref={service_type_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className=" p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                         type="text"
                                         name="service_type"
-                                        defaultValue={
+                                        value={
                                             selectedService
                                                 ? selectedService.service_type
                                                 : ''
                                         }
-                                    />
+                                    >
+                                        <option value="Massage">Massage</option>
+                                        <option value="Spa">Spa</option>
+                                        <option value="Package">Package</option>
+                                    </select>
                                 </div>
                             </div>
 

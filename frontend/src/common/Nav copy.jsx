@@ -1,37 +1,56 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FaBars, FaUsers, FaBuilding, FaPercent } from 'react-icons/fa'
-
-import { FaHandsBound } from 'react-icons/fa6'
-
+import { FaBars } from 'react-icons/fa'
+import { FaUserCircle } from 'react-icons/fa'
+import { AiOutlineHome } from 'react-icons/ai'
 import logoImage from '../common/PATH.png'
-import BottomNav from './BottomNav'
+
+// import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 
 const Nav = () => {
     const pages = [
         {
+            name: 'Home',
+            link: '/home',
+        },
+        {
+            name: 'Dashboard',
+            link: '/dashboard',
+        },
+        {
+            name: 'New Transaction',
+            link: '/new-transaction',
+        },
+        {
             name: 'Users',
             link: '/users',
-            icon: <FaUsers className="mr-2 " />,
         },
         {
             name: 'Branches',
             link: '/branches',
-            icon: <FaBuilding className="mr-2" />,
         },
         {
             name: 'Services',
             link: '/services',
-            icon: <FaHandsBound className="mr-2 " />,
         },
         {
             name: 'Discounts',
             link: '/discounts',
-            icon: <FaPercent className="mr-2 " />,
+        },
+        // {
+        //     name: 'Settings',
+        //     link: '/settings',
+        // },
+        {
+            name: 'Logout',
+            link: '/logout',
+        },
+        {
+            name: 'Light Mode',
+            link: '/light-mode',
         },
     ]
     const [open, setOpen] = useState(true)
-
     return (
         <>
             <nav className="fixed top-0 left-0 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
@@ -52,13 +71,26 @@ const Nav = () => {
                                 >
                                     {page.name}
                                 </Link>
+                                {/* <a
+                                    href={page.link}
+                                    onClick={() => setOpen(!open)}
+                                >
+                                    {' '}
+                                    {page.name}
+                                </a> */}
                             </li>
                         )
                     })}
+                    {/* <button className="p-1 mt-2 bg-red-600 rounded-md md:h-10 md:mt-3"> */}
+                    {/* Contact Me */}
+                    {/* </button> */}
                 </ul>
 
                 <button onClick={() => setOpen(!open)}>
-                    <span className="absolute flex items-center text-2xl md:hidden right-4 top-4 ">
+                    <span className="absolute flex items-center text-2xl md:hidden right-4 top-4">
+                        <FaUserCircle className="mr-2 text-white" />
+                        <AiOutlineHome className="mr-2 text-white" />
+
                         {open ? (
                             <FaBars style={{ color: 'white' }} />
                         ) : (
@@ -66,9 +98,6 @@ const Nav = () => {
                         )}
                     </span>
                 </button>
-            </nav>
-            <nav>
-                <BottomNav />
             </nav>
         </>
     )

@@ -234,7 +234,7 @@ export default function Discounts() {
                                     <h1 className="mb-2 text-xl ">Discounts</h1>
                                 </div>
 
-                                <div className="flex justify-between w-full space-y-2 text-black">
+                                {/* <div className="flex justify-between w-full space-y-2 text-black">
                                     <label className="self-center">
                                         Discount Code
                                     </label>
@@ -246,7 +246,7 @@ export default function Discounts() {
                                             name="discount_id"
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="flex justify-between w-full space-y-2 text-black ">
                                     <label className="self-center">
                                         Description:
@@ -269,8 +269,9 @@ export default function Discounts() {
                                         <input
                                             onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="percentage"
+                                            step="any"
                                         />
                                     </div>
                                 </div>
@@ -305,7 +306,7 @@ export default function Discounts() {
                                 <h1 className="mb-2 text-xl ">Discounts</h1>
                             </div>
 
-                            <div className="flex justify-between w-full space-y-2 text-black">
+                            {/* <div className="flex justify-between w-full space-y-2 text-black">
                                 <label className="self-center">
                                     Discount Code
                                 </label>
@@ -321,9 +322,10 @@ export default function Discounts() {
                                                 ? selectedDiscount.discount_id
                                                 : ''
                                         }
+                                        disabled
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="flex justify-between w-full space-y-2 text-black">
                                 <label className="self-center">
                                     Description:
@@ -353,8 +355,9 @@ export default function Discounts() {
                                         ref={percentage_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
                                         className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
+                                        type="number"
                                         name="percentage"
+                                        step="any"
                                         defaultValue={
                                             selectedDiscount
                                                 ? selectedDiscount.percentage

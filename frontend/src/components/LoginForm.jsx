@@ -39,9 +39,9 @@ const LoginForm = () => {
     }
 
     return (
-        <div className="flex items-center justify-center h-screen">
+        <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
             <form
-                className="w-[25rem]  p-4 border rounded-lg shadow-lg max-w-md"
+                className="w-[25rem]  p-4 border bg-white rounded-lg shadow-lg max-w-md"
                 onSubmit={handleLoginSubmit}
             >
                 <h2 className="mb-4 text-2xl font-semibold">Login</h2>

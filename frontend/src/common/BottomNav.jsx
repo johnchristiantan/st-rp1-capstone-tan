@@ -49,12 +49,24 @@ const BottomNav = () => {
             </ul>
 
             {/* Circular "New Transaction" Button */}
-            <div className="absolute transform -translate-x-1/2 bottom-10 left-1/2">
+            {/* <div className="absolute transform -translate-x-1/2 bottom-10 left-1/2">
                 <Link
                     to="/new-transaction"
                     className="flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem]  hover:bg-orange-600 transition-transform transition-bg hover:scale-110 hover:shadow-md hover:text-white hover:border-orange-600"
+                    // className="flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] hover:bg-orange-600 hover:scale-110 hover:shadow-md hover:text-white hover:border-orange-600 transition-transform transition-bg transition-shadow transition-colors"
                 >
                     +
+                </Link>
+            </div> */}
+
+            <div className="absolute transform -translate-x-1/2 bottom-10 left-1/2">
+                <Link
+                    to="/new-transaction"
+                    className="relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group"
+                >
+                    <span className="z-10">+</span>
+                    <span className=" absolute w-1/2 h-full top-0 left-0 bg-orange-500 transform translate-x-0 transition-transform ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-x-full duration-500 "></span>
+                    <span className="absolute w-1/2 h-full top-0 right-0 bg-orange-500 transform translate-x-0 transition-transform ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-x-full duration-500"></span>
                 </Link>
             </div>
         </nav>

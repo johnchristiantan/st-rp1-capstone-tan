@@ -58,5 +58,16 @@ CREATE TABLE "services" (
   PRIMARY KEY ("service_id")
 );
 
+CREATE TABLE "users" (
+  "user_id" bigserial,
+  "user_name" character varying  (255),
+  "password" character varying  (255),
+  "user_type" character varying  (255),
+  "first_name" character varying  (255),
+  "last_name" character varying  (255),
+
+  PRIMARY KEY ("user_id")
+);
+
 
 

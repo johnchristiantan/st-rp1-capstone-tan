@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 
 app.use('/api/v1', loginRoutes)
 // Use user routes (with authentication middleware for protected routes)
-// app.use('/api/v1', authenticateToken, userRoutes);
+// app.use('/api/v1', authenticateToken, userRoutes)
 
 app.use('/api/v1', userRoutes)
 app.use('/api/v1', serviceRoutes)

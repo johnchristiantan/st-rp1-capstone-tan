@@ -10,13 +10,17 @@ export default function Branches() {
     const [branches, setBranches] = useState([])
     const [showCreateForm, setShowCreateForm] = useState(false)
     const [showSelectedBranch, setShowSelectedBranch] = useState(false)
-    const [selectedBranch, setSelectedBranch] = useState(null)
+    const [selectedBranch, setSelectedBranch] = useState(null) //State Variable for Selected Branch
     const [createBranchForm, setCreateBranchForm] = useState(false)
     const [isCreateBranchFormSubmitted, setIsCreateBranchFormSubmitted] =
         useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
     const [isEdited, setIsEdited] = useState(false)
     const [inputChanges, setInputChanges] = useState(selectedBranch)
+
+    // Confirmation dialog state
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+    const [branchToDelete, setBranchToDelete] = useState(null)
 
     const handleShowButton = () => {
         setShowSelectedBranch(false)
@@ -34,11 +38,13 @@ export default function Branches() {
         createdBranch(createBranchForm)
             .then((res) => {
                 setIsCreateBranchFormSubmitted((prev) => !prev)
+
+                // Hide the form after successful branch creation
                 setShowCreateForm(false)
             })
             .catch((error) => {
                 console.log('Error creating or fetching branches:', error)
-                throw error
+                throw error // Rethrow the error to handle it in the main component if needed
             })
     }
 
@@ -66,13 +72,16 @@ export default function Branches() {
             .catch((error) => {
                 console.log(error)
             })
-    }, [isCreateBranchFormSubmitted, isDeleted, isEdited])
+    }, [isCreateBranchFormSubmitted, isDeleted, isEdited]) // auto reload when submitted
 
+    // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
     const branch_id_ur = useRef(null)
     const branch_name_ur = useRef(null)
     const percent_share_ur = useRef(null)
 
+    // This handles the selection of a branch (1/2)
     const handleSelectBranch = (branch) => {
+        console.log(branch)
         setShowCreateForm(false)
         setSelectedBranch(branch)
         setShowSelectedBranch(true)
@@ -82,9 +91,11 @@ export default function Branches() {
         percent_share_ur.current.value = branch.percent_share
     }
 
+    //Handle delete (1/1)
     const handleDeleteBranch = (branch_id) => {
         deleteBranch(branch_id)
             .then((res) => {
+                // alert('Deleted successfully')
                 setIsDeleted((prev) => !prev)
                 setShowSelectedBranch(false)
             })
@@ -93,13 +104,19 @@ export default function Branches() {
             })
     }
 
+    //Form Submission for Editing (2/)
+    // This function is called when the user submits the edit form.
+    // It creates a new object (mergeObject) by merging the changes made in the input fields (inputChanges) with the original selected branch (selectedBranch).
+    // Then, it sends a request to edit the branch using the editBranch function from the service. If the edit is successful, it displays an alert and updates the isEdited state variable to trigger a reload of the branch list.
     const handleEditSubmit = (e) => {
         e.preventDefault()
         const mergeObject = { ...selectedBranch, ...inputChanges }
         editBranch(mergeObject)
             .then((res) => {
                 alert('Edited successfully')
+                console.log(res)
                 setIsEdited((prev) => !prev)
+
                 setShowSelectedBranch(false)
             })
             .catch((error) => {
@@ -107,29 +124,8 @@ export default function Branches() {
             })
     }
 
-    // New state variable for delete confirmation dialog
-    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-    const [branchToDelete, setBranchToDelete] = useState(null)
-
-    // ... Other functions ...
-
-    // Function to show delete confirmation dialog
-    const showDeleteDialog = (branch_id) => {
-        setBranchToDelete(branch_id)
-        setShowDeleteConfirmation(true)
-    }
-
-    // Function to handle delete confirmation
-    const handleDeleteConfirmation = () => {
-        if (branchToDelete) {
-            handleDeleteBranch(branchToDelete)
-            // Reset branchToDelete and hide the confirmation dialog
-            setBranchToDelete(null)
-            setShowDeleteConfirmation(false)
-        }
-    }
-
-    const columnWidth = 'calc(22rem / 3)'
+    // Calculate the width for each column
+    const columnWidth = 'calc(22rem / 3)' // This divides the available width by 3
 
     return (
         <>
@@ -184,6 +180,20 @@ export default function Branches() {
                                 </h1>
                             </div>
 
+                            {/* <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Branch Code
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={branch_id_ur}
+                                        onChange={handleOnChange}
+                                        className="p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="branch_id"
+                                    />
+                                </div>
+                            </div> */}
                             <div className="flex justify-between w-full space-y-2 text-black">
                                 <label className="self-center">
                                     Branch Name:
@@ -245,13 +255,33 @@ export default function Branches() {
                                 </h1>
                             </div>
 
+                            {/* <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Branch Code
+                                </label>
+                                <div className="flex flex-col ">
+                                    <input
+                                        ref={branch_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
+                                        onChange={handleOnChangeEdit}
+                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        type="text"
+                                        name="branch_id"
+                                        defaultValue={
+                                            selectedBranch
+                                                ? selectedBranch.branch_id
+                                                : ''
+                                        }
+                                        disabled
+                                    />
+                                </div>
+                            </div> */}
                             <div className="flex justify-between w-full space-y-2 text-black">
                                 <label className="self-center">
                                     Branch Name:
                                 </label>
                                 <div className="flex flex-col ">
                                     <input
-                                        ref={branch_name_ur}
+                                        ref={branch_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
                                         className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
                                         type="text"
@@ -271,7 +301,7 @@ export default function Branches() {
                                 </label>
                                 <div className="flex flex-col ">
                                     <input
-                                        ref={percent_share_ur}
+                                        ref={percent_share_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
                                         className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                         type="number"
@@ -309,38 +339,13 @@ export default function Branches() {
                                     type="button"
                                     value="Delete"
                                     onClick={() =>
-                                        showDeleteDialog(
+                                        handleDeleteBranch(
                                             selectedBranch.branch_id
                                         )
                                     }
                                 />
                             </div>
                         </form>
-                    </div>
-                )}
-
-                {/* Delete Confirmation Dialog */}
-                {showDeleteConfirmation && (
-                    <div className="fixed inset-0 z-30 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50">
-                        <div className="bg-white p-4 rounded-lg border-2 border-gray-600">
-                            <p>Are you sure you want to delete this branch?</p>
-                            <div className="flex justify-center mt-2">
-                                <button
-                                    className="mr-2 bg-red-500 text-white px-4 py-2 rounded-lg"
-                                    onClick={handleDeleteConfirmation}
-                                >
-                                    Yes
-                                </button>
-                                <button
-                                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
-                                    onClick={() =>
-                                        setShowDeleteConfirmation(false)
-                                    }
-                                >
-                                    No
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 )}
             </div>

@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { createUser } from '../services/Users'
 
-export const CreateUser = ({ handleCreatedAlertClose }) => {
+export const CreateUser = ({
+    handleCreatedAlertClose,
+    handleFormVisibility,
+}) => {
     const user_name_value = useRef(null)
     const password_value = useRef(null)
     const first_name_value = useRef(null)
     const last_name_value = useRef(null)
     const user_type_value = useRef(null)
+
+    const [isCreateUserVisible, setIsCreateUserVisible] = useState(false)
 
     const [showButton, setShowButton] = useState(false)
 
@@ -26,22 +31,24 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
     const [formErrors, setformErrors] = useState({}) // VALIDATION-2
     const [isSubmit, setisSubmit] = useState(false)
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault()
+    //     console.log(validate(userDetails))
+    //     setformErrors(validate(userDetails)) // VALIDATION-3
+    //     // console.log(setformErrors(validate(userDetails)))
+    //     setisSubmit(true)
+    // }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(validate(userDetails))
         setformErrors(validate(userDetails)) // VALIDATION-3
-        // console.log(setformErrors(validate(userDetails)))
         setisSubmit(true)
-        // alert('Hello')
-    }
 
-    useEffect(() => {
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
+        if (Object.keys(formErrors).length === 0) {
             createUser(userDetails)
-                .then((res) => {
+                .then(() => {
                     setisSubmit(false)
-                    // setShowButton(false)
-                    // alert('Registered Successfully', res)
                     user_name_value.current.value = ''
                     password_value.current.value = ''
                     first_name_value.current.value = ''
@@ -55,6 +62,41 @@ export const CreateUser = ({ handleCreatedAlertClose }) => {
                         last_name: '',
                         user_type: '',
                     })
+                    setShowButton(false) // Hide the form after success
+                })
+                .catch((error) => {
+                    console.log('User not Created', error)
+                    setisSubmit(false)
+                    setUserDetails({
+                        user_name: '',
+                        password: '',
+                        first_name: '',
+                        last_name: '',
+                        user_type: '',
+                    })
+                })
+        }
+    }
+
+    useEffect(() => {
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            createUser(userDetails)
+                .then((res) => {
+                    setisSubmit(false)
+                    user_name_value.current.value = ''
+                    password_value.current.value = ''
+                    first_name_value.current.value = ''
+                    last_name_value.current.value = ''
+                    user_type_value.current.value = ''
+                    handleCreatedAlertClose()
+                    setUserDetails({
+                        user_name: '',
+                        password: '',
+                        first_name: '',
+                        last_name: '',
+                        user_type: '',
+                    })
+                    handleFormVisibility(false) // Hide the form after success
                 })
                 .catch((error) => {
                     console.log('User not Created', error)

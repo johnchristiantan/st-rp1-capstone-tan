@@ -10,6 +10,8 @@ export const ShowUsers = () => {
     const [alertDeletedMessage, setalertDeletedMessage] = useState(false) //TOASTMESSAGE
     const [alertCreatedMessage, setalertCreatedMessage] = useState(false) //TOASTMESSAGE
 
+    const [isCreateUserVisible, setIsCreateUserVisible] = useState(false)
+
     useEffect(() => {
         getUsers()
             .then((users) => {
@@ -104,7 +106,7 @@ export const ShowUsers = () => {
                             >
                                 <div
                                     // onClick={() => handleSelectDiscount(discount)}
-                                    className="transition-transform transition-bg hover:scale-110 hover:shadow-md w-[22rem] bg-white border border-gray-400 shadow-lg rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
+                                    className=" hover:shadow-md w-[22rem] bg-white border border-gray-400 shadow-lg rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
                                 >
                                     <div className="text-lg font-bold">
                                         {user.last_name} {user.first_name}
@@ -150,7 +152,10 @@ export const ShowUsers = () => {
                 </div>
             </div>
 
-            <CreateUser handleCreatedAlertClose={handleCreatedAlertClose} />
+            <CreateUser
+                handleCreatedAlertClose={handleCreatedAlertClose}
+                handleFormVisibility={setIsCreateUserVisible}
+            />
         </>
     )
 }

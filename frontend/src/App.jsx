@@ -13,12 +13,11 @@ import LoginForm from './components/LoginForm'
 import Chart1 from './components/Chart1'
 import Chart2 from './components/Chart2'
 import Chart3 from './components/Chart3'
+import Users from './components/Users'
 
 function App() {
     return (
         <>
-            {/* <CreateUser /> */}
-            {/* <ShowUsers /> */}
             <Nav />
             <Routes>
                 <Route path="/home" element={<Home />} />
@@ -30,6 +29,7 @@ function App() {
                 <Route path="/discounts" element={<Discounts />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/users" element={<ShowUsers />} />
+                {/* <Route path="/users" element={<Users />} /> */}
             </Routes>
         </>
     )
