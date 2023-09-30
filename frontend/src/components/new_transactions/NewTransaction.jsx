@@ -3,24 +3,52 @@ import PrioInputFields from './PrioInputFields';
 import BranchLists from './BranchLists'
 import StatusLists from './StatusLists'
 import ServiceCard from './ServiceCard'
+import useTransactionFormStore from '../../data/Store'
+import { createdTransaction } from '../../services/TransactionServices';
+
 
 const NewTransaction = () => {
+
+  const {
+    availedServices,
+    createTransactionInputField,
+    setCreateTransactionInputField,
+    availedServicesArray,
+    clearAvailedServicesArray
+} = useTransactionFormStore()
 
   const handleClose = () => {
     console.log('Closed')
   }
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault()
-    console.log('Here')
+  const callCreateTransactions = async (data) => {
+    try {
+      const transactionCreated = await createdTransaction(data)
+        console.log(transactionCreated)
+      } catch (err) {
+        console.error(err.message)
+      }
   }
 
-  const handleAddService = () => {
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    console.log('Submitted')
+    console.log("createTransactionInputField Upon Submit: ", createTransactionInputField)
+    console.log("Availed Services Upon Submit: ", availedServices)
+    console.log("Availed Services Array Upon Submit: ", availedServicesArray)
+    createTransactionInputField['availed_services'] = availedServicesArray
+    
+    // Add a final 
+    console.log("Combined Availed Services to the list: ", createTransactionInputField)
+    callCreateTransactions(createTransactionInputField)
 
+    // Clean up zustand
+    setCreateTransactionInputField({})
+    clearAvailedServicesArray([])
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen pt-16">
+    <div className="flex flex-col items-center justify-start pt-16 mt-[1rem] mb-[100px]">
       <form
           className="flex flex-col justify-around w-[25rem] p-6 m-4  text-white border border-gray-500 rounded form1 px-15 items-left h-9/12"
           onSubmit={handleOnSubmit}

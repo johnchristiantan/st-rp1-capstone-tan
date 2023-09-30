@@ -18,8 +18,8 @@ const PrioInputFields = () => {
         {
             NewTransFormTextInputData.map((data) => {
               return (
-                <>
-                  <div key={data.id} className="flex justify-between w-full space-y-2 text-black">
+                <div key={data.id} >
+                  <div className="flex justify-between w-full space-y-2 text-black">
                     <label className="self-center">
                         {data.label}
                     </label>
@@ -32,7 +32,7 @@ const PrioInputFields = () => {
                         />
                     </div>
                 </div>
-                </>
+                </div>
               )
             })
           }

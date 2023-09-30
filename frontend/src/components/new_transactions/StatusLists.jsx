@@ -23,7 +23,7 @@ export default function BranchLists() {
 
     return (
         <div className="flex justify-between w-full space-y-2 text-black">
-            <label className="self-center">Branch:</label>
+            <label className="self-center">Status:</label>
             <div className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg">
             <select
             name="status" // Add the name attribute here

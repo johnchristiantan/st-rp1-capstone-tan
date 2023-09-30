@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:8000/new-transaction'
+const baseURL = 'http://localhost:8000/api/v1/transactions'
 
 export async function getAllTransactions() {
     try {

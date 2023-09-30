@@ -42,10 +42,10 @@ const createAvailedServices = async ( availed_services, transaction_id ) => {
         for (let i = 0; i < availed_services.length ; i++) {
             // Create a new availed service record
             await pool.query('BEGIN')
-            const availedServiceCreated = await pool.query(
-                'INSERT INTO availed_services(transaction_id, service_id, discount_id) \
-                VALUES ($1, $2, $3) RETURNING *',
-                [ transaction_id, availed_services[i].service_id, availed_services[i].discount_id ]
+            await pool.query(
+                'INSERT INTO availed_services(transaction_id, service_id, discount_id, quantity) \
+                VALUES ($1, $2, $3, $4) RETURNING *',
+                [ transaction_id, availed_services[i].service_id, availed_services[i].discount_id, availed_services[i].quantity ]
             )
         }
         await pool.query('COMMIT')
@@ -62,10 +62,12 @@ const getTotalDiscountedAmount = async ( transaction_id ) => {
     try {
         // Get the total discounted amount
         const totalDiscountedAmount = await pool.query(
-            'SELECT SUM(S.price - (S.price * D.percentage)) AS total_discounted_price \
+            'SELECT (total_price - total_discount) AS total_discounted_price \
+            FROM ( SELECT SUM(S.price * ASV.quantity) AS total_price, \
+            SUM(S.price * D.percentage * ASV.quantity) AS total_discount \
             FROM availed_services AS ASV INNER JOIN services AS S ON ASV.service_id = S.service_id \
-            INNER JOIN discounts AS D ON ASV.discount_id = D.discount_id WHERE ASV.transaction_id IS NOT NULL \
-            AND transaction_id = $1',
+            INNER JOIN discounts AS D ON ASV.discount_id = D.discount_id \
+            WHERE ASV.transaction_id = $1) AS subquery',
             [ transaction_id ]
         )
         return totalDiscountedAmount.rows[0].total_discounted_price
@@ -79,10 +81,9 @@ const getTotalCommission = async ( transaction_id ) => {
     try {
         // Get the total discounted amount
         const totalCommission = await pool.query(
-            'SELECT SUM(S.commission) AS total_commission \
+            'SELECT SUM(S.commission * ASV.quantity) AS total_commission \
             FROM availed_services AS ASV INNER JOIN services AS S ON ASV.service_id = S.service_id \
-            INNER JOIN discounts AS D ON ASV.discount_id = D.discount_id WHERE ASV.transaction_id IS NOT NULL \
-            AND ASV.transaction_id = $1',
+            WHERE ASV.transaction_id = $1',
             [ transaction_id ]
         )
         return totalCommission.rows[0].total_commission
