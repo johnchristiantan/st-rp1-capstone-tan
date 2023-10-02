@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { getAllBranches } from '../../services/BranchServices'
-import useTransactionFormStore from '../../data/Store';
+import useTransactionFormStore from '../../data/Store'
 
 export default function BranchLists() {
     const [branches, setBranches] = useState([])
     const [selectedBranch, setSelectedBranch] = useState('') // State to track the selected branch
-    const { createTransactionInputField, setCreateTransactionInputField } = useTransactionFormStore()
+    const { createTransactionInputField, setCreateTransactionInputField } =
+        useTransactionFormStore()
 
     useEffect(() => {
         async function fetchBranches() {
@@ -24,10 +25,10 @@ export default function BranchLists() {
         const { name, value } = e.target
         setSelectedBranch(value)
         setCreateTransactionInputField(name, value)
-    
+
         console.log(name, value)
         console.log(createTransactionInputField)
-      }
+    }
 
     // Create an array of option elements
     const branchOptions = branches.map((branch) => (
@@ -39,19 +40,18 @@ export default function BranchLists() {
     return (
         <div className="flex justify-between w-full space-y-2 text-black">
             <label className="self-center">Branch:</label>
-            <div className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg">
-            <select
-            name="branch_id" // Add the name attribute here
-            className="p-1 text-black bg-white rounded"
-            value={selectedBranch}
-            onChange={handleOnChange}
-        >
-            <option value="">Select a branch</option>
-            {branchOptions}
-        </select>
+            <div className="flex flex-col w-[12rem]  border-gray-500 rounded-lg">
+                <select
+                    name="branch_id" // Add the name attribute here
+                    className="p-1 text-black bg-white border border-gray-500 rounded"
+                    value={selectedBranch}
+                    onChange={handleOnChange}
+                >
+                    <option value="">Select a branch</option>
+                    {branchOptions}
+                </select>
             </div>
         </div>
-        
     )
 }
 

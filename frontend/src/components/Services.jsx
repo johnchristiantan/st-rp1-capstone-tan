@@ -54,7 +54,19 @@ export default function Services() {
     //    serviceAdd (3/3)
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        createdService(servicesInputs)
+
+        // Set the default service type if it's not changed
+        const serviceType = servicesInputs.service_type || 'Massage'
+
+        const newService = {
+            service_name: servicesInputs.service_name,
+            service_type: serviceType, // Use the default if not changed
+            price: servicesInputs.price,
+            minutes: servicesInputs.minutes,
+            commission: servicesInputs.commission,
+        }
+
+        createdService(newService)
             .then(() => getAllServices())
             .then((res) => {
                 setServices(res)
@@ -188,7 +200,7 @@ export default function Services() {
                                         {service.service_name}
                                     </div>
                                     <div className="text-gray-500">
-                                        {service.service_type}
+                                        {service.price}
                                     </div>
                                 </div>
                             </div>
@@ -259,7 +271,7 @@ export default function Services() {
                                     </label>
                                     <div className="flex flex-col ">
                                         <input
-                                            // onChange={handleOnChange}
+                                            onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                             type="number"
                                             name="price"
@@ -273,7 +285,7 @@ export default function Services() {
                                     </label>
                                     <div className="flex flex-col ">
                                         <input
-                                            // onChange={handleOnChange}
+                                            onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                             type="number"
                                             name="minutes"
@@ -287,7 +299,7 @@ export default function Services() {
                                     </label>
                                     <div className="flex flex-col ">
                                         <input
-                                            // onChange={handleOnChange}
+                                            onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
                                             type="number"
                                             name="commission"
@@ -396,7 +408,7 @@ export default function Services() {
                                         ref={price_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
                                         className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="number"
+                                        type="text"
                                         name="price"
                                         defaultValue={
                                             selectedService

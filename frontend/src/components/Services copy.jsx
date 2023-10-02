@@ -1,10 +1,14 @@
 import { useEffect, useState, useRef } from 'react'
+import {
+    getAllServices,
+    createdService,
+    deleteService,
+    editService,
+} from '../services/SpaServices'
 
-import { createUser, getUsers, editUser, deleteUser } from '../services/Users'
-
-export default function Users() {
-    const [showButton, setShowButton] = useState(false)
-    const [users, setUsers] = useState([])
+export default function Services() {
+    // const [showButton, setShowButton] = useState(false)
+    const [services, setServices] = useState([])
 
     // This handles the selection of a service
     const [showServiceCreateForm, setShowServiceCreateForm] = useState(false) // This handles the selection of a service (1/6)
@@ -14,13 +18,20 @@ export default function Users() {
     const [isDeleted, setIsDeleted] = useState(false)
     const [inputChanges, setInputChanges] = useState(selectedService)
     const [isEdited, setIsEdited] = useState(false)
+    // const [createServiceForm, setCreateServiceForm] = useState(false)
+    // const [isCreateServiceFormSubmitted, setIsCreateServiceFormSubmitted] =
+    //     useState(false)
+
+    // const [serviceID, setServiceID] = useState('')
+    // const [serviceName, setServiceName] = useState('')
+    // const [serviceType, setServiceType] = useState(null)
 
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [serviceToDelete, setServiceToDelete] = useState(null)
 
     //    serviceAdd (1/3)
-    const [usersInputs, setUsersInputs] = useState({
+    const [servicesInputs, setServicesInputs] = useState({
         service_id: '',
         service_name: '',
         service_type: '',
@@ -34,7 +45,7 @@ export default function Users() {
     //    serviceAdd (2/3)
     const handleOnChange = (e) => {
         const { name, value } = e.target
-        setUsersInputs((prev) => ({
+        setServicesInputs((prev) => ({
             ...prev,
             [name]: value,
         }))
@@ -43,16 +54,16 @@ export default function Users() {
     //    serviceAdd (3/3)
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        createdUser(usersInputs)
-            .then(() => getAllUsers())
+        createdService(servicesInputs)
+            .then(() => getAllServices())
             .then((res) => {
-                setUsers(res)
+                setServices(res)
 
                 // Hide the form after successful creation
                 setShowServiceCreateForm(false)
             })
             .catch((error) => {
-                console.log('Error creating or fetching users:', error)
+                console.log('Error creating or fetching services:', error)
                 throw error // Rethrow the error to handle it in the main component if needed
             })
     }
@@ -64,12 +75,12 @@ export default function Users() {
 
     // Data fetching
     useEffect(() => {
-        getAllUsers()
+        getAllServices()
             .then((res) => {
-                setUsers(res)
+                setServices(res)
             })
             .catch((error) => {
-                console.log('Error fetching users:', error)
+                console.log('Error fetching services:', error)
             })
     }, [isDeleted, isEdited, showServiceCreateForm]) // [isCreateBranchFormSubmitted, isDeleted, isEdited]) // auto reload when submitted
 
@@ -163,21 +174,21 @@ export default function Users() {
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
                 <div className="servicelist flex flex-wrap w-[22rem] max-w-md">
                     {/* ServiceList */}
-                    {users ? (
-                        users.map((service, index) => (
+                    {services ? (
+                        services.map((service, index) => (
                             <div
                                 key={index}
                                 className={`w-[25rem] md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth} `}
                             >
                                 <div
-                                    onClick={() => handleSelectUser(user)}
+                                    onClick={() => handleSelectService(service)}
                                     className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] transition-transform transition-bg hover:scale-110 hover:shadow-md overflow-y-auto flex flex-col justify-center items-center text-center"
                                 >
                                     <div className="text-sm font-bold">
-                                        {user.service_name}
+                                        {service.service_name}
                                     </div>
                                     <div className="text-gray-500">
-                                        {user.service_type}
+                                        {service.service_type}
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +203,7 @@ export default function Users() {
                     onDoubleClick={handleShowButton}
                     className="w-[30rem] p-1  rounded-lg hover:text-orange-600 text-orange-500   hover:font-bold"
                 >
-                    Create New User
+                    Create New Service
                 </button>
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
@@ -203,34 +214,42 @@ export default function Users() {
                                 onSubmit={handleOnSubmit}
                             >
                                 <div className="flex items-center w-full text-lg font-bold text-orange-500 ">
-                                    <h1 className="mb-2 text-xl ">Users</h1>
+                                    <h1 className="mb-2 text-xl ">Services</h1>
                                 </div>
 
                                 <div className="flex justify-between w-full space-y-2 text-black ">
                                     <label className="self-center">
-                                        Username:
+                                        Service Name:
                                     </label>
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
                                             type="text"
-                                            name="user_name"
+                                            name="service_name"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="flex justify-between w-full space-y-2 text-black">
                                     <label className="self-center">
-                                        Password:
+                                        Service Type:
                                     </label>
                                     <div className="flex flex-col ">
-                                        <input
+                                        <select
                                             onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
-                                            name="password"
-                                        />
+                                            name="service_type"
+                                            // value="Massage" // Set a default value
+                                        >
+                                            <option value="Massage">
+                                                Massage
+                                            </option>
+                                            <option value="Spa">Spa</option>
+                                            <option value="Package">
+                                                Package
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -242,7 +261,7 @@ export default function Users() {
                                         <input
                                             // onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="price"
                                         />
                                     </div>
@@ -256,7 +275,7 @@ export default function Users() {
                                         <input
                                             // onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="minutes"
                                         />
                                     </div>
@@ -270,7 +289,7 @@ export default function Users() {
                                         <input
                                             // onChange={handleOnChange}
                                             className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
+                                            type="number"
                                             name="commission"
                                         />
                                     </div>
@@ -322,6 +341,7 @@ export default function Users() {
                                                 ? selectedService.service_id
                                                 : ''
                                         }
+                                        disabled
                                     />
                                 </div>
                             </div>
@@ -350,18 +370,22 @@ export default function Users() {
                                     Service Type:
                                 </label>
                                 <div className="flex flex-col ">
-                                    <input
+                                    <select
                                         ref={service_type_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className=" p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
                                         type="text"
                                         name="service_type"
-                                        defaultValue={
+                                        value={
                                             selectedService
                                                 ? selectedService.service_type
                                                 : ''
                                         }
-                                    />
+                                    >
+                                        <option value="Massage">Massage</option>
+                                        <option value="Spa">Spa</option>
+                                        <option value="Package">Package</option>
+                                    </select>
                                 </div>
                             </div>
 

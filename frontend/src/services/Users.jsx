@@ -29,7 +29,7 @@ export async function getUsers() {
 export async function editUser(user) {
     try {
         const response = await fetch(
-            `http://localhost:8000/users/${user.user_id}`,
+            `http://localhost:8000/api/v1/users/${user.user_id}`,
             {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },

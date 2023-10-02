@@ -98,7 +98,7 @@ export default function Branches() {
         const mergeObject = { ...selectedBranch, ...inputChanges }
         editBranch(mergeObject)
             .then((res) => {
-                alert('Edited successfully')
+                // alert('Edited successfully')
                 setIsEdited((prev) => !prev)
                 setShowSelectedBranch(false)
             })

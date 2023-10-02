@@ -5,7 +5,10 @@ import useTransactionFormStore from '../../data/Store'
 import { BiSolidSave } from 'react-icons/bi'
 import { RxCross2 } from 'react-icons/rx'
 
-export default function AvailedServiceLists({ serviceCardIndex, toDeleteServiceCardIndex }) {
+export default function AvailedServiceLists({
+    serviceCardIndex,
+    toDeleteServiceCardIndex,
+}) {
     const [services, setServices] = useState([])
     const [selectedServiceType, setSelectedServiceType] = useState('')
     const [filteredServiceNames, setFilteredServiceNames] = useState([])
@@ -15,10 +18,11 @@ export default function AvailedServiceLists({ serviceCardIndex, toDeleteServiceC
     const [selectedDiscount, setSelectedDiscount] = useState('')
     const [showSubCard, setSubShowCard] = useState(true)
 
-    const { setAvailedServices,
-            availedServices,
-            appendToAvailedServicesArray,
-            availedServicesArray
+    const {
+        setAvailedServices,
+        availedServices,
+        appendToAvailedServicesArray,
+        availedServicesArray,
     } = useTransactionFormStore()
 
     // Get all service with a specific type
@@ -46,7 +50,7 @@ export default function AvailedServiceLists({ serviceCardIndex, toDeleteServiceC
 
     // printing current state changes availedServices
     useEffect(() => {
-        console.log("Availed Services On Save: ", availedServices)
+        console.log('Availed Services On Save: ', availedServices)
         if (availedServices) {
             const x = async (availedServices) => {
                 await appendToAvailedServicesArray(availedServices)
@@ -57,9 +61,9 @@ export default function AvailedServiceLists({ serviceCardIndex, toDeleteServiceC
 
     // printing current state changes for availedServicesArray
     useEffect(() => {
-        console.log("Availed Services Array On Save: ", availedServicesArray)
+        console.log('Availed Services Array On Save: ', availedServicesArray)
     }, [availedServicesArray])
-    
+
     // Service Type On Change Handler
     const handleServiceTypeChange = (event) => {
         const newServiceType = event.target.value
@@ -90,120 +94,144 @@ export default function AvailedServiceLists({ serviceCardIndex, toDeleteServiceC
     const handleSave = (e) => {
         // Guard Clause for the select input
         if (!selectedServiceType || !selectedServiceName) {
-            return alert("Please provide service type and name!")
+            return alert('Please provide service type and name!')
         }
 
         // Get the service ID by finding same type and name
-        const serviceID = services
-            .filter((service) => {
-                return service.service_type === selectedServiceType,
+        const serviceID = services.filter((service) => {
+            return (
+                service.service_type === selectedServiceType,
                 service.service_name === selectedServiceName
-            })
+            )
+        })
 
         // Get the discount ID by finding discount_code
-        const discountID = discounts
-            .filter((discount) => {
-                return discount.discount_code === selectedDiscount
-            })
-        
+        const discountID = discounts.filter((discount) => {
+            return discount.discount_description === selectedDiscount
+        })
+
         // Set data to pass into the zustand
         const service_id = serviceID.length > 0 ? serviceID[0].service_id : null
-        const discount_id = discountID.length > 0 ? discountID[0].discount_id : null
-        
-        // Append data in availedServices (zustand state)
-        setAvailedServices("card_index", serviceCardIndex)
-        setAvailedServices("service_id", service_id)
-        setAvailedServices("discount_id", discount_id)
-        setAvailedServices("quantity", quantity)
+        const discount_id =
+            discountID.length > 0 ? discountID[0].discount_id : null
 
-        alert('Save')
+        // Append data in availedServices (zustand state)
+        setAvailedServices('card_index', serviceCardIndex)
+        setAvailedServices('service_id', service_id)
+        setAvailedServices('discount_id', discount_id)
+        setAvailedServices('quantity', quantity)
+
+        // alert('Save')
     }
 
     const handleDelete = () => {
         console.log('Delete Card ID: ', serviceCardIndex)
         setSubShowCard(false)
         toDeleteServiceCardIndex(serviceCardIndex)
-      }
-    
+    }
+
     return (
         <>
-            {
-            showSubCard && 
-            <>
-                <div className='flex justify-end w-full'><button type='button' onClick={handleDelete}><RxCross2 size={20} /></button></div>
-            <div className="absolute top-2 right-10"><button type="button" onClick={handleSave}><BiSolidSave size={20} alt="save" /></button></div>
-            <div className="relative flex justify-between space-y-2 text-black">
-                <label className="self-center text-white">Service Type:</label>
-                <div className="flex flex-col w-[12rem]">
-                    <select
-                        className="w-[12rem] p-1 text-black rounded"
-                        name="service_type"
-                        value={selectedServiceType}
-                        onChange={(e) => handleServiceTypeChange(e)}
-                    >
-                        <option value="">Select a service type</option>
-                        {uniqueServices.map((service) => (
-                            <option
-                                key={service.service_type}
-                                value={service.service_type}
+            {showSubCard && (
+                <>
+                    <div className="flex justify-end w-full">
+                        <button type="button" onClick={handleDelete}>
+                            <RxCross2 size={20} />
+                        </button>
+                    </div>
+                    <div className="absolute top-2 right-10">
+                        <button type="button" onClick={handleSave}>
+                            <BiSolidSave size={20} alt="save" />
+                        </button>
+                    </div>
+                    <div className="relative flex justify-between space-y-2 text-black">
+                        <label className="self-center text-white">
+                            Service Type:
+                        </label>
+                        <div className="flex flex-col w-[12rem]">
+                            <select
+                                className="w-[12rem] p-1 text-black rounded"
+                                name="service_type"
+                                value={selectedServiceType}
+                                onChange={(e) => handleServiceTypeChange(e)}
                             >
-                                {service.service_type}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
+                                <option value="">Select a service type</option>
+                                {uniqueServices.map((service) => (
+                                    <option
+                                        key={service.service_type}
+                                        value={service.service_type}
+                                    >
+                                        {service.service_type}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
 
-            <div className="relative flex justify-between space-y-2 text-black">
-                <label className="self-center text-white">Service:</label>
-                <div className="flex flex-col w-[12rem]">
-                    <select
-                        className="w-[12rem] p-1 text-black rounded"
-                        name="service_name"
-                        value={selectedServiceName}
-                        onChange={(e) => handleServiceNameChange(e)}
-                    >
-                        <option value="">Select a service</option>
-                        {filteredServiceNames.map((serviceName) => (
-                            <option key={serviceName} value={serviceName}>
-                                {serviceName}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            
-            <div className="relative flex justify-between space-y-2 text-black">
-                <label className="self-center text-white">Quantity:</label>
-                <div className="flex flex-col w-[12rem]">
-                    <input onChange={(e) => setQuantity(parseInt(e.target.value))}
-                    className='w-[12rem] p-1 text-black rounded' type="number" />
-                </div>
-            </div>
-
-            <div className="relative flex justify-between space-y-2 text-black">
-                <label className="self-center text-white">Discounts:</label>
-                <div className="flex flex-col w-[12rem]">
-                    <select
-                        className="w-[12rem] p-1 text-black rounded"
-                        name="service_type"
-                        value={selectedDiscount}
-                        onChange={(e) => handleDiscountOnChange(e)}
-                    >
-                        <option value="">Select a discount</option>
-                        {discounts.map((discount) => (
-                            <option
-                                key={discount.discount_code}
-                                value={discount.discount_code}
+                    <div className="relative flex justify-between space-y-2 text-black">
+                        <label className="self-center text-white">
+                            Service:
+                        </label>
+                        <div className="flex flex-col w-[12rem]">
+                            <select
+                                className="w-[12rem] p-1 text-black rounded"
+                                name="service_name"
+                                value={selectedServiceName}
+                                onChange={(e) => handleServiceNameChange(e)}
                             >
-                                {discount.discount_code}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            </>
-            }
+                                <option value="">Select a service</option>
+                                {filteredServiceNames.map((serviceName) => (
+                                    <option
+                                        key={serviceName}
+                                        value={serviceName}
+                                    >
+                                        {serviceName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="relative flex justify-between space-y-2 text-black">
+                        <label className="self-center text-white">
+                            Quantity:
+                        </label>
+                        <div className="flex flex-col w-[12rem]">
+                            <input
+                                onChange={(e) =>
+                                    setQuantity(parseInt(e.target.value))
+                                }
+                                className="w-[12rem] p-1 text-black rounded"
+                                type="number"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="relative flex justify-between space-y-2 text-black">
+                        <label className="self-center text-white">
+                            Discounts:
+                        </label>
+                        <div className="flex flex-col w-[12rem]">
+                            <select
+                                className="w-[12rem] p-1 text-black rounded"
+                                name="service_type"
+                                value={selectedDiscount}
+                                onChange={(e) => handleDiscountOnChange(e)}
+                            >
+                                <option value="">Select a discount</option>
+                                {discounts.map((discount) => (
+                                    <option
+                                        key={discount.discount_description}
+                                        value={discount.discount_description}
+                                    >
+                                        {discount.discount_description}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </>
+            )}
         </>
     )
 }

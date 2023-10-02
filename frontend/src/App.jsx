@@ -13,7 +13,6 @@ import LoginForm from './components/LoginForm'
 import Chart1 from './components/Chart1'
 import Chart2 from './components/Chart2'
 import Chart3 from './components/Chart3'
-import Users from './components/Users'
 
 function App() {
     return (

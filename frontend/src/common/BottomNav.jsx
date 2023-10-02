@@ -26,6 +26,14 @@ const BottomNav = () => {
         },
     ]
 
+    // State to manage the visibility of NewTransaction component
+    // const [isTransactionVisible, setIsTransactionVisible] = useState(false)
+
+    // Function to toggle the visibility of NewTransaction component
+    const toggleTransactionVisibility = () => {
+        // setIsTransactionVisible(!isTransactionVisible)
+    }
+
     return (
         <nav className="fixed bottom-0 left-0 w-full text-orange-400 bg-gray-100 shadow-lg md:h-16">
             {/* Bottom Navigation Links */}
@@ -65,8 +73,8 @@ const BottomNav = () => {
                     className="relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group"
                 >
                     <span className="z-10">+</span>
-                    <span className=" absolute w-1/2 h-full top-0 left-0 bg-orange-500 transform translate-x-0 transition-transform ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-x-full duration-500 "></span>
-                    <span className="absolute w-1/2 h-full top-0 right-0 bg-orange-500 transform translate-x-0 transition-transform ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-x-full duration-500"></span>
+                    <span className="absolute top-0 left-0 w-1/2 h-full transition-transform duration-500 ease-in-out transform translate-x-0 bg-orange-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-full"></span>
+                    <span className="absolute top-0 right-0 w-1/2 h-full transition-transform duration-500 ease-in-out transform translate-x-0 bg-orange-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-full"></span>
                 </Link>
             </div>
         </nav>
