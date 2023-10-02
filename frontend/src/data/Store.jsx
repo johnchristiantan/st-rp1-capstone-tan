@@ -19,15 +19,29 @@ const useTransactionFormStore = create((set) => ({
       }
       return state; // Item already exists, no need to append it again
     }),
-    
-    clearAvailedServicesArray: () =>
-      set((state) => ({
-        availedServicesArray: [],
-      })),
 
-    setAvailedServices: (name, value) =>
+  // You can also add other functions to manipulate the array as needed
+  removeFromAvailedServicesArray: (valueToRemove) =>    
+    set((state) => ({
+      availedServicesArray: state.availedServicesArray.filter(
+        // (item) => item.card_index !== valueToRemove.card_index
+        (item) => item.card_index !== valueToRemove
+      ),
+    })),
+    
+  clearAvailedServicesArray: () =>
+    set((state) => ({
+      availedServicesArray: [],
+    })),
+
+  setAvailedServices: (name, value) =>
     set((state) => ({
       availedServices: { ...state.availedServices, [name]: value },
+    })),
+
+  setCards: (value) =>
+    set((state) => ({
+      cards: value,
     })),
 }));
 

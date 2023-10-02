@@ -32,6 +32,15 @@ const NewTransaction = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
+
+    if (!createTransactionInputField) {
+      return alert("Please provide transaction details to proceed!")
+    }
+    
+    if (availedServicesArray.length === 0) {
+      return alert("Please provide availed service to a transaction!")
+    }
+    
     console.log('Submitted')
     console.log("createTransactionInputField Upon Submit: ", createTransactionInputField)
     console.log("Availed Services Upon Submit: ", availedServices)
