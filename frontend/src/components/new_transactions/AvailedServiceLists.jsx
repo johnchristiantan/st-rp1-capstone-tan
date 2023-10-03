@@ -23,6 +23,7 @@ export default function AvailedServiceLists({
         availedServices,
         appendToAvailedServicesArray,
         availedServicesArray,
+        removeFromAvailedServicesArray,
     } = useTransactionFormStore()
 
     // Get all service with a specific type
@@ -124,112 +125,136 @@ export default function AvailedServiceLists({
         // alert('Save')
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         console.log('Delete Card ID: ', serviceCardIndex)
         setSubShowCard(false)
-        toDeleteServiceCardIndex(serviceCardIndex)
+        removeFromAvailedServicesArray(serviceCardIndex)
+        // await toDeleteServiceCardIndex(serviceCardIndex)
     }
 
     return (
         <>
             {showSubCard && (
                 <>
-                    <div className="flex justify-end w-full">
-                        <button type="button" onClick={handleDelete}>
-                            <RxCross2 size={20} />
-                        </button>
-                    </div>
-                    <div className="absolute top-2 right-10">
-                        <button type="button" onClick={handleSave}>
-                            <BiSolidSave size={20} alt="save" />
-                        </button>
-                    </div>
-                    <div className="relative flex justify-between space-y-2 text-black">
-                        <label className="self-center text-white">
-                            Service Type:
-                        </label>
-                        <div className="flex flex-col w-[12rem]">
-                            <select
-                                className="w-[12rem] p-1 text-black rounded"
-                                name="service_type"
-                                value={selectedServiceType}
-                                onChange={(e) => handleServiceTypeChange(e)}
-                            >
-                                <option value="">Select a service type</option>
-                                {uniqueServices.map((service) => (
-                                    <option
-                                        key={service.service_type}
-                                        value={service.service_type}
+                    {/* {visible && <div  key={serviceCardIndex} className='m-2' > */}
+                    {/* <div className="z-10 w-full h-20 bg-blue-900 text">{serviceCardIndex}</div> */}
+                    <div className="">
+                        <div className="relative flex flex-col w-full my-2 bg-red-500 h-[13rem] p-2 rounded-lg">
+                            <div className="flex justify-end w-full">
+                                <button type="button" onClick={handleDelete}>
+                                    <RxCross2 size={20} />
+                                </button>
+                            </div>
+                            <div className="absolute top-2 right-10">
+                                <button type="button" onClick={handleSave}>
+                                    <BiSolidSave size={20} alt="save" />
+                                </button>
+                            </div>
+                            <div className="relative flex justify-between space-y-2 text-black">
+                                <label className="self-center text-white">
+                                    Service Type:
+                                </label>
+                                <div className="flex flex-col w-[12rem]">
+                                    <select
+                                        className="w-[12rem] p-1 text-black rounded"
+                                        name="service_type"
+                                        value={selectedServiceType}
+                                        onChange={(e) =>
+                                            handleServiceTypeChange(e)
+                                        }
                                     >
-                                        {service.service_type}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                                        <option value="">
+                                            Select a service type
+                                        </option>
+                                        {uniqueServices.map((service) => (
+                                            <option
+                                                key={service.service_type}
+                                                value={service.service_type}
+                                            >
+                                                {service.service_type}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
 
-                    <div className="relative flex justify-between space-y-2 text-black">
-                        <label className="self-center text-white">
-                            Service:
-                        </label>
-                        <div className="flex flex-col w-[12rem]">
-                            <select
-                                className="w-[12rem] p-1 text-black rounded"
-                                name="service_name"
-                                value={selectedServiceName}
-                                onChange={(e) => handleServiceNameChange(e)}
-                            >
-                                <option value="">Select a service</option>
-                                {filteredServiceNames.map((serviceName) => (
-                                    <option
-                                        key={serviceName}
-                                        value={serviceName}
+                            <div className="relative flex justify-between space-y-2 text-black">
+                                <label className="self-center text-white">
+                                    Service:
+                                </label>
+                                <div className="flex flex-col w-[12rem]">
+                                    <select
+                                        className="w-[12rem] p-1 text-black rounded"
+                                        name="service_name"
+                                        value={selectedServiceName}
+                                        onChange={(e) =>
+                                            handleServiceNameChange(e)
+                                        }
                                     >
-                                        {serviceName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                                        <option value="">
+                                            Select a service
+                                        </option>
+                                        {filteredServiceNames.map(
+                                            (serviceName) => (
+                                                <option
+                                                    key={serviceName}
+                                                    value={serviceName}
+                                                >
+                                                    {serviceName}
+                                                </option>
+                                            )
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
 
-                    <div className="relative flex justify-between space-y-2 text-black">
-                        <label className="self-center text-white">
-                            Quantity:
-                        </label>
-                        <div className="flex flex-col w-[12rem]">
-                            <input
-                                onChange={(e) =>
-                                    setQuantity(parseInt(e.target.value))
-                                }
-                                className="w-[12rem] p-1 text-black rounded"
-                                type="number"
-                            />
-                        </div>
-                    </div>
+                            <div className="relative flex justify-between space-y-2 text-black">
+                                <label className="self-center text-white">
+                                    Quantity:
+                                </label>
+                                <div className="flex flex-col w-[12rem]">
+                                    <input
+                                        onChange={(e) =>
+                                            setQuantity(
+                                                parseInt(e.target.value)
+                                            )
+                                        }
+                                        className="w-[12rem] p-1 text-black rounded"
+                                        type="number"
+                                    />
+                                </div>
+                            </div>
 
-                    <div className="relative flex justify-between space-y-2 text-black">
-                        <label className="self-center text-white">
-                            Discounts:
-                        </label>
-                        <div className="flex flex-col w-[12rem]">
-                            <select
-                                className="w-[12rem] p-1 text-black rounded"
-                                name="service_type"
-                                value={selectedDiscount}
-                                onChange={(e) => handleDiscountOnChange(e)}
-                            >
-                                <option value="">Select a discount</option>
-                                {discounts.map((discount) => (
-                                    <option
-                                        key={discount.discount_description}
-                                        value={discount.discount_description}
+                            <div className="relative flex justify-between space-y-2 text-black">
+                                <label className="self-center text-white">
+                                    Discounts:
+                                </label>
+                                <div className="flex flex-col w-[12rem]">
+                                    <select
+                                        className="w-[12rem] p-1 text-black rounded"
+                                        name="service_type"
+                                        value={selectedDiscount}
+                                        onChange={(e) =>
+                                            handleDiscountOnChange(e)
+                                        }
                                     >
-                                        {discount.discount_description}
-                                    </option>
-                                ))}
-                            </select>
+                                        <option value="">
+                                            Select a discount
+                                        </option>
+                                        {discounts.map((discount) => (
+                                            <option
+                                                key={discount.discount_code}
+                                                value={discount.discount_code}
+                                            >
+                                                {discount.discount_code}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    {/* </div>} */}
                 </>
             )}
         </>

@@ -35,7 +35,7 @@ const BottomNav = () => {
     }
 
     return (
-        <nav className="fixed bottom-0 left-0 w-full text-orange-400 bg-gray-100 shadow-lg md:h-16">
+        <nav className="fixed bottom-0 left-0 z-50 w-full text-orange-400 bg-gray-100 shadow-lg md:h-16">
             {/* Bottom Navigation Links */}
             <ul className="flex items-center justify-between md:mt-0 md:mx-24 md:h-16">
                 {bottomPages.map((page) => (
@@ -67,7 +67,7 @@ const BottomNav = () => {
                 </Link>
             </div> */}
 
-            <div className="absolute transform -translate-x-1/2 bottom-10 left-1/2">
+            <div className="absolute z-50 transform -translate-x-1/2 bottom-10 left-1/2">
                 <Link
                     to="/new-transaction"
                     className="relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group"

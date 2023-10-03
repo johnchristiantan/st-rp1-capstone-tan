@@ -34,7 +34,7 @@ const Nav = () => {
 
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
+            <nav className="fixed top-0 left-0 z-50 w-full pb-8 pl-4 text-white shadow-lg bg-amber-400 md:p-0 md-flex md:h-16">
                 <span className="absolute top-4 left-4">
                     <img src={logoImage} alt="Logo" className="mr-2" />{' '}
                 </span>

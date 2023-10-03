@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import PrioInputFields from './PrioInputFields'
 import BranchLists from './BranchLists'
@@ -35,6 +34,15 @@ const NewTransaction = () => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault()
+
+        if (!createTransactionInputField) {
+            return alert('Please provide transaction details to proceed!')
+        }
+
+        if (availedServicesArray.length === 0) {
+            return alert('Please provide availed service to a transaction!')
+        }
+
         console.log('Submitted')
         console.log(
             'createTransactionInputField Upon Submit: ',
@@ -48,7 +56,10 @@ const NewTransaction = () => {
         createTransactionInputField['availed_services'] = availedServicesArray
 
         // Add a final
-        // console.log("Combined Availed Services to the list: ", createTransactionInputField)
+        console.log(
+            'Combined Availed Services to the list: ',
+            createTransactionInputField
+        )
         callCreateTransactions(createTransactionInputField)
 
         // Clean up zustand
