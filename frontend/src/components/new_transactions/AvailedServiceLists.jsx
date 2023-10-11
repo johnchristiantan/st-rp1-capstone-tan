@@ -90,6 +90,7 @@ export default function AvailedServiceLists({
     const handleDiscountOnChange = (event) => {
         const newDiscount = event.target.value
         setSelectedDiscount(newDiscount)
+        // alert(newDiscount)
     }
 
     const handleSave = (e) => {
@@ -243,10 +244,10 @@ export default function AvailedServiceLists({
                                         </option>
                                         {discounts.map((discount) => (
                                             <option
-                                                key={discount.discount_code}
-                                                value={discount.discount_code}
+                                                key={discount.discount_id}
+                                                value={discount.discount_id}
                                             >
-                                                {discount.discount_code}
+                                                {discount.discount_description}
                                             </option>
                                         ))}
                                     </select>

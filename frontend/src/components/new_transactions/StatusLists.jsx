@@ -25,10 +25,10 @@ export default function BranchLists() {
     return (
         <div className="flex justify-between w-full space-y-2 text-black">
             <label className="self-center">Status:</label>
-            <div className="flex flex-col w-[12rem] border-gray-500 rounded-lg">
+            <div className="flex flex-col w-[12rem]  rounded">
                 <select
                     name="status" // Add the name attribute here
-                    className="p-1 text-black bg-white border border-gray-500 rounded"
+                    className="p-1 text-black bg-white border rounded"
                     value={selectedStatus}
                     onChange={handleOnChange}
                 >

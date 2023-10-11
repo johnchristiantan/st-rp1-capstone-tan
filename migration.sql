@@ -31,23 +31,29 @@ CREATE TABLE "discounts" (
 );
 
 CREATE TABLE "transactions" (
-  "transaction_id" character varying (255),
-  "voucher_number" integer,
+  "transaction_id" integer,
+  "transaction_date" datetime,
+  "total_discounted_amount" double (10, 2),
+  "status"  character varying (255),
   "branch_code"  character varying (255),
   "customer_id" integer,
-  "date" datetime,
-  "total_amount" double (10, 2),
+  "tip" double (10, 2),
+  "total_commission" double (10, 2),
+  "voucher_number" character varying (255),
   PRIMARY KEY ("transaction_id")
 );
 
 CREATE TABLE "availed_services" (
-  "a_service_id" integer     ,
-  "therapist_id" integer,
+  "a_service_id" integer,
+  "transaction_id" integer,
   "service_id" integer,
-  "discount_code" character varying (255),
-  "tip" Type,
+  "therapist_id" integer,
+  "discount_id" character varying (255),
+  "quantity" integer,
+  "discounted_amount" double (10, 2),
   PRIMARY KEY ("a_service_id")
 );
+
 CREATE TABLE "services" (
   "service_id"  integer ,
   "service_name" character varying  (255),

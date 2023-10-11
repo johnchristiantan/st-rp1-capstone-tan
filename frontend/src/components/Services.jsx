@@ -18,13 +18,30 @@ export default function Services() {
     const [isDeleted, setIsDeleted] = useState(false)
     const [inputChanges, setInputChanges] = useState(selectedService)
     const [isEdited, setIsEdited] = useState(false)
-    // const [createServiceForm, setCreateServiceForm] = useState(false)
-    // const [isCreateServiceFormSubmitted, setIsCreateServiceFormSubmitted] =
-    //     useState(false)
 
-    // const [serviceID, setServiceID] = useState('')
-    // const [serviceName, setServiceName] = useState('')
-    // const [serviceType, setServiceType] = useState(null)
+    const [formErrors, setFormErrors] = useState({})
+
+    const validate = (formInputs) => {
+        const errors = {}
+
+        if (!formInputs.service_name) {
+            errors.service_name = 'Service Name is required!'
+        }
+
+        if (!formInputs.price) {
+            errors.price = 'Price is required!'
+        }
+
+        if (!formInputs.minutes) {
+            errors.minutes = 'Minutes is required!'
+        }
+
+        if (!formInputs.commission) {
+            errors.commission = 'Commission is required!'
+        }
+
+        return errors
+    }
 
     // Confirmation dialog state
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
@@ -66,18 +83,25 @@ export default function Services() {
             commission: servicesInputs.commission,
         }
 
-        createdService(newService)
-            .then(() => getAllServices())
-            .then((res) => {
-                setServices(res)
+        const errors = validate(newService)
+        setFormErrors(errors)
 
-                // Hide the form after successful creation
-                setShowServiceCreateForm(false)
-            })
-            .catch((error) => {
-                console.log('Error creating or fetching services:', error)
-                throw error // Rethrow the error to handle it in the main component if needed
-            })
+        if (Object.keys(errors).length === 0) {
+            // If there are no errors, proceed with user creation
+
+            createdService(newService)
+                .then(() => getAllServices())
+                .then((res) => {
+                    setServices(res)
+
+                    // Hide the form after successful creation
+                    setShowServiceCreateForm(false)
+                })
+                .catch((error) => {
+                    console.log('Error creating or fetching services:', error)
+                    throw error // Rethrow the error to handle it in the main component if needed
+                })
+        }
     }
 
     const handleOnCancelEdit = () => {
@@ -194,7 +218,7 @@ export default function Services() {
                             >
                                 <div
                                     onClick={() => handleSelectService(service)}
-                                    className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] transition-transform transition-bg hover:scale-110 hover:shadow-md overflow-y-auto flex flex-col justify-center items-center text-center"
+                                    className="bg-white border shadow-md rounded p-4 cursor-pointer h-[10rem] transition-transform transition-bg hover:scale-110 hover:shadow-md overflow-y-auto flex flex-col justify-center items-center text-center"
                                 >
                                     <div className="text-sm font-bold">
                                         {service.service_name}
@@ -236,10 +260,13 @@ export default function Services() {
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
+                                            className="w-[12rem] p-1 text-black border  rounded"
                                             type="text"
                                             name="service_name"
                                         />
+                                        <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                            {formErrors.service_name}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -250,7 +277,7 @@ export default function Services() {
                                     <div className="flex flex-col ">
                                         <select
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            className="w-[12rem] p-1 text-black border rounded"
                                             name="service_type"
                                             // value="Massage" // Set a default value
                                         >
@@ -272,10 +299,13 @@ export default function Services() {
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            className="w-[12rem] p-1 text-black border  rounded"
                                             type="number"
                                             name="price"
                                         />
+                                        <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                            {formErrors.price}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -286,10 +316,13 @@ export default function Services() {
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            className="w-[12rem] p-1 text-black border  rounded"
                                             type="number"
                                             name="minutes"
                                         />
+                                        <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                            {formErrors.minutes}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -300,10 +333,13 @@ export default function Services() {
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            className="w-[12rem] p-1 text-black border  rounded"
                                             type="number"
                                             name="commission"
                                         />
+                                        <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                            {formErrors.commission}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -345,7 +381,7 @@ export default function Services() {
                                     <input
                                         ref={service_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border rounded"
                                         type="text"
                                         name="service_id"
                                         defaultValue={
@@ -365,7 +401,7 @@ export default function Services() {
                                     <input
                                         ref={service_name_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border  rounded"
                                         type="text"
                                         name="service_name"
                                         defaultValue={
@@ -385,7 +421,7 @@ export default function Services() {
                                     <select
                                         ref={service_type_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className=" p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className=" p-1 text-black w-[12rem] border rounded"
                                         type="text"
                                         name="service_type"
                                         value={
@@ -407,7 +443,7 @@ export default function Services() {
                                     <input
                                         ref={price_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border  rounded"
                                         type="text"
                                         name="price"
                                         defaultValue={
@@ -425,7 +461,7 @@ export default function Services() {
                                     <input
                                         ref={minutes_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border rounded"
                                         type="number"
                                         name="minutes"
                                         defaultValue={
@@ -445,7 +481,7 @@ export default function Services() {
                                     <input
                                         ref={commission_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border  rounded"
                                         type="number"
                                         name="commission"
                                         defaultValue={

@@ -96,6 +96,7 @@ export const ShowUsers = () => {
                         </div>
                     )}
                 </div>
+
                 <div className="flex flex-col w-[25rem] max-w-md ">
                     {/* User List */}
                     {userDetails ? (
@@ -106,11 +107,15 @@ export const ShowUsers = () => {
                             >
                                 <div
                                     // onClick={() => handleSelectDiscount(discount)}
-                                    className=" hover:shadow-md w-[22rem] bg-white border border-gray-400 shadow-lg rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
+                                    className=" hover:shadow-md w-[22rem] bg-white border shadow-md rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
                                 >
-                                    <div className="text-lg font-bold">
+                                    <div className="text-lg font-bold ">
                                         {user.last_name} {user.first_name}
+                                        {/* <div className="w-8 overflow-hidden">
+                                            <div className="h-16 origin-top-left transform -rotate-45 bg-black "></div>
+                                        </div> */}
                                     </div>
+
                                     <div className="text-base text-black">
                                         {user.user_type}
                                     </div>

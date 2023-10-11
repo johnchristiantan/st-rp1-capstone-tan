@@ -28,18 +28,40 @@ export default function Branches() {
         setShowSelectedBranch((prev) => !prev)
     }
 
+    const [formErrors, setFormErrors] = useState({})
+
+    const validate = (formInputs) => {
+        const errors = {}
+
+        if (!formInputs.branch_name) {
+            errors.branch_name = 'Please enter branch name.'
+        }
+
+        if (!formInputs.percent_share) {
+            errors.percent_share = 'Please enter percent share.'
+        }
+
+        return errors
+    }
+
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        console.log('Created successfully')
-        createdBranch(createBranchForm)
-            .then((res) => {
-                setIsCreateBranchFormSubmitted((prev) => !prev)
-                setShowCreateForm(false)
-            })
-            .catch((error) => {
-                console.log('Error creating or fetching branches:', error)
-                throw error
-            })
+
+        const errors = validate(createBranchForm)
+        setFormErrors(errors)
+
+        if (Object.keys(errors).length === 0) {
+            // If there are no errors, proceed with user creation
+            createdBranch(createBranchForm)
+                .then((res) => {
+                    setIsCreateBranchFormSubmitted((prev) => !prev)
+                    setShowCreateForm(false)
+                })
+                .catch((error) => {
+                    console.log('Error creating or fetching branches:', error)
+                    throw error
+                })
+        }
     }
 
     const handleOnChange = (e) => {
@@ -146,7 +168,7 @@ export default function Branches() {
                                         onClick={() =>
                                             handleSelectBranch(branch)
                                         }
-                                        className="transition-transform transition-bg hover:scale-110 hover:shadow-md bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                        className="transition-transform transition-bg hover:scale-110 hover:shadow-md bg-white border  shadow-md rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
                                     >
                                         <div className="text-sm font-bold">
                                             {branch.branch_name}
@@ -192,10 +214,13 @@ export default function Branches() {
                                     <input
                                         ref={branch_name_ur}
                                         onChange={handleOnChange}
-                                        className="p-1 text-black border border-gray-500 rounded-lg "
+                                        className="p-1 text-black border rounded "
                                         type="text"
                                         name="branch_name"
                                     />
+                                    <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                        {formErrors.branch_name}
+                                    </div>
                                 </div>
                             </div>
 
@@ -207,11 +232,14 @@ export default function Branches() {
                                     <input
                                         ref={percent_share_ur}
                                         onChange={handleOnChange}
-                                        className="p-1 text-black border border-gray-500 rounded-lg"
+                                        className="p-1 text-black border rounded"
                                         type="number"
                                         name="percent_share"
                                         step="any"
                                     />
+                                    <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                        {formErrors.percent_share}
+                                    </div>
                                 </div>
                             </div>
 
@@ -253,7 +281,7 @@ export default function Branches() {
                                     <input
                                         ref={branch_name_ur}
                                         onChange={handleOnChangeEdit}
-                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
+                                        className="w-[12rem] p-1 text-black border  rounded "
                                         type="text"
                                         name="branch_name"
                                         defaultValue={
@@ -273,7 +301,7 @@ export default function Branches() {
                                     <input
                                         ref={percent_share_ur}
                                         onChange={handleOnChangeEdit}
-                                        className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                        className="w-[12rem] p-1 text-black border  rounded"
                                         type="number"
                                         name="percent_share"
                                         step="any"
@@ -322,17 +350,17 @@ export default function Branches() {
                 {/* Delete Confirmation Dialog */}
                 {showDeleteConfirmation && (
                     <div className="fixed inset-0 z-30 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50">
-                        <div className="bg-white p-4 rounded-lg border-2 border-gray-600">
+                        <div className="p-4 bg-white border-2 border-gray-600 rounded-lg">
                             <p>Are you sure you want to delete this branch?</p>
                             <div className="flex justify-center mt-2">
                                 <button
-                                    className="mr-2 bg-red-500 text-white px-4 py-2 rounded-lg"
+                                    className="px-4 py-2 mr-2 text-white bg-red-500 rounded-lg"
                                     onClick={handleDeleteConfirmation}
                                 >
                                     Yes
                                 </button>
                                 <button
-                                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
+                                    className="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg"
                                     onClick={() =>
                                         setShowDeleteConfirmation(false)
                                     }

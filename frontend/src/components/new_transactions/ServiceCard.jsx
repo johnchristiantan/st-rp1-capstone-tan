@@ -84,7 +84,10 @@ export default function ServiceCard() {
 
     // Add a default first service card on mount
     useEffect(() => {
+        // if (!samting) {
         handleAddService()
+        // setSampting(true)
+        // }
     }, [])
 
     // print if the serviceCard changed state

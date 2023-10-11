@@ -40,6 +40,22 @@ export default function Discounts() {
 
     // const [isDragging, setIsDragging] = useState(false)
 
+    const [formErrors, setFormErrors] = useState({})
+
+    const validate = (formInputs) => {
+        const errors = {}
+
+        if (!formInputs.discount_description) {
+            errors.discount_description = 'Please enter description.'
+        }
+
+        if (!formInputs.percentage) {
+            errors.percentage = 'Please enter percentage of discount.'
+        }
+
+        return errors
+    }
+
     const handleShowButton = () => {
         setShowSelectedDiscount(false)
         setShowDiscountCreateForm((prev) => !prev)
@@ -70,18 +86,26 @@ export default function Discounts() {
     //    DiscountAdd (3/3)
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        createdDiscount(discountsInputs)
-            .then(() => getAllDiscounts())
-            .then((res) => {
-                setDiscounts(res)
 
-                // Hide the form after successful creation
-                setShowDiscountCreateForm(false)
-            })
-            .catch((error) => {
-                console.log('Error creating or fetching discounts:', error)
-                throw error // Rethrow the error to handle it in the main component if needed
-            })
+        const errors = validate(discountsInputs)
+        setFormErrors(errors)
+
+        if (Object.keys(errors).length === 0) {
+            // If there are no errors, proceed with user creation
+
+            createdDiscount(discountsInputs)
+                .then(() => getAllDiscounts())
+                .then((res) => {
+                    setDiscounts(res)
+
+                    // Hide the form after successful creation
+                    setShowDiscountCreateForm(false)
+                })
+                .catch((error) => {
+                    console.log('Error creating or fetching discounts:', error)
+                    throw error // Rethrow the error to handle it in the main component if needed
+                })
+        }
     }
 
     const handleOnCancelEdit = () => {
@@ -188,7 +212,7 @@ export default function Discounts() {
                                     onClick={() =>
                                         handleSelectDiscount(discount)
                                     }
-                                    className="bg-white border border-gray-400 shadow-lg rounded p-4 cursor-pointer h-[10rem] transition-transform transition-bg hover:scale-110 hover:shadow-md overflow-y-auto flex flex-col justify-center items-center text-center"
+                                    className="bg-white border shadow-md rounded p-4 cursor-pointer h-[10rem] transition-transform transition-bg hover:scale-110 hover:shadow-md overflow-y-auto flex flex-col justify-center items-center text-center"
                                 >
                                     <div className="text-sm font-bold">
                                         {discount.discount_description}
@@ -234,19 +258,6 @@ export default function Discounts() {
                                     <h1 className="mb-2 text-xl ">Discounts</h1>
                                 </div>
 
-                                {/* <div className="flex justify-between w-full space-y-2 text-black">
-                                    <label className="self-center">
-                                        Discount Code
-                                    </label>
-                                    <div className="flex flex-col ">
-                                        <input
-                                            onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
-                                            type="text"
-                                            name="discount_id"
-                                        />
-                                    </div>
-                                </div> */}
                                 <div className="flex justify-between w-full space-y-2 text-black ">
                                     <label className="self-center">
                                         Description:
@@ -254,10 +265,13 @@ export default function Discounts() {
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg "
+                                            className="w-[12rem] p-1 text-black border rounded "
                                             type="text"
                                             name="discount_description"
                                         />
+                                        <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                            {formErrors.discount_description}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -268,11 +282,14 @@ export default function Discounts() {
                                     <div className="flex flex-col ">
                                         <input
                                             onChange={handleOnChange}
-                                            className="w-[12rem] p-1 text-black border border-gray-500 rounded-lg"
+                                            className="w-[12rem] p-1 text-black border  rounded"
                                             type="number"
                                             name="percentage"
                                             step="any"
                                         />
+                                        <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                            {formErrors.percentage}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -306,26 +323,6 @@ export default function Discounts() {
                                 <h1 className="mb-2 text-xl ">Discounts</h1>
                             </div>
 
-                            {/* <div className="flex justify-between w-full space-y-2 text-black">
-                                <label className="self-center">
-                                    Discount Code
-                                </label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        ref={discount_id_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
-                                        onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
-                                        type="text"
-                                        name="discount_id"
-                                        defaultValue={
-                                            selectedDiscount
-                                                ? selectedDiscount.discount_id
-                                                : ''
-                                        }
-                                        disabled
-                                    />
-                                </div>
-                            </div> */}
                             <div className="flex justify-between w-full space-y-2 text-black">
                                 <label className="self-center">
                                     Description:
@@ -334,7 +331,7 @@ export default function Discounts() {
                                     <input
                                         ref={discount_description_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border  rounded"
                                         type="text"
                                         name="discount_description"
                                         defaultValue={
@@ -354,7 +351,7 @@ export default function Discounts() {
                                     <input
                                         ref={percentage_ur} // THIS WILL DISPLAY THE SELECTED ITEM BACK TO INPUT BOX
                                         onChange={handleOnChangeEdit}
-                                        className="p-1 text-black w-[12rem] border border-gray-500 rounded-lg"
+                                        className="p-1 text-black w-[12rem] border  rounded"
                                         type="number"
                                         name="percentage"
                                         step="any"

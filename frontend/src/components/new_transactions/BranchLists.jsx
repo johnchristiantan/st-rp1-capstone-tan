@@ -38,12 +38,12 @@ export default function BranchLists() {
     ))
 
     return (
-        <div className="flex justify-between w-full space-y-2 text-black">
+        <div className="flex justify-between w-full text-black">
             <label className="self-center">Branch:</label>
-            <div className="flex flex-col w-[12rem]  border-gray-500 rounded-lg">
+            <div className="flex flex-col w-[12rem]   rounded">
                 <select
                     name="branch_id" // Add the name attribute here
-                    className="p-1 text-black bg-white border border-gray-500 rounded"
+                    className="p-1 text-black bg-white border rounded"
                     value={selectedBranch}
                     onChange={handleOnChange}
                 >

@@ -27,19 +27,34 @@ export const CreateUser = ({
 
     const validate = (formInputs) => {
         const errors = {}
-        if (!formInputs.user_name) {
-            errors.user_name = 'Username is required!'
-        } else if (formInputs.user_name.length < 8) {
-            errors.user_name = 'Username must be more than 8 characters.'
+
+        // Check user_type only if it's not "Customer"
+        if (formInputs.user_type !== 'Customer') {
+            if (!formInputs.user_name) {
+                errors.user_name = 'Username is required!'
+            } else if (formInputs.user_name.length < 8) {
+                errors.user_name = 'Username must be more than 8 characters.'
+            }
+
+            if (!formInputs.password) {
+                errors.password = 'Password is required!'
+            }
+
+            if (!formInputs.first_name) {
+                errors.first_name = 'First Name is required!'
+            }
+            // else if (formInputs.first_name.length < 8) {
+            //     errors.first_name = 'Username must be more than 8 characters.'
+            // }
+
+            if (!formInputs.last_name) {
+                errors.last_name = 'Last Name is required!'
+            }
         }
 
-        if (!formInputs.password) {
-            errors.password = 'Password is required!'
-        }
-
-        if (!formInputs.user_type) {
-            errors.user_type = 'User type is required!'
-        }
+        // if (!formInputs.user_type) {
+        //     errors.user_type = 'User type is required!'
+        // }
 
         return errors
     }
@@ -73,7 +88,7 @@ export const CreateUser = ({
         <>
             <div className="flex flex-col items-center justify-center">
                 <button
-                    onClick={() => setIsCreateUserVisible(true)}
+                    onDoubleClick={() => setIsCreateUserVisible(true)}
                     className="w-[30rem] p-1 rounded-lg hover:text-orange-600 text-orange-500 hover:font-bold"
                 >
                     Create New User
@@ -92,16 +107,45 @@ export const CreateUser = ({
                             </div>
 
                             <div className="flex justify-between w-full text-black">
+                                <label>User Type:</label>
+                                <div className="flex flex-col">
+                                    <select
+                                        className="w-[12rem] p-1 text-black border rounded"
+                                        name="user_type"
+                                        value={userDetails.user_type}
+                                        onChange={handleUserChange}
+                                    >
+                                        <option value="Admin">Admin</option>
+                                        <option value="Receptionist">
+                                            Receptionist
+                                        </option>
+                                        <option value="Therapist">
+                                            Therapist
+                                        </option>
+                                        <option value="Customer">
+                                            Customer
+                                        </option>
+                                    </select>
+                                    <div className="text-red-400 text-[0.65rem] font-semibold my-1">
+                                        {formErrors.user_type}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between w-full text-black">
                                 <label>Username:</label>
                                 <div className="flex flex-col ">
                                     <input
-                                        className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
+                                        className="w-[12rem] p-1 text-black border  rounded"
                                         type="text"
                                         name="user_name"
                                         value={userDetails.user_name}
                                         onChange={handleUserChange}
+                                        disabled={
+                                            userDetails.user_type === 'Customer'
+                                        } // Disable if user_type is "Customer"
                                     />
-                                    <div className="text-red-400 x-[0.65rem] font-semibold my-1 ">
+                                    <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
                                         {formErrors.user_name}
                                     </div>
                                 </div>
@@ -110,11 +154,14 @@ export const CreateUser = ({
                                 <label>Password:</label>
                                 <div className="flex flex-col ">
                                     <input
-                                        className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
+                                        className="w-[12rem] p-1 text-black border  rounded"
                                         type="password"
                                         name="password"
                                         value={userDetails.password}
                                         onChange={handleUserChange}
+                                        disabled={
+                                            userDetails.user_type === 'Customer'
+                                        } // Disable if user_type is "Customer"
                                     />
                                     <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
                                         {formErrors.password}
@@ -125,43 +172,33 @@ export const CreateUser = ({
                                 <label>First Name:</label>
                                 <div className="flex flex-col ">
                                     <input
-                                        className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
+                                        className="w-[12rem] p-1 text-black border  rounded"
                                         type="text"
                                         name="first_name"
                                         value={userDetails.first_name}
                                         onChange={handleUserChange}
                                     />
-                                    <div className="text-red-400 x-[0.65rem] font-semibold my-1 "></div>
+                                    <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
+                                        {formErrors.first_name}
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex justify-between w-full text-black">
                                 <label>Last Name:</label>
                                 <div className="flex flex-col ">
                                     <input
-                                        className="w-[12rem] p-1 text-black border border-gray-600 rounded-lg"
+                                        className="w-[12rem] p-1 text-black border  rounded"
                                         type="text"
                                         name="last_name"
                                         value={userDetails.last_name}
                                         onChange={handleUserChange}
                                     />
-                                    <div className="text-red-400 x-[0.65rem] font-semibold my-1 "></div>
-                                </div>
-                            </div>
-                            <div className="flex justify-between w-full text-black">
-                                <label className="">Usertype:</label>
-                                <div className="flex flex-col ">
-                                    <input
-                                        className="w-[12rem]  p-1 text-black border border-gray-600 rounded-lg"
-                                        type="text"
-                                        name="user_type"
-                                        value={userDetails.user_type}
-                                        onChange={handleUserChange}
-                                    />
                                     <div className="text-red-400 text-[0.65rem] font-semibold my-1 ">
-                                        {formErrors.user_type}
+                                        {formErrors.last_name}
                                     </div>
                                 </div>
                             </div>
+
                             <div className="flex items-center justify-center w-full">
                                 <input
                                     className="w-[30rem] p-1 border hover:font-bold bg-orange-400 rounded-lg hover:bg-orange-500 border-orange-400 hover:border-orange-500"

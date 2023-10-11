@@ -3,70 +3,68 @@ export const NewTransFormTextInputData = [
         id: 1,
         label: 'Date:',
         divClassName: 'flex flex-col  w-[12rem]',
-        inputClassName: 'p-1 text-black border border-gray-500 rounded',
+        inputClassName: 'p-1 text-black border  rounded',
         inputType: 'date',
-        inputName: "transaction_date"
+        inputName: 'transaction_date',
     },
     {
         id: 2,
         label: 'Voucher No.:',
-        divClassName: 'flex flex-col border border-gray-500 rounded',
+        divClassName: 'flex flex-col border  rounded',
         inputClassName: 'p-1 text-black rounded',
         inputType: 'text',
-        inputName: "voucher_number"
+        inputName: 'voucher_number',
     },
-    {
-        id: 3,
-        label: 'First Name:',
-        divClassName: 'flex flex-col',
-        inputClassName: 'w-full p-1 text-black bg-white border border-gray-500 rounded',
-        inputType: 'text',
-        inputName: "first_name"
-    },
-    {
-        id: 4,
-        label: 'Last Name:',
-        divClassName: 'flex flex-col',
-        inputClassName: 'w-full p-1 text-black bg-white border border-gray-500 rounded',
-        inputType: 'text',
-        inputName: "last_name"
-    },
-
+    // {
+    //     id: 3,
+    //     label: 'First Name:',
+    //     divClassName: 'flex flex-col',
+    //     inputClassName: 'w-full p-1 text-black bg-white border border-gray-500 rounded',
+    //     inputType: 'text',
+    //     inputName: "first_name"
+    // },
+    // {
+    //     id: 4,
+    //     label: 'Last Name:',
+    //     divClassName: 'flex flex-col',
+    //     inputClassName: 'w-full p-1 text-black bg-white border border-gray-500 rounded',
+    //     inputType: 'text',
+    //     inputName: "last_name"
+    // },
 ]
 
 export const NewTransFormSelectInputData = [
     {
         id: 1,
         label: 'Branch:',
-        inputName: "branch"
+        inputName: 'branch',
     },
     {
         id: 2,
         label: 'Status:',
-        inputName: "status"
-      
+        inputName: 'status',
     },
 ]
 
-export const statuses =  [
+export const statuses = [
     {
         id: 1,
         status: 'booked',
-        name: 'Booked'
+        name: 'Booked',
     },
     {
         id: 2,
         status: 'ongoing',
-        name: 'Ongoing'
+        name: 'Ongoing',
     },
     {
         id: 3,
         status: 'completed',
-        name: 'Completed'
+        name: 'Completed',
     },
     {
         id: 4,
         status: 'cancelled',
-        name: 'Cancelled'
-    }
+        name: 'Cancelled',
+    },
 ]
