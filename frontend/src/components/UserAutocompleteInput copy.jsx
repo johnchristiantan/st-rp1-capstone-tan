@@ -7,22 +7,24 @@ const UserAutocompleteInput = ({ users, onChange }) => {
     const [selectedOption, setSelectedOption] = useState(null) // State to store selected option
 
     useEffect(() => {
-        // Filter the users based on the input value (first name or last name)
-        const filteredOptions = users.filter(
-            (user) =>
-                user.first_name
-                    .toLowerCase()
-                    .includes(inputValue.toLowerCase()) ||
-                user.last_name.toLowerCase().includes(inputValue.toLowerCase())
-        )
+        if (users) {
+            // Filter the users based on the input value (first name or last name)
+            const filteredOptions = users.filter(
+                (user) =>
+                    user.first_name
+                        .toLowerCase()
+                        .includes(inputValue.toLowerCase()) ||
+                    user.last_name.toLowerCase().includes(inputValue.toLowerCase())
+            )
 
-        // Map the filtered options to the format expected by React-Select
-        const selectOptions = filteredOptions.map((user) => ({
-            value: user.id,
-            label: `${user.first_name} ${user.last_name}`,
-        }))
+            // Map the filtered options to the format expected by React-Select
+            const selectOptions = filteredOptions.map((user) => ({
+                value: user.id,
+                label: `${user.first_name} ${user.last_name}`,
+            }))
 
-        setOptions(selectOptions)
+            setOptions(selectOptions)
+        }
     }, [inputValue, users])
 
     const handleChange = (selectedOption) => {

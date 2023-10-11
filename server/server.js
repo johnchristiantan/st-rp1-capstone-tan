@@ -13,7 +13,7 @@ const discountRoutes = require('./routes/discountRoutes')
 const transactionRoutes = require('./routes/transactionRoutes')
 const chartDataRoutes = require('./routes/chartDataRoutes')
 
-const { authenticateToken } = require('./middleware/authMiddleware')
+const Middleware = require('./middleware/authMiddleware')
 
 const app = express()
 

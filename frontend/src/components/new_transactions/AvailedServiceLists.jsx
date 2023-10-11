@@ -108,19 +108,21 @@ export default function AvailedServiceLists({
         })
 
         // Get the discount ID by finding discount_code
-        const discountID = discounts.filter((discount) => {
-            return discount.discount_description === selectedDiscount
-        })
+        // const discountID = discounts.filter((discount) => {
+        //     return discount.discount_description === selectedDiscount
+        // })
 
         // Set data to pass into the zustand
         const service_id = serviceID.length > 0 ? serviceID[0].service_id : null
-        const discount_id =
-            discountID.length > 0 ? discountID[0].discount_id : null
+        const availedPrice = serviceID.length > 0 ? serviceID[0].price : null
+        // const discount_id =
+        //     discountID.length > 0 ? discountID[0].discount_id : null
 
         // Append data in availedServices (zustand state)
         setAvailedServices('card_index', serviceCardIndex)
         setAvailedServices('service_id', service_id)
-        setAvailedServices('discount_id', discount_id)
+        setAvailedServices('availed_price', availedPrice)
+        setAvailedServices('discount_id', parseInt(selectedDiscount))
         setAvailedServices('quantity', quantity)
 
         // alert('Save')

@@ -15,7 +15,7 @@ const useTransactionFormStore = create((set) => ({
       if (!state.availedServicesArray.some((item) => item.card_index === value.card_index)) {
         return {
           availedServicesArray: [...state.availedServicesArray, value],
-        };
+        }
       }
       return state; // Item already exists, no need to append it again
     }),
@@ -45,4 +45,4 @@ const useTransactionFormStore = create((set) => ({
     })),
 }));
 
-export default useTransactionFormStore;
+export default useTransactionFormStore

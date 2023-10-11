@@ -61,12 +61,13 @@ const createAvailedServices = async (availed_services, transaction_id) => {
             // Create a new availed service record
             await pool.query('BEGIN')
             await pool.query(
-                'INSERT INTO availed_services(transaction_id, service_id, discount_id, quantity) \
-                VALUES ($1, $2, $3, $4) RETURNING *',
+                'INSERT INTO availed_services(transaction_id, service_id, discount_id, availed_price, quantity) \
+                VALUES ($1, $2, $3, $4, $5) RETURNING *',
                 [
                     transaction_id,
                     availed_services[i].service_id,
                     availed_services[i].discount_id,
+                    availed_services[i].availed_price,
                     availed_services[i].quantity,
                 ]
             )
@@ -83,17 +84,23 @@ const createAvailedServices = async (availed_services, transaction_id) => {
 
 const getTotalDiscountedAmount = async (transaction_id) => {
     try {
-        // Get the total discounted amount
-        const totalDiscountedAmount = await pool.query(
-            'SELECT (total_price - total_discount) AS total_discounted_price \
-            FROM ( SELECT SUM(S.price * ASV.quantity) AS total_price, \
-            SUM(S.price * D.percentage * ASV.quantity) AS total_discount \
-            FROM availed_services AS ASV INNER JOIN services AS S ON ASV.service_id = S.service_id \
-            INNER JOIN discounts AS D ON ASV.discount_id = D.discount_id \
-            WHERE ASV.transaction_id = $1) AS subquery',
-            [transaction_id]
+        const totalPrice = await pool.query(
+            'SELECT (ASV.quantity * S.price) AS total_price FROM availed_services AS ASV \
+            INNER JOIN services AS S ON ASV.service_id = S.service_id  WHERE transaction_id = $1', [transaction_id]
         )
-        return totalDiscountedAmount.rows[0].total_discounted_price
+
+        const totalDiscount = await pool.query(
+            'SELECT (ASV.quantity * S.price * D.percentage) AS total_discount \
+            FROM availed_services AS ASV INNER JOIN discounts AS D ON D.discount_id = ASV.discount_id \
+            INNER JOIN services AS S ON ASV.service_id = S.service_id  WHERE transaction_id = $1', [transaction_id]
+        )
+
+        if (totalDiscount.rowCount > 0) {
+            return (totalPrice.rows[0].total_price - totalDiscount.rows[0].total_discount)
+        } else {
+            return (totalPrice.rows[0].total_price)
+        }
+        
     } catch (err) {
         console.error(err.message)
         return null
@@ -266,6 +273,7 @@ const deleteTransaction = async (transaction_id) => {
 // }
 
 module.exports = {
+    pool,
     createCustomer,
     createCustomerTransaction,
     createAvailedServices,

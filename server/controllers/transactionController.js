@@ -65,6 +65,7 @@ const createTransaction = async (req, res) => {
             })
         }
         // Get the total discounted amount
+        console.log("dfsdfsdfsf")
         const total_discounted_amount =
             await Transactions.getTotalDiscountedAmount(transaction_id)
         const totalDiscountedAmountUpdated =
