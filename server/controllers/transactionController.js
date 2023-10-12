@@ -140,7 +140,22 @@ const deleteTransaction = async (req, res) => {
     }
 }
 
+const getTransactionAMounts = async (req, res) => {
+    try {
+        const { year } = req.params
+        const transactionAmounts = await Transactions.getTotalDiscountedAmountPerYear(year)
+        if (!transactionAmounts) {
+            res.status(500).json({ error: `No Transaction Amounts for the year ${year}` })
+        }
+        res.json(transactionAmounts)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+}
+
 module.exports = {
+    getTransactionAMounts,
     getAllTransactions,
     createTransaction,
     updateTransaction,

@@ -14,4 +14,7 @@ router.put('/transactions/:transaction_id', transactionController.updateTransact
 // DELETE a transaction by transaction ID
 router.delete('/transactions/:transaction_id', transactionController.deleteTransaction)
 
+// GET TOTAL DISCOUNTED AMOUNT by year
+router.get('/get-transactions-amounts/:year', transactionController.getTransactionAMounts)
+
 module.exports = router

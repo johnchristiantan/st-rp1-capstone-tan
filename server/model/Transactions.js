@@ -276,8 +276,53 @@ const deleteTransaction = async (transaction_id) => {
 //     }
 // }
 
+// /get-total-discounted
+const getTotalDiscountedAmountPerYear = async (year) => {
+    let totalAmountPerYear = []
+    let serviceTypesFromDB = []
+    let serviceTypes = []
+    let totalNumberOfMonths = 12
+
+    try {
+        // Get service types from database
+        const services = await pool.query('SELECT DISTINCT service_type FROM services')
+        serviceTypesFromDB = services.rows
+        
+        // tranform data structure of service types ==> serviceTypes
+        serviceTypesFromDB.forEach((serviceType, index) => {
+            serviceTypes[index] = {"id": index + 1, "service_type": serviceType.service_type}
+          })
+          
+        for (let i = 1; i <= totalNumberOfMonths; i++) {
+            perMonthTotalAmount = {}
+            for (let j = 0; j < serviceTypes.length; j++) {
+                if (serviceTypes[j].service_type) {
+                    const result = await pool.query(
+                        'select SUM(ASV.availed_price * ASV.quantity) as total_amt from availed_services as ASV \
+                        inner join services as S on ASV.service_id = S.service_id \
+                        inner join transactions as Trx on Trx.transaction_id = ASV.transaction_id \
+                        where S.service_type = $1 \
+                        and EXTRACT(MONTH FROM Trx.transaction_date) = $2 \
+                        and EXTRACT(YEAR FROM Trx.transaction_date) = $3'
+                        , [serviceTypes[j].service_type, i, 2023]
+    
+                    )
+                    perMonthTotalAmount[serviceTypes[j].service_type] = result.rows[0].total_amt
+                }
+            }
+            perMonthTotalAmount['id'] = i
+            perMonthTotalAmount['month'] = i
+            totalAmountPerYear.push(perMonthTotalAmount)
+        }
+        return totalAmountPerYear
+    } catch (err) {
+        console.error(err.message)
+        return false
+    }
+}
+
 module.exports = {
-    pool,
+    getTotalDiscountedAmountPerYear,
     createCustomer,
     createCustomerTransaction,
     createAvailedServices,

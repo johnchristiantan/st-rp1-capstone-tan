@@ -17,21 +17,21 @@ export const Dashboard = () => {
                         datasets: [
                             {
                                 label: 'Massage',
-                                data: res.map((data) => data.massage),
+                                data: res.map((data) => data.Massage),
                                 backgroundColor: 'rgba(231, 111, 91, 1)',
                                 // backgroundColor: ['green'],
                                 // borderColor: ['gray'],
                             },
                             {
                                 label: 'Spa',
-                                data: res.map((data) => data.spa),
+                                data: res.map((data) => data.Spa),
                                 backgroundColor: 'rgba(244, 162, 97, 1)',
                                 // backgroundColor: ['red'],
                                 // borderColor: ['gray'],
                             },
                             {
                                 label: 'Package',
-                                data: res.map((data) => data.package),
+                                data: res.map((data) => data.Package),
                                 backgroundColor: 'rgba(233, 196, 106, 1)',
                                 // backgroundColor: ['blue'],
                                 // borderColor: ['gray'],
@@ -56,12 +56,12 @@ export const Dashboard = () => {
     const columnWidth = 'calc(22rem / 3)'
 
     return (
-        <div className="flex flex-col items-center justify-between  mt-14 pt-2">
+        <div className="flex flex-col items-center justify-between pt-2 mt-14">
             <div className="bg-white w-[22rem] shadow-md rounded-md m-4 p-2 h-[4rem]">
-                <div className=" text-center text-orange-400 ">
+                <div className="text-center text-orange-400 ">
                     Current Sales
                 </div>
-                <div className=" text-center text-orange-400 font-bold text-xl ">
+                <div className="text-xl font-bold text-center text-orange-400 ">
                     500,597
                 </div>
             </div>
