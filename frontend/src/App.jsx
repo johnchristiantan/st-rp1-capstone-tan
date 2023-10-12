@@ -15,6 +15,7 @@ import Chart2 from './components/Chart2'
 import Chart3 from './components/Chart3'
 import React, { useEffect } from 'react'
 // import DiscountedAmountFilter from './components/DiscountedAmountFilter'
+// import SalesByServiceType from './components/SalesByServiceType'
 
 function App() {
     return (
@@ -22,10 +23,11 @@ function App() {
             <Nav />
             <Routes>
                 <Route path="/home" element={<Home />} />
-                {/* <Route path="/home" element={<DiscountedAmountFilter />} /> */}
+                {/* <Route path="/home" element={<SalesByServiceType />} /> */}
 
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/new-transaction" element={<NewTransaction />} />
+                <Route path="/booking" element={<NewTransaction />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/branches" element={<Branches />} />
                 <Route path="/services" element={<Services />} />

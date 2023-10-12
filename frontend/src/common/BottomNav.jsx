@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaHome, FaChartBar, FaMoon, FaUserCircle } from 'react-icons/fa'
+import { BsJournalBookmark } from 'react-icons/bs'
 
 const BottomNav = () => {
     const bottomPages = [
@@ -13,6 +14,13 @@ const BottomNav = () => {
             name: 'Dashboard',
             link: '/dashboard',
             icon: <FaChartBar className="mb-1 text-lg text-orange-400 " />,
+        },
+        {
+            name: 'Booking',
+            link: '/booking',
+            icon: (
+                <BsJournalBookmark className="mb-1 text-lg text-orange-400 " />
+            ),
         },
         {
             name: 'Dark Mode',
@@ -67,7 +75,7 @@ const BottomNav = () => {
                 </Link>
             </div> */}
 
-            <div className="absolute z-50 transform -translate-x-1/2 bottom-10 left-1/2">
+            {/* <div className="absolute z-50 transform -translate-x-1/2 bottom-10 left-1/2">
                 <Link
                     to="/new-transaction"
                     className="relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group"
@@ -76,7 +84,7 @@ const BottomNav = () => {
                     <span className="absolute top-0 left-0 w-1/2 h-full transition-transform duration-500 ease-in-out transform translate-x-0 bg-orange-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-full"></span>
                     <span className="absolute top-0 right-0 w-1/2 h-full transition-transform duration-500 ease-in-out transform translate-x-0 bg-orange-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-full"></span>
                 </Link>
-            </div>
+            </div> */}
         </nav>
     )
 }

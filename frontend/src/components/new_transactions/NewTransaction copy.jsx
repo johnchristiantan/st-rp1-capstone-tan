@@ -29,6 +29,8 @@ const NewTransaction = () => {
     } = useTransactionFormStore()
 
     const [users, setUsers] = useState([])
+    const [lastNames, setLastNames] = useState([])
+    const targetUserId = '2' // Replace with the user_id you want to find
 
     const [isFormVisible, setIsFormVisible] = useState(false)
 
@@ -112,13 +114,51 @@ const NewTransaction = () => {
 
     // Define a function to map customer_id to first_name and last_name
 
-    const mapCustomerIdToName = (customer_id, users) => {
+    //   const mapCustomerIdToName = (customer_id, users) => {
+    //     console.log(users)
+    //     if (!users || users.length === 0) {
+    //         // console.warn('No users data available.')
+    //         return 'Data not available'
+    //     }
+
+    //     const user = users.find((user) => user.user_id === customer_id)
+    //     if (user) {
+    //         return `${user.first_name} ${user.last_name}`
+    //     }
+
+    //     // console.warn(`No user found for customer_id: ${customer_id}`)
+    //     return 'Unknown'
+    // }
+
+    useEffect(() => {
+        // Fetch user data when the component mounts
+        getUsers()
+            .then((res) => {
+                setUsers(res)
+                console.log(res)
+
+                // Find the user with the target user_id
+                const targetUser = res.find(
+                    (user) => user.user_id === targetUserId
+                )
+
+                if (targetUser) {
+                    // Store the last_name in the state
+                    setLastNames({ [targetUserId]: targetUser.last_name })
+                }
+            })
+            .catch((error) => {
+                console.log('Error fetching users:', error)
+            })
+    }, [targetUserId]) // Include targetUserId in the dependency array if it can change
+
+    const mapCustomerIdToName = (customer_id) => {
         if (!users || users.length === 0) {
             return 'Data not available'
         }
 
         const user = users.find(
-            (user) => user.user_id.toString() === customer_id.toString()
+            (user) => user.user_id.toString() === customer_id
         )
 
         if (user) {
@@ -127,18 +167,6 @@ const NewTransaction = () => {
 
         return 'Unknown'
     }
-
-    useEffect(() => {
-        // Fetch user data when the component mounts
-        getUsers()
-            .then((res) => {
-                setUsers(res)
-                // console.log(res)
-            })
-            .catch((error) => {
-                console.log('Error fetching users:', error)
-            })
-    }, [])
 
     return (
         <>
@@ -161,11 +189,19 @@ const NewTransaction = () => {
                                 <div className="flex items-center ">
                                     <div>
                                         <div>
-                                            {transaction.transaction_id}:{' '}
+                                            {transaction.customer_id}:{' '}
                                             {mapCustomerIdToName(
                                                 transaction.customer_id,
                                                 users
                                             )}
+                                        </div>
+
+                                        <div>
+                                            Last Name for User ID{' '}
+                                            {transaction.customer_id}:{' '}
+                                            {lastNames[
+                                                transaction.customer_id
+                                            ] || 'Not found'}
                                         </div>
                                     </div>
                                 </div>

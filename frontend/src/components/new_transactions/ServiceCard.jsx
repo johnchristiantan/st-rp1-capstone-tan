@@ -94,7 +94,7 @@ export default function ServiceCard() {
     useEffect(() => {
         console.log('New Service Cards', serviceCards)
         setSampting((prev) => !prev)
-        console.log('Saamthing')
+        // console.log('Saamthing')
     }, [serviceCards])
 
     // print if the serviceCard changed state

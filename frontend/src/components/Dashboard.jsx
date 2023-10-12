@@ -4,8 +4,6 @@ import Chart2 from './Chart2'
 import Chart3 from './Chart3'
 import { getAllChartData } from '../services/ChartDataServices'
 
-// import { getTotalDiscountedAmountByServiceType } from '../../../server/model/Transactions'
-
 export const Dashboard = () => {
     const [chartData, setChartData] = useState(null)
     const [activeTab, setActiveTab] = useState('Chart1') // Initialize with 'Chart1'
@@ -55,29 +53,6 @@ export const Dashboard = () => {
         setActiveTab(tabName)
     }
 
-    const [totalDiscountedByServiceType, setTotalDiscountedByServiceType] =
-        useState([])
-
-    useEffect(() => {
-        // Call the getTotalDiscountedAmountByServiceType function here
-        getTotalDiscountedAmountByServiceType('Massage')
-            .then((result) => {
-                if (result) {
-                    setTotalDiscountedByServiceType(result)
-                } else {
-                    console.log(
-                        'Failed to fetch total discounted amount by service type'
-                    )
-                }
-            })
-            .catch((error) => {
-                console.error(
-                    'Error fetching total discounted amount by service type:',
-                    error
-                )
-            })
-    }, [])
-
     const columnWidth = 'calc(22rem / 3)'
 
     return (
@@ -88,19 +63,6 @@ export const Dashboard = () => {
                 </div>
                 <div className=" text-center text-orange-400 font-bold text-xl ">
                     500,597
-                </div>
-            </div>
-            <div>
-                <div>
-                    {totalDiscountedByServiceType.map((item) => (
-                        <div key={item.service_type}>
-                            <p>Service Type: {item.service_type}</p>
-                            <p>
-                                Total Discounted Amount:{' '}
-                                {item.total_discounted_amount_per_type}
-                            </p>
-                        </div>
-                    ))}
                 </div>
             </div>
             <div className="flex ">
