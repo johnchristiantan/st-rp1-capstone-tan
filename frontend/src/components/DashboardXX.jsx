@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Chart1 from './Chart1'
 import Chart2 from './Chart2'
 import Chart3 from './Chart3'
@@ -8,62 +8,42 @@ export const Dashboard = () => {
     const [chartData, setChartData] = useState(null)
     const [activeTab, setActiveTab] = useState('Chart1') // Initialize with 'Chart1'
 
-    // Calculate the sum of Massage, Spa, and Package: WIP
+    // Calculate the sum of Massage, Spa, and Package
     const calculateTotal = (data) => {
-        return data.Massage + data.Spa + data.Package
+        // return data.Massage + data.Spa + data.Package
+        return data.Massage
     }
 
-    // Use useRef to store total_sales
-    const totalSalesRef = useRef(0)
-
     useEffect(() => {
-        // console.log 'useEffect triggered
-
         getAllChartData()
             .then((res) => {
                 if (res) {
-                    // console.log('API Response:', res)
+                    console.log('API Response:', res)
 
-                    // Filter out data points where any of the values (Massage, Spa, Package) are null : WIP
+                    // Filter out data points where any of the values (Massage, Spa, Package) are null
                     const filteredData = res.filter(
                         (data) =>
                             data.Massage !== null &&
                             data.Spa !== null &&
                             data.Package !== null
                     )
-                    const total_spa = res.reduce((p, c) => {
-                        return p + c.Spa
-                    }, 0)
-
-                    const total_massage = res.reduce((p, c) => {
-                        return p + c.Massage
-                    }, 0)
-
-                    const total_package = res.reduce((p, c) => {
-                        return p + c.Package
-                    }, 0)
-
-                    totalSalesRef.current =
-                        total_package + total_massage + total_spa // Update total_sales using useRef
-
-                    console.log(totalSalesRef.current)
 
                     const updatedChartData = {
-                        labels: res.map((data) => data.month),
+                        labels: filteredData.map((data) => data.month),
                         datasets: [
                             {
                                 label: 'Massage',
-                                data: res.map((data) => data.Massage),
+                                data: filteredData.map((data) => data.Massage),
                                 backgroundColor: 'rgba(231, 111, 91, 1)',
                             },
                             {
                                 label: 'Spa',
-                                data: res.map((data) => data.Spa),
+                                data: filteredData.map((data) => data.Spa),
                                 backgroundColor: 'rgba(244, 162, 97, 1)',
                             },
                             {
                                 label: 'Package',
-                                data: res.map((data) => data.Package),
+                                data: filteredData.map((data) => data.Package),
                                 backgroundColor: 'rgba(233, 196, 106, 1)',
                             },
                         ],
@@ -89,8 +69,7 @@ export const Dashboard = () => {
             <div className="bg-white w-[22rem] shadow-md rounded-md m-4 p-2 h-[4rem]">
                 <div className="text-center text-orange-400">Current Sales</div>
                 <div className="text-xl font-bold text-center text-orange-400">
-                    {/* {totalSalesRef.current} */}
-                    {totalSalesRef.current.toLocaleString()}
+                    500,597
                 </div>
             </div>
             <div className="flex">

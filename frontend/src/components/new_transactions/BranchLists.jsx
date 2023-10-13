@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react'
 import { getAllBranches } from '../../services/BranchServices'
 import useTransactionFormStore from '../../data/Store'
 
-export default function BranchLists() {
+export default function BranchLists({ selectedTransaction, isEditMode }) {
     const [branches, setBranches] = useState([])
     const [selectedBranch, setSelectedBranch] = useState('') // State to track the selected branch
     const { createTransactionInputField, setCreateTransactionInputField } =
         useTransactionFormStore()
+
+    // console.log('jc', selectedTransaction)
+    // console.log('mode', isEditMode)
 
     useEffect(() => {
         async function fetchBranches() {
@@ -37,6 +40,14 @@ export default function BranchLists() {
         </option>
     ))
 
+    // console.log('transaction in branch', selectedTransaction)
+    // console.log('branch', selectedTransaction.branch_id)
+    // console.log('jjj', selectedTransaction['branch_id'])
+
+    // if (selectedTransaction !== null) {
+    //     //     selectedTransaction['transaction_date'] = selectedTransaction.branch_id
+    // }
+
     return (
         <div className="flex justify-between w-full text-black">
             <label className="self-center">Branch:</label>
@@ -46,6 +57,7 @@ export default function BranchLists() {
                     className="p-1 text-black bg-white border rounded"
                     value={selectedBranch}
                     onChange={handleOnChange}
+                    // defaultValue={selectedTransaction['branch_id']}
                 >
                     <option value="">Select a branch</option>
                     {branchOptions}

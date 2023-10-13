@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FaHome, FaChartBar, FaMoon, FaUserCircle } from 'react-icons/fa'
-import { BsJournalBookmark } from 'react-icons/bs'
+import { FaHome, FaMoon, FaUserCircle, FaBookOpen } from 'react-icons/fa'
+import { GiSecretBook } from 'react-icons/gi'
+import { SiBookmeter } from 'react-icons/si'
 
 const BottomNav = () => {
     const bottomPages = [
@@ -13,20 +14,18 @@ const BottomNav = () => {
         {
             name: 'Dashboard',
             link: '/dashboard',
-            icon: <FaChartBar className="mb-1 text-lg text-orange-400 " />,
+            icon: <SiBookmeter className="mb-1 text-lg text-orange-400 " />,
         },
         {
             name: 'Booking',
             link: '/booking',
-            icon: (
-                <BsJournalBookmark className="mb-1 text-lg text-orange-400 " />
-            ),
+            icon: <FaBookOpen className="mb-1 text-lg text-orange-400 " />,
         },
-        {
-            name: 'Dark Mode',
-            link: '/dark-mode',
-            icon: <FaMoon className="mb-1 text-lg text-orange-400 " />,
-        },
+        // {
+        //     name: 'Dark Mode',
+        //     link: '/dark-mode',
+        //     icon: <FaMoon className="mb-1 text-lg text-orange-400 " />,
+        // },
         {
             name: 'Profile',
             link: '/profile',

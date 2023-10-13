@@ -285,14 +285,19 @@ const getTotalDiscountedAmountPerYear = async (year) => {
 
     try {
         // Get service types from database
-        const services = await pool.query('SELECT DISTINCT service_type FROM services')
+        const services = await pool.query(
+            'SELECT DISTINCT service_type FROM services'
+        )
         serviceTypesFromDB = services.rows
-        
+
         // tranform data structure of service types ==> serviceTypes
         serviceTypesFromDB.forEach((serviceType, index) => {
-            serviceTypes[index] = {"id": index + 1, "service_type": serviceType.service_type}
-          })
-          
+            serviceTypes[index] = {
+                id: index + 1,
+                service_type: serviceType.service_type,
+            }
+        })
+
         for (let i = 1; i <= totalNumberOfMonths; i++) {
             perMonthTotalAmount = {}
             for (let j = 0; j < serviceTypes.length; j++) {
@@ -303,11 +308,11 @@ const getTotalDiscountedAmountPerYear = async (year) => {
                         inner join transactions as Trx on Trx.transaction_id = ASV.transaction_id \
                         where S.service_type = $1 \
                         and EXTRACT(MONTH FROM Trx.transaction_date) = $2 \
-                        and EXTRACT(YEAR FROM Trx.transaction_date) = $3'
-                        , [serviceTypes[j].service_type, i, 2023]
-    
+                        and EXTRACT(YEAR FROM Trx.transaction_date) = $3',
+                        [serviceTypes[j].service_type, i, 2023]
                     )
-                    perMonthTotalAmount[serviceTypes[j].service_type] = result.rows[0].total_amt
+                    perMonthTotalAmount[serviceTypes[j].service_type] =
+                        result.rows[0].total_amt
                 }
             }
             perMonthTotalAmount['id'] = i

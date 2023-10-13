@@ -1,5 +1,5 @@
 import React from 'react'
-import { Bar } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { Chart as ChartJS } from 'chart.js/auto'
 
 function Chart1({ chartData, height }) {
@@ -29,7 +29,7 @@ function Chart1({ chartData, height }) {
 
     return (
         <div style={{ height: `${height}px` }}>
-            <Bar data={chartData} options={chartOptions} />
+            <Line data={chartData} options={chartOptions} />
         </div>
     )
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { statuses } from '../../data/FormData'
 import useTransactionFormStore from '../../data/Store'
 
-export default function BranchLists() {
+export default function BranchLists({ selectedTransaction, isEditMode }) {
     const [selectedStatus, setSelectedStatus] = useState('') // State to track the selected status
     const { createTransactionInputField, setCreateTransactionInputField } =
         useTransactionFormStore()
@@ -22,6 +22,12 @@ export default function BranchLists() {
         console.log(createTransactionInputField)
     }
 
+    console.log('status: ', selectedTransaction['status'])
+    // if (selectedTransaction !== null) {
+    //     const iStatus = selectedTransaction['status']
+    //     selectedTransaction['status'] = iStatus
+    // }
+
     return (
         <div className="flex justify-between w-full space-y-2 text-black">
             <label className="self-center">Status:</label>
@@ -31,6 +37,7 @@ export default function BranchLists() {
                     className="p-1 text-black bg-white border rounded"
                     value={selectedStatus}
                     onChange={handleOnChange}
+                    defaultValue={selectedTransaction['status']}
                 >
                     <option value="">Select a status</option>
                     {branchOptions}

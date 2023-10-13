@@ -8,12 +8,9 @@ import {
     createdTransaction,
     getAllTransactions,
 } from '../../services/TransactionServices'
-
 import { getUsers } from '../../services/Users'
-
 import UserFilter from '../UserFilter'
-
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const NewTransaction = () => {
     const [transactions, setTransactions] = useState([])
@@ -29,7 +26,7 @@ const NewTransaction = () => {
     } = useTransactionFormStore()
 
     const [users, setUsers] = useState([])
-
+    const [isEditMode, setIsEditMode] = useState(false)
     const [isFormVisible, setIsFormVisible] = useState(false)
 
     const toggleFormVisibility = () => {
@@ -140,9 +137,65 @@ const NewTransaction = () => {
             })
     }, [])
 
+    const [selectedTransaction, setSelectedTransaction] = useState(null)
+    const [formattedDate, setFormattedDate] = useState(null)
+
+    // Add state variables for other input fields as needed
+
+    const transaction_id_ur = useRef(null)
+    const transaction_date_ur = useRef(null)
+    const voucher_number_ur = useRef(null)
+    const customer_id_ur = useRef(null)
+    const branch_id_ur = useRef(null)
+    const status_ur = useRef(null)
+
+    // const total_discounted_amount_ur = useRef(null)
+    // const tip_ur = useRef(null)
+    // const total_commission_ur = useRef(null)
+
+    const handleSelectTransaction = (transaction) => {
+        // setIsFormVisible(false)
+        // setSelectedBranch(branch)
+        // setShowSelectedBranch(true)
+
+        setIsEditMode(true)
+        setSelectedTransaction(transaction)
+        // setFormattedDate(transaction)
+
+        // console.log('trans', transaction)
+
+        if (transaction_id_ur.current) {
+            transaction_id_ur.current.value = transaction.transaction_id
+        }
+        if (transaction_date_ur.current) {
+            transaction_date_ur.current.value = transaction.transaction_date
+        }
+        if (voucher_number_ur.current) {
+            voucher_number_ur.current.value = transaction.voucher_number
+        }
+        if (customer_id_ur.current) {
+            customer_id_ur.current.value = transaction.customer_id
+        }
+        if (branch_id_ur.current) {
+            branch_id_ur.current.value = transaction.branch_id
+        }
+        if (status_ur.current) {
+            status_ur.current.value = transaction.status
+        }
+        // console.log(transaction_id_ur.current.value)
+        // tip_ur.current.value = transaction.tip
+        // total_commission_ur.current.value = transaction.total_commission
+        // total_discounted_amount_ur.current.value =
+        //     transaction.total_discounted_amount
+        // created_at_ur.current.value
+
+        // setSelectedStatus(transaction.status)
+        // console.log('status', transaction.status)
+    }
+
     return (
         <>
-            <div className=" flex flex-col items-center pt-16 text-black ">
+            <div className="flex flex-col items-center pt-16 text-black ">
                 <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
@@ -157,7 +210,12 @@ const NewTransaction = () => {
                 {filteredTransactions ? (
                     filteredTransactions.map((transaction, index) => (
                         <div key={index} className={`w-[22rem] pt-2 `}>
-                            <div className=" flex justify-between bg-white p-2 overflow-y-auto text-left transition-transform border-b cursor-pointer">
+                            <div
+                                onClick={() =>
+                                    handleSelectTransaction(transaction)
+                                }
+                                className="flex justify-between p-2 overflow-y-auto text-left transition-transform bg-white border-b cursor-pointer "
+                            >
                                 <div className="flex items-center ">
                                     <div>
                                         <div>
@@ -189,15 +247,82 @@ const NewTransaction = () => {
 
             <div className="bg-red-300"></div>
 
-            <div className=" flex items-center justify-center m-4 ">
+            <div className="flex items-center justify-center m-4 ">
                 <div className="transition-transform transition-bg hover:scale-110 relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group">
                     <button
-                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 "
                         onClick={toggleFormVisibility}
                     >
                         +
                     </button>
                 </div>
+            </div>
+
+            <div className="  flex flex-col items-center justify-start pt-2 mt-[1rem] mb-[100px]">
+                <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
+                    <div className="flex w-full">
+                        <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
+                            <span>Update</span>
+                            <button type="button" onClick={handleClose}>
+                                <RxCross2 size={20} />
+                            </button>
+                        </h1>
+                    </div>
+
+                    {/* <div>
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Date:</label>
+                            <div className="flex flex-col  w-[12rem]">
+                                <input
+                                    className="p-1 text-black border rounded"
+                                    type="date"
+                                    name="transaction_date"
+                                    ref={transaction_date_ur}
+                                    // onChange={handleOnChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Voucher No.:</label>
+                            <div className="flex flex-col border rounded">
+                                <input
+                                    className="p-1 text-black rounded"
+                                    type="text"
+                                    name="voucher_number"
+                                    ref={voucher_number_ur}
+                                    // onChange={handleOnChange}
+                                />
+                            </div>
+                        </div>
+                    </div> */}
+                    <PrioInputFields
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+                    <UserFilter
+                    // selectedTransaction={selectedTransaction}
+                    // isEditMode={isEditMode}
+                    />
+                    <BranchLists
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+                    <StatusLists
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+
+                    <div className="flex items-center justify-center w-full mt-4">
+                        <input
+                            className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
+                            type="submit"
+                            value="Submit"
+                        />
+                    </div>
+                </form>
             </div>
 
             <div className="  flex flex-col items-center justify-start pt-2 mt-[1rem] mb-[100px]">

@@ -17,11 +17,12 @@ export const NewTransFormTextInputData = [
     },
     // {
     //     id: 3,
-    //     label: 'First Name:',
+    //     label: 'Status:',
     //     divClassName: 'flex flex-col',
-    //     inputClassName: 'w-full p-1 text-black bg-white border border-gray-500 rounded',
+    //     inputClassName:
+    //         'w-full p-1 text-black bg-white border border-gray-500 rounded',
     //     inputType: 'text',
-    //     inputName: "first_name"
+    //     inputName: 'status',
     // },
     // {
     //     id: 4,
