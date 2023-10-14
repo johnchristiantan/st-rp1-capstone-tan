@@ -26,7 +26,7 @@ export const Dashboard = ({ setJwt }) => {
             .then((res) => {
                 if (res) {
                     const updatedChartData = {
-                        labels: res.map((data) => data.month),
+                        labels: res ? res.map((data) => data.month): null,
                         datasets: [
                             {
                                 label: 'Massage',
@@ -59,8 +59,6 @@ export const Dashboard = ({ setJwt }) => {
         getAllTransactions()
             .then((res) => {
                 if (res) {
-                    console.log('Transactions: ', res)
-                    console.log('Transactions Date: ', res.transaction_date)
                     const arrayDate = res.map((r) => {
                         let spa_total = null
                         let massage_total = null
@@ -69,7 +67,6 @@ export const Dashboard = ({ setJwt }) => {
                             (r.availed_services[i]['service_type'] === "Spa") && (spa_total += r.availed_services[i]['availed_price']),
                             (r.availed_services[i]['service_type'] === "Massage") && (massage_total += r.availed_services[i]['availed_price']),
                             (r.availed_services[i]['service_type'] === "Package") && (package_total += r.availed_services[i]['availed_price'])
-                    // console.log("Object Length: ", Object.keys(r.availed_services).length)
                         }
                         return {
                             "transaction_id": r.transaction_id,
@@ -79,12 +76,8 @@ export const Dashboard = ({ setJwt }) => {
                             "Package": package_total
                         }
                     })
-                    // console.log("Array Date: ", arrayDate[28]['transaction_date'])
-                    // console.log("Array Spa: ", arrayDate[28]['Spa'])
-                    // console.log("Array Massage: ", arrayDate[28]['Massage'])
-                    // console.log("Array Package: ", arrayDate[28]['Package'])
                     const updatedTransactions = {
-                        labels: arrayDate.map((data) => data.transaction_date),
+                        labels: arrayDate ? arrayDate.map((data) => data.transaction_date) : null,
                         datasets: [
                             {
                                 label: 'Massage',
