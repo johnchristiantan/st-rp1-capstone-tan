@@ -269,42 +269,13 @@ const NewTransaction = () => {
                         </h1>
                     </div>
 
-                    {/* <div>
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Date:</label>
-                            <div className="flex flex-col  w-[12rem]">
-                                <input
-                                    className="p-1 text-black border rounded"
-                                    type="date"
-                                    name="transaction_date"
-                                    ref={transaction_date_ur}
-                                    // onChange={handleOnChange}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Voucher No.:</label>
-                            <div className="flex flex-col border rounded">
-                                <input
-                                    className="p-1 text-black rounded"
-                                    type="text"
-                                    name="voucher_number"
-                                    ref={voucher_number_ur}
-                                    // onChange={handleOnChange}
-                                />
-                            </div>
-                        </div>
-                    </div> */}
                     <PrioInputFields
                         selectedTransaction={selectedTransaction}
                         isEditMode={isEditMode}
                     />
                     <UserFilter
-                    // selectedTransaction={selectedTransaction}
-                    // isEditMode={isEditMode}
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
                     />
                     <BranchLists
                         selectedTransaction={selectedTransaction}

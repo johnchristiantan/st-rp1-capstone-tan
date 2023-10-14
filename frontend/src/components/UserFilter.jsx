@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import UserAutocompleteInput from './UserAutocompleteInput'
 import { getUsers } from '../services/Users'
 
-const UserFilter = () => {
+const UserFilter = ({ selectedTransaction, isEditMode }) => {
     const [selectedUser, setSelectedUser] = useState(null)
     const [users, setUsers] = useState([])
 
     useEffect(() => {
+        console.log('from userfilter', selectedTransaction)
         // Fetch user data from your API here using getUsers()
         // Update the 'users' state with the fetched data
         getUsers()
@@ -20,11 +21,16 @@ const UserFilter = () => {
 
     const handleUserSelect = (selectedOption) => {
         setSelectedUser(selectedOption)
+        console.log('userfilter', selectedUser)
     }
 
     return (
         <div>
-            <UserAutocompleteInput users={users} onChange={handleUserSelect} />
+            <UserAutocompleteInput
+                users={users}
+                onChange={handleUserSelect}
+                selectedTransaction={selectedTransaction}
+            />
             {/* Display selected user details */}
             {selectedUser && (
                 <div className="text-black">

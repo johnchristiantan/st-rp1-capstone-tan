@@ -8,9 +8,6 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
     const { createTransactionInputField, setCreateTransactionInputField } =
         useTransactionFormStore()
 
-    // console.log('jc', selectedTransaction)
-    // console.log('mode', isEditMode)
-
     useEffect(() => {
         async function fetchBranches() {
             try {
@@ -40,14 +37,6 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
         </option>
     ))
 
-    // console.log('transaction in branch', selectedTransaction)
-    // console.log('branch', selectedTransaction.branch_id)
-    // console.log('jjj', selectedTransaction['branch_id'])
-
-    // if (selectedTransaction !== null) {
-    //     //     selectedTransaction['transaction_date'] = selectedTransaction.branch_id
-    // }
-
     return (
         <div className="flex justify-between w-full text-black">
             <label className="self-center">Branch:</label>
@@ -55,9 +44,12 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
                 <select
                     name="branch_id" // Add the name attribute here
                     className="p-1 text-black bg-white border rounded"
-                    value={selectedBranch}
+                    value={
+                        selectedTransaction
+                            ? selectedTransaction['branch_id']
+                            : ''
+                    }
                     onChange={handleOnChange}
-                    // defaultValue={selectedTransaction['branch_id']}
                 >
                     <option value="">Select a branch</option>
                     {branchOptions}

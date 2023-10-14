@@ -4,7 +4,7 @@ import useTransactionFormStore from '../../data/Store'
 const PrioInputFields = ({ selectedTransaction, isEditMode }) => {
     const { createTransactionInputField, setCreateTransactionInputField } =
         useTransactionFormStore()
-    // console.log('xxx', selectedTransaction)
+    console.log('xxx', selectedTransaction)
     // console.log('mode', isEditMode)
 
     const handleOnChange = (e) => {
@@ -22,6 +22,8 @@ const PrioInputFields = ({ selectedTransaction, isEditMode }) => {
         const formattedDate = date.toISOString().slice(0, 10)
         // console.log('date', formattedDate)
         selectedTransaction['transaction_date'] = formattedDate
+        console.log('xxx1', selectedTransaction)
+        // setSelectedTransaction(selectedTransaction)
     }
 
     return (
@@ -38,7 +40,11 @@ const PrioInputFields = ({ selectedTransaction, isEditMode }) => {
                                     name={data.inputName}
                                     onChange={handleOnChange}
                                     defaultValue={
-                                        selectedTransaction[data.inputName]
+                                        selectedTransaction
+                                            ? selectedTransaction[
+                                                  data.inputName
+                                              ]
+                                            : ''
                                     }
                                 />
                             </div>
