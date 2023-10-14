@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import Chart1 from './Chart1'
 import Chart2 from './Chart2'
 import Chart3 from './Chart3'
-import { getAllChartData } from '../services/ChartDataServices'
+import { getAllChartData, getAllTransactions } from '../services/ChartDataServices'
 import Nav from '../common/Nav'
+import { removeTimeStamp } from '../utils/DateFormatter'
 
 export const Dashboard = ({ setJwt }) => {
     const [chartData, setChartData] = useState(null)
+    const [transactions, setTransactions] = useState(null)
     const [activeTab, setActiveTab] = useState('Chart1') // Initialize with 'Chart1'
 
     // Calculate the sum of Massage, Spa, and Package: WIP
@@ -23,32 +25,6 @@ export const Dashboard = ({ setJwt }) => {
         getAllChartData()
             .then((res) => {
                 if (res) {
-                    console.log('API Response:', res)
-
-                    // Filter out data points where any of the values (Massage, Spa, Package) are null : WIP
-                    const filteredData = res.filter(
-                        (data) =>
-                            data.Massage !== null &&
-                            data.Spa !== null &&
-                            data.Package !== null
-                    )
-                    const total_spa = res.reduce((p, c) => {
-                        return p + c.Spa
-                    }, 0)
-
-                    const total_massage = res.reduce((p, c) => {
-                        return p + c.Massage
-                    }, 0)
-
-                    const total_package = res.reduce((p, c) => {
-                        return p + c.Package
-                    }, 0)
-
-                    totalSalesRef.current =
-                        total_package + total_massage + total_spa // Update total_sales using useRef
-
-                    console.log(totalSalesRef.current)
-
                     const updatedChartData = {
                         labels: res.map((data) => data.month),
                         datasets: [
@@ -70,6 +46,67 @@ export const Dashboard = ({ setJwt }) => {
                         ],
                     }
                     setChartData(updatedChartData)
+                } else {
+                    console.log('No data received from the API')
+                }
+            })
+            .catch((error) => {
+                console.log('Error fetching chart data:', error)
+            })
+    }, [])
+
+    useEffect(() => {
+        getAllTransactions()
+            .then((res) => {
+                if (res) {
+                    console.log('Transactions: ', res)
+                    console.log('Transactions Date: ', res.transaction_date)
+                    const arrayDate = res.map((r) => {
+                        let spa_total = null
+                        let massage_total = null
+                        let package_total = null
+                        for (let i = 0; i < Object.keys(r.availed_services).length; i++) {
+                            (r.availed_services[i]['service_type'] === "Spa") && (spa_total += r.availed_services[i]['availed_price']),
+                            (r.availed_services[i]['service_type'] === "Massage") && (massage_total += r.availed_services[i]['availed_price']),
+                            (r.availed_services[i]['service_type'] === "Package") && (package_total += r.availed_services[i]['availed_price'])
+                    // console.log("Object Length: ", Object.keys(r.availed_services).length)
+                        }
+                        return {
+                            "transaction_id": r.transaction_id,
+                            "transaction_date": removeTimeStamp(r.transaction_date),
+                            "Spa": spa_total,
+                            "Massage": massage_total,
+                            "Package": package_total
+                        }
+                    })
+                    // console.log("Array Date: ", arrayDate[28]['transaction_date'])
+                    // console.log("Array Spa: ", arrayDate[28]['Spa'])
+                    // console.log("Array Massage: ", arrayDate[28]['Massage'])
+                    // console.log("Array Package: ", arrayDate[28]['Package'])
+                    const updatedTransactions = {
+                        labels: arrayDate.map((data) => data.transaction_date),
+                        datasets: [
+                            {
+                                label: 'Massage',
+                                data: arrayDate.map((data) => data.Massage),
+                                backgroundColor: 'rgba(231, 111, 91, 1)',
+                                borderColor: 'rgba(231, 111, 91, 1)',
+                            },
+                            {
+                                label: 'Spa',
+                                data: arrayDate.map((data) => data.Spa),
+                                backgroundColor: 'rgba(244, 162, 97, 1)',
+                                borderColor: 'rgba(244, 162, 97, 1)',
+                            },
+                            {
+                                label: 'Package',
+                                data: arrayDate.map((data) => data.Package),
+                                backgroundColor: 'rgba(233, 196, 106, 1)',
+                                borderColor: 'rgba(233, 196, 106, 1)',
+                            },
+                        ],
+                    }
+                    setTransactions(updatedTransactions)
                 } else {
                     console.log('No data received from the API')
                 }
@@ -131,7 +168,7 @@ export const Dashboard = ({ setJwt }) => {
             {chartData ? (
                 <div className="rounded-lg w-[22rem] h-[25rem] p-2 font-bold bg-white shadow-md">
                     {activeTab === 'Chart1' && (
-                        <Chart1 chartData={chartData} height={380} />
+                        <Chart1 chartData={transactions} height={380} />
                     )}
                     {activeTab === 'Chart2' && (
                         <Chart2 chartData={chartData} height={380} />

@@ -162,7 +162,9 @@ const getAllTransactions = async () => {
 
 const getAvailedServices = async (transaction_id) => {
     const availed_services = await pool.query(
-        'SELECT * FROM availed_services WHERE transaction_id = $1',
+        'SELECT * FROM availed_services AS AVS \
+        INNER JOIN services AS S ON AVS.service_id = S.service_id \
+        WHERE transaction_id = $1',
         [transaction_id]
     )
     return availed_services.rows

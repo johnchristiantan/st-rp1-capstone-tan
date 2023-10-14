@@ -6,7 +6,8 @@ function Chart1({ chartData, height }) {
     const chartOptions = {
         maintainAspectRatio: false, // Prevent the chart from maintaining aspect ratio
         responsive: true, // Make the chart responsive
-
+        showLine: true,
+        stack: 'line',
         scales: {
             x: {
                 grid: {
