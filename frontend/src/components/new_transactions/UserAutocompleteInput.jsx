@@ -1,17 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
-import useTransactionFormStore from '../data/Store'
+import useTransactionFormStore from '../../data/Store'
 
-const UserAutocompleteInput = ({ users, onChange, selectedTransaction }) => {
+const UserAutocompleteInput = ({ users, selectedTransaction=null, isEditMode }) => {
     const [inputValue, setInputValue] = useState('')
+    const [inputFromClick, setInputFromClick] = useState('')
     const [options, setOptions] = useState([])
     const [selectedOption, setSelectedOption] = useState(null) // State to store selected option
 
-    const { createTransactionInputField } = useTransactionFormStore()
+    const { createTransactionInputField, setCreateTransactionInputField } = useTransactionFormStore()
 
     useEffect(() => {
-        console.log('Users: ', users)
-        console.log('2', selectedTransaction)
+        if (selectedTransaction !== null) {
+            const filteredCustomerByClick = users.filter((user) => {
+                return user.user_id === selectedTransaction.customer_id;
+            });
+            setCreateTransactionInputField('customer_id', filteredCustomerByClick[0].user_id)
+
+            const selectedCustomerByClick = filteredCustomerByClick.map((user) => ({
+                value: user.user_id,
+                label: `${user.first_name} ${user.last_name}`,
+            }))
+            setInputFromClick(selectedCustomerByClick)
+        }
+        console.log("createTransactionInputField", createTransactionInputField)
+    }, [selectedTransaction])
+    
+    useEffect(() => {
+        
         if (users) {
             // Filter the users based on the input value (first name or last name)
             const filteredOptions = users.filter(
@@ -24,43 +40,31 @@ const UserAutocompleteInput = ({ users, onChange, selectedTransaction }) => {
                         .includes(inputValue.toLowerCase())
             )
 
-            const filteredCustomer = users.filter((user) => {
-                return (user.user_id = selectedTransaction['customer_id'])
-            })
-
-            console.log('customer filtered', filteredCustomer)
+            console.log('Filtered Options', filteredOptions)
 
             // Map the filtered options to the format expected by React-Select
-            const selectOptions = filteredOptions.map((user) => ({
+            const userListOption = filteredOptions.map((user) => ({
                 value: user.user_id,
                 label: `${user.first_name} ${user.last_name}`,
             }))
 
-            setOptions(
-                selectedTransaction
-                    ? selectedTransaction['customer_id']
-                    : selectOptions
-            )
+            console.log('userListOption', userListOption)
+            setOptions(userListOption)
         }
     }, [inputValue, users])
 
+
     const handleChange = (selectedOption) => {
-        console.log('1', selectedOption)
-        console.log('selectedTransaction', selectedTransaction)
         if (selectedOption && selectedOption.value) {
             const userId = selectedOption.value // This will give you the user_id
-            // alert(`Selected User ID: ${userId}`)
+            setCreateTransactionInputField('customer_id', userId)
             createTransactionInputField['customer_id'] = userId
-            // Pass the userId to the onChange callback
-            // onChange(userId)
+
+            setSelectedOption(selectedOption)
         } else {
             alert('No user selected')
         }
-
-        setSelectedOption(selectedOption)
     }
-
-    console.log('vvv', { inputValue })
 
     return (
         <>
@@ -70,7 +74,7 @@ const UserAutocompleteInput = ({ users, onChange, selectedTransaction }) => {
                     <Select
                         value={selectedOption}
                         options={options}
-                        inputValue={inputValue}
+                        inputValue={inputFromClick ? inputFromClick[0]['label'] : inputValue}
                         onInputChange={(value) => setInputValue(value)}
                         onChange={handleChange}
                         placeholder="Search by name..."

@@ -1,5 +1,8 @@
-import React from 'react'
+import Nav from '../common/Nav';
 
-export default function Settings() {
-    return <div>Settings</div>
+export default function Settings({ setJwt }) {
+    return <>
+            <Nav setJwt={setJwt} />
+            <div>Settings</div>
+        </>
 }

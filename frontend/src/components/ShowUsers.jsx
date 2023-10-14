@@ -3,8 +3,9 @@ import { deleteUser, getUsers } from '../services/Users'
 import '../App.css'
 import EditUser from './EditUser'
 import { CreateUser } from './CreateUser'
+import Nav from '../common/Nav'
 
-export const ShowUsers = () => {
+export const ShowUsers = ({ setJwt }) => {
     const [userDetails, setUserDetails] = useState(false)
     const [alertEditedMessage, setalertEditedMessage] = useState(false) //TOASTMESSAGE
     const [alertDeletedMessage, setalertDeletedMessage] = useState(false) //TOASTMESSAGE
@@ -50,6 +51,7 @@ export const ShowUsers = () => {
 
     return (
         <>
+            <Nav setJwt={setJwt} />
             <div className="flex flex-col items-center justify-center ">
                 <div className="flex items-center justify-center p-4 mt-20 ">
                     {alertCreatedMessage && (

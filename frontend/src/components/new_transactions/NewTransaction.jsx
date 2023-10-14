@@ -6,13 +6,14 @@ import ServiceCard from './ServiceCard'
 import useTransactionFormStore from '../../data/Store'
 import {
     createdTransaction,
-    getAllTransactions,
+    getAllTransactions
 } from '../../services/TransactionServices'
 import { getUsers } from '../../services/Users'
-import UserFilter from '../UserFilter'
+import UserFilter from './UserFilter'
 import { useState, useEffect, useRef } from 'react'
+import Nav from '../../common/Nav'
 
-const NewTransaction = () => {
+const NewTransaction = ({ setJwt }) => {
     const [transactions, setTransactions] = useState([])
 
     const [selectedStatus, setSelectedStatus] = useState('All') // Default to 'All' to show all transactions initially
@@ -30,8 +31,10 @@ const NewTransaction = () => {
     const [isFormVisible, setIsFormVisible] = useState(false)
 
     const toggleFormVisibility = () => {
-        setIsFormVisible(!isFormVisible) // Toggle between true and false
+        setIsFormVisible((prev) => !prev) // Toggle between true and false
     }
+
+    const [selectedTransaction, setSelectedTransaction] = useState(null)
 
     const getStatusBackgroundColorClass = (status) => {
         switch (status) {
@@ -137,9 +140,6 @@ const NewTransaction = () => {
             })
     }, [])
 
-    const [selectedTransaction, setSelectedTransaction] = useState(null)
-    const [formattedDate, setFormattedDate] = useState(null)
-
     // Add state variables for other input fields as needed
 
     const transaction_id_ur = useRef(null)
@@ -157,7 +157,7 @@ const NewTransaction = () => {
         // setIsFormVisible(false)
         // setSelectedBranch(branch)
         // setShowSelectedBranch(true)
-
+        // console.log("Transaction:    ", transaction)
         setIsEditMode(true)
         setSelectedTransaction(transaction)
         // setFormattedDate(transaction)
@@ -182,24 +182,96 @@ const NewTransaction = () => {
         if (status_ur.current) {
             status_ur.current.value = transaction.status
         }
-        // console.log(transaction_id_ur.current.value)
-        // tip_ur.current.value = transaction.tip
-        // total_commission_ur.current.value = transaction.total_commission
-        // total_discounted_amount_ur.current.value =
-        //     transaction.total_discounted_amount
-        // created_at_ur.current.value
-
-        // setSelectedStatus(transaction.status)
-        // console.log('status', transaction.status)
     }
-
     return (
         <>
-            <div className="flex flex-col items-center pt-16 text-black ">
+        <Nav setJwt={setJwt} />
+        <div className="flex flex-col items-center justify-start pt-2 mt-20 mb-4 ">
+                <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
+                    <div className="flex w-full">
+                        <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
+                            <span>{isEditMode ? 'Update' : 'Create'}</span>
+                            <button type="button" onClick={handleClose}>
+                                <RxCross2 size={20} />
+                            </button>
+                        </h1>
+                    </div>
+
+                    <PrioInputFields
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+                    <UserFilter
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+                    <BranchLists
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+                    <StatusLists
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    />
+
+                    <div className="flex items-center justify-center w-full mt-4">
+                        <input
+                            className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
+                            type="submit"
+                            value="Submit"
+                        />
+                    </div>
+                </form>
+            </div>
+
+            <div className="flex items-center justify-center m-2 ">
+                <div className="transition-transform transition-bg hover:scale-110 relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group">
+                    <button
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 "
+                        onClick={toggleFormVisibility}
+                    >
+                        +
+                    </button>
+                </div>
+            </div>
+
+            <div className="flex flex-col items-center justify-start pt-2 my-2">
+                {isFormVisible && (
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form
+                            className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12"
+                            onSubmit={handleOnSubmit}
+                        >
+                            <div className="flex w-full">
+                                <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
+                                    <span>New Transaction</span>
+                                    <button type="button" onClick={handleClose}>
+                                        <RxCross2 size={20} />
+                                    </button>
+                                </h1>
+                            </div>
+                            <PrioInputFields />
+                            <UserFilter />
+                            <BranchLists />
+                            <StatusLists />
+                            <ServiceCard />
+                            <div className="flex items-center justify-center w-full mt-4">
+                                <input
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
+                                    type="submit"
+                                    value="Submit"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                )}
+            </div>
+            
+            <div className="flex flex-col items-center pt-2 text-black ">
                 <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="mt-4 p-2  rounded w-[22rem] "
+                    className="mt-4 p-2 bg-orange-100 rounded w-[22rem] "
                 >
                     <option value="All">All</option>
                     <option value="booked">Booked</option>
@@ -242,89 +314,6 @@ const NewTransaction = () => {
                     ))
                 ) : (
                     <div>Loading...</div>
-                )}
-            </div>
-
-            <div className="bg-red-300"></div>
-
-            <div className="flex items-center justify-center m-4 ">
-                <div className="transition-transform transition-bg hover:scale-110 relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group">
-                    <button
-                        className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 "
-                        onClick={toggleFormVisibility}
-                    >
-                        +
-                    </button>
-                </div>
-            </div>
-
-            <div className="  flex flex-col items-center justify-start pt-2 mt-[1rem] mb-[100px]">
-                <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
-                    <div className="flex w-full">
-                        <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
-                            <span>Update</span>
-                            <button type="button" onClick={handleClose}>
-                                <RxCross2 size={20} />
-                            </button>
-                        </h1>
-                    </div>
-
-                    <PrioInputFields
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
-                    <UserFilter
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
-                    <BranchLists
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
-                    <StatusLists
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
-
-                    <div className="flex items-center justify-center w-full mt-4">
-                        <input
-                            className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
-                            type="submit"
-                            value="Submit"
-                        />
-                    </div>
-                </form>
-            </div>
-
-            <div className="  flex flex-col items-center justify-start pt-2 mt-[1rem] mb-[100px]">
-                {isFormVisible && (
-                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
-                        <form
-                            className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12"
-                            onSubmit={handleOnSubmit}
-                        >
-                            <div className="flex w-full">
-                                <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
-                                    <span>New Transaction</span>
-                                    <button type="button" onClick={handleClose}>
-                                        <RxCross2 size={20} />
-                                    </button>
-                                </h1>
-                            </div>
-                            <PrioInputFields />
-                            <UserFilter />
-                            <BranchLists />
-                            <StatusLists />
-                            <ServiceCard />
-                            <div className="flex items-center justify-center w-full mt-4">
-                                <input
-                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
-                                    type="submit"
-                                    value="Submit"
-                                />
-                            </div>
-                        </form>
-                    </div>
                 )}
             </div>
         </>

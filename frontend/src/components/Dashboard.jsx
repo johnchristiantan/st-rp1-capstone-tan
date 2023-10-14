@@ -3,8 +3,9 @@ import Chart1 from './Chart1'
 import Chart2 from './Chart2'
 import Chart3 from './Chart3'
 import { getAllChartData } from '../services/ChartDataServices'
+import Nav from '../common/Nav'
 
-export const Dashboard = () => {
+export const Dashboard = ({ setJwt }) => {
     const [chartData, setChartData] = useState(null)
     const [activeTab, setActiveTab] = useState('Chart1') // Initialize with 'Chart1'
 
@@ -22,7 +23,7 @@ export const Dashboard = () => {
         getAllChartData()
             .then((res) => {
                 if (res) {
-                    // console.log('API Response:', res)
+                    console.log('API Response:', res)
 
                     // Filter out data points where any of the values (Massage, Spa, Package) are null : WIP
                     const filteredData = res.filter(
@@ -85,6 +86,9 @@ export const Dashboard = () => {
     const columnWidth = 'calc(22rem / 3)'
 
     return (
+        <>
+       
+        <Nav setJwt={setJwt} />
         <div className="flex flex-col items-center justify-between pt-2 mt-14">
             <div className="bg-white w-[22rem] shadow-md rounded-md m-4 p-2 h-[4rem]">
                 <div className="text-center text-orange-400">Current Sales</div>
@@ -142,5 +146,6 @@ export const Dashboard = () => {
 
             <div className="bg-white w-[22rem] shadow-md rounded-md m-4 p-2 h-[4rem]"></div>
         </div>
+        </>
     )
 }

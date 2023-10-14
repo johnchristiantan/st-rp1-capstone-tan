@@ -134,6 +134,7 @@ const getSingleTransaction = async (transaction_id) => {
             'SELECT * FROM transactions WHERE transaction_id = $1',
             [transaction_id]
         )
+        transaction.rows[0]['availed_services'] = await getAvailedServices(transaction_id)
         return transaction.rows[0]
     } catch (err) {
         console.error(err.message)
@@ -141,23 +142,36 @@ const getSingleTransaction = async (transaction_id) => {
     }
 }
 
+
 const getAllTransactions = async () => {
     try {
         // Get all transaction
-        const transaction = await pool.query(
+        const transactions = await pool.query(
             'SELECT * FROM transactions ORDER BY transaction_id ASC'
-        )
-        return transaction.rows
-    } catch (err) {
-        console.error(err.message)
-        return null
-    }
+            )
+            // console.log("Length: ", transactions.rowCount)
+            for (let i = 0; i < transactions.rowCount; i++) {
+                transactions.rows[i]['availed_services'] = await getAvailedServices(transactions.rows[i]['transaction_id'])
+            }
+            return transactions.rows
+            } catch (err) {
+                console.error(err.message)
+                return null
+            }
 }
 
+const getAvailedServices = async (transaction_id) => {
+    const availed_services = await pool.query(
+        'SELECT * FROM availed_services WHERE transaction_id = $1',
+        [transaction_id]
+    )
+    return availed_services.rows
+}
+        
 const updateTotalDiscountedAmount = async (
     total_discounted_amount,
     transaction_id
-) => {
+    ) => {
     try {
         // Create a new availed service record
         await pool.query('BEGIN')
@@ -242,7 +256,11 @@ const deleteTransaction = async (transaction_id) => {
     try {
         // Get delete single transaction
         await pool.query('DELETE FROM transactions WHERE transaction_id = $1', [
-            transaction_id,
+            transaction_id
+        ])
+        // Get delete single availed services
+        await pool.query('DELETE FROM availed_services WHERE transaction_id = $1', [
+            transaction_id
         ])
         return true
     } catch (err) {
@@ -250,31 +268,6 @@ const deleteTransaction = async (transaction_id) => {
         return false
     }
 }
-
-// const getTotalDiscountedAmountByServiceType = async (serviceType) => {
-//     try {
-//         //SQL query to calculate total discounted amount by service type
-//         const query = `
-//             SELECT
-//                 s."service_type",
-//                 SUM(as."discounted_amount") AS "total_discounted_amount_per_type"
-//             FROM
-//                 "availed_services" AS as
-//             INNER JOIN
-//                 "services" AS s ON as."service_id" = s."service_id"
-//             WHERE
-//                 s."service_type" = $1
-//             GROUP BY
-//                 s."service_type";
-//         `
-
-//         const result = await pool.query(query, [serviceType])
-//         return result.rows
-//     } catch (err) {
-//         console.error(err.message)
-//         return null
-//     }
-// }
 
 // /get-total-discounted
 const getTotalDiscountedAmountPerYear = async (year) => {

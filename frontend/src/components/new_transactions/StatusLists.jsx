@@ -37,7 +37,7 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
                     name="status" // Add the name attribute here
                     className="p-1 text-black bg-white border rounded"
                     value={
-                        selectedTransaction ? selectedTransaction['status'] : ''
+                        selectedTransaction ? selectedTransaction['status'] : selectedStatus
                     }
                     onChange={handleOnChange}
                     // defaultValue={selectedTransaction['status']}

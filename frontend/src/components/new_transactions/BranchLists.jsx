@@ -47,7 +47,7 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
                     value={
                         selectedTransaction
                             ? selectedTransaction['branch_id']
-                            : ''
+                            : selectedBranch
                     }
                     onChange={handleOnChange}
                 >

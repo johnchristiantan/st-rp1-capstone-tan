@@ -8,7 +8,7 @@ const BottomNav = () => {
     const bottomPages = [
         {
             name: 'Home',
-            link: '/home',
+            link: '/booking',
             icon: <FaHome className="mb-1 text-lg text-orange-400 " />,
         },
         {

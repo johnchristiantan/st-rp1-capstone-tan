@@ -10,6 +10,17 @@ const getAllTransactions = async (req, res) => {
     }
 }
 
+const getSingleTransaction = async (req, res) => {
+    try {
+        const { transaction_id } = req.params
+        const transactions = await Transactions.getSingleTransaction(transaction_id)
+        res.json(transactions)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+}
+
 const createTransaction = async (req, res) => {
     try {
         const {
@@ -161,6 +172,7 @@ const getTransactionAMounts = async (req, res) => {
 module.exports = {
     getTransactionAMounts,
     getAllTransactions,
+    getSingleTransaction,
     createTransaction,
     updateTransaction,
     deleteTransaction,

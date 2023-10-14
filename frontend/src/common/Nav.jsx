@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaBars, FaUsers, FaBuilding, FaPercent } from 'react-icons/fa'
 
 import { FaHandsBound } from 'react-icons/fa6'
@@ -7,7 +7,8 @@ import { FaHandsBound } from 'react-icons/fa6'
 import logoImage from '../common/PATH.png'
 import BottomNav from './BottomNav'
 
-const Nav = () => {
+const Nav = ({ setJwt }) => {
+    const navigate = useNavigate()
     const pages = [
         {
             name: 'Users',
@@ -28,9 +29,15 @@ const Nav = () => {
             name: 'Discounts',
             link: '/discounts',
             icon: <FaPercent className="mr-2 " />,
-        },
+        }
     ]
     const [open, setOpen] = useState(true)
+
+    const handleOnClick = () => {
+        localStorage.removeItem('user')
+        setJwt(null)
+        navigate('/')
+    }
 
     return (
         <>
@@ -55,6 +62,9 @@ const Nav = () => {
                             </li>
                         )
                     })}
+                    <li className="py-2 md:mt-3">
+                        <button onClick={handleOnClick}>Logout</button>
+                    </li>
                 </ul>
 
                 <button onClick={() => setOpen(!open)}>

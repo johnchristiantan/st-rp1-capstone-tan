@@ -46,29 +46,29 @@ const handleServiceNameChange = (event) => {
 }
 
 <div className="relative flex justify-between space-y-2 text-black">
-                                <label className="self-center">
-                                    Service Type:
-                                </label>
-                                <div className="flex flex-col w-[12rem]">
-                                    <select
-                                        className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg"
-                                        name="service_type"
-                                        value={selectedServiceType}
-                                        onChange={(event) =>
-                                            handleServiceTypeChange(event)
-                                        }
-                                    >
-                                        {uniqueServices.map((service) => (
-                                            <option
-                                                key={service.service_type}
-                                                value={service.service_type}
-                                            >
-                                                {service.service_type}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
+    <label className="self-center">
+        Service Type:
+    </label>
+    <div className="flex flex-col w-[12rem]">
+        <select
+            className="flex flex-col w-[12rem] border-2 border-gray-500 rounded-lg"
+            name="service_type"
+            value={selectedServiceType}
+            onChange={(event) =>
+                handleServiceTypeChange(event)
+            }
+        >
+            {uniqueServices.map((service) => (
+                <option
+                    key={service.service_type}
+                    value={service.service_type}
+                >
+                    {service.service_type}
+                </option>
+            ))}
+        </select>
+    </div>
+</div>
 
 
 handleServiceTypeChange

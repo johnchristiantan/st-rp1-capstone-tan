@@ -1,31 +1,21 @@
 import { NewTransFormTextInputData } from '../../data/FormData'
 import useTransactionFormStore from '../../data/Store'
 
-const PrioInputFields = ({ selectedTransaction, isEditMode }) => {
+const PrioInputFields = ({ selectedTransaction=null, isEditMode }) => {
     const { createTransactionInputField, setCreateTransactionInputField } =
         useTransactionFormStore()
-    console.log('xxx', selectedTransaction)
-    // console.log('mode', isEditMode)
 
     const handleOnChange = (e) => {
         const { name, value } = e.target
         setCreateTransactionInputField(name, value)
-
-        // console.log(name, value)
-        // console.log(createTransactionInputField)
     }
 
-    // console.log('yyy', selectedTransaction.transaction_date)
-    // console.log('PRIO', selectedTransaction.branch_id)
     if (selectedTransaction !== null) {
+        console.log("selectedTransaction: ", selectedTransaction)
         const date = new Date(selectedTransaction['transaction_date'])
         const formattedDate = date.toISOString().slice(0, 10)
-        // console.log('date', formattedDate)
         selectedTransaction['transaction_date'] = formattedDate
-        console.log('xxx1', selectedTransaction)
-        // setSelectedTransaction(selectedTransaction)
     }
-
     return (
         <div>
             {NewTransFormTextInputData.map((data) => {

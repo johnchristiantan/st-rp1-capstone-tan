@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 let url = import.meta.env.VITE_SERVER
 
-const LoginForm = () => {
+const LoginForm = ({ setJwt }) => {
     const [loginDetail, setLoginDetail] = useState({})
     const navigate = useNavigate()
 
@@ -18,23 +18,21 @@ const LoginForm = () => {
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault()
-        // console.log(loginDetail)
         try {
             const response = await axios.post(
-                'http://localhost:8000/login',
+                'http://localhost:8000/api/v1/login',
                 loginDetail
             )
-            if (response.data.length > 0) {
-                localStorage.setItem(
-                    'loginDetail',
-                    JSON.stringify(response.data[0])
-                )
-                navigate('/new-transaction')
+            console.log(response.data)
+            
+            if(response.status === 200) {
+                localStorage.setItem('user',JSON.stringify(response.data))
+                setJwt(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).token : null)
+                console.log(JSON.parse(localStorage.getItem('user')))
+                navigate('/dashboard')
             }
-            console.log(JSON.parse(localStorage.getItem('loginDetail')))
-            // console.log(response.data)
-        } catch {
-            console.log()
+        } catch (error) {
+            console.log(error.message)
         }
     }
 

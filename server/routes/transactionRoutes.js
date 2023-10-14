@@ -5,6 +5,9 @@ const transactionController = require('../controllers/transactionController')
 // GET all transactions
 router.get('/transactions', transactionController.getAllTransactions)
 
+// GET one transactions
+router.get('/transactions/:transaction_id', transactionController.getSingleTransaction)
+
 // CREATE a new transaction
 router.post('/transactions', transactionController.createTransaction)
 

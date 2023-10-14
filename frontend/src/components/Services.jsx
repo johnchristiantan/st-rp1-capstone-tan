@@ -5,8 +5,9 @@ import {
     deleteService,
     editService,
 } from '../services/SpaServices'
+import Nav from '../common/Nav'
 
-export default function Services() {
+export default function Services({ setJwt }) {
     // const [showButton, setShowButton] = useState(false)
     const [services, setServices] = useState([])
 
@@ -207,6 +208,7 @@ export default function Services() {
 
     return (
         <>
+            <Nav setJwt={setJwt} />
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
                 <div className="servicelist flex flex-wrap w-[22rem] max-w-md">
                     {/* ServiceList */}

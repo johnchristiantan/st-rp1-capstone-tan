@@ -5,8 +5,9 @@ import {
     deleteBranch,
     editBranch,
 } from '../services/BranchServices'
+import Nav from '../common/Nav'
 
-export default function Branches() {
+export default function Branches({ setJwt }) {
     const [branches, setBranches] = useState([])
     const [showCreateForm, setShowCreateForm] = useState(false)
     const [showSelectedBranch, setShowSelectedBranch] = useState(false)
@@ -155,6 +156,7 @@ export default function Branches() {
 
     return (
         <>
+            <Nav setJwt={setJwt} />
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
                 <div className="flex flex-wrap w-[22rem]">
                     {branches ? (

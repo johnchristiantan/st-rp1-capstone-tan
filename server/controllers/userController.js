@@ -81,12 +81,17 @@ const loginUser = async (req, res) => {
             [user_name]
         )
         if (userDetails.rowCount !== 0) {
-            await bcrypt.compare(password, userDetails.rows[0].password)
+            const matched = await bcrypt.compare(password, userDetails.rows[0].password)
             const generatedToken = generateAccessToken({
                 user_name: user_name,
             })
             userDetails.rows[0].token = generatedToken
-            res.json(userDetails.rows[0])
+
+            if (matched) {
+                res.json(userDetails.rows[0])
+            } else {
+                throw new Error("Password mismatched!")
+            } 
         } else {
             res.json(`User does not exist`)
         }

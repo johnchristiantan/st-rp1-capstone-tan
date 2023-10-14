@@ -6,8 +6,9 @@ import {
     editDiscount,
 } from '../services/DiscountServices'
 // import Draggable from 'react-draggable'
+import Nav from '../common/Nav'
 
-export default function Discounts() {
+export default function Discounts({ setJwt }) {
     const [showButton, setShowButton] = useState(false)
     const [discounts, setDiscounts] = useState([])
 
@@ -199,6 +200,7 @@ export default function Discounts() {
 
     return (
         <>
+            <Nav setJwt={setJwt} />
             <div className="flex flex-col items-center justify-start h-screen pt-16 ">
                 <div className="discountlist flex flex-wrap w-[22rem] max-w-md">
                     {/* DiscountList */}
