@@ -158,7 +158,7 @@ export const Dashboard = ({ setJwt }) => {
                 </button>
             </div>
 
-            {chartData ? (
+            {chartData &&  transactions ? (
                 <div className="rounded-lg w-[22rem] h-[25rem] p-2 font-bold bg-white shadow-md">
                     {activeTab === 'Chart1' && (
                         <Chart1 chartData={transactions} height={380} />
