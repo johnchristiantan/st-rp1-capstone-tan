@@ -2,7 +2,7 @@ import { NewTransFormTextInputData } from '../../data/FormData'
 import useTransactionFormStore from '../../data/Store'
 import { removeTimeStamp } from '../../utils/DateFormatter'
 
-const PrioInputFields = ({ selectedTransaction=null, isEditMode }) => {
+const PrioInputFields = ({ selectedTransaction = null, isEditMode }) => {
     const { createTransactionInputField, setCreateTransactionInputField } =
         useTransactionFormStore()
 
@@ -12,8 +12,10 @@ const PrioInputFields = ({ selectedTransaction=null, isEditMode }) => {
     }
 
     if (selectedTransaction !== null) {
-        console.log("selectedTransaction: ", selectedTransaction)
-        selectedTransaction['transaction_date'] = removeTimeStamp(selectedTransaction['transaction_date'])
+        console.log('selectedTransaction: ', selectedTransaction)
+        selectedTransaction['transaction_date'] = removeTimeStamp(
+            selectedTransaction['transaction_date']
+        )
     }
     return (
         <div>

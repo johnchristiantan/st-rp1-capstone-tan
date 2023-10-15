@@ -13,7 +13,9 @@ const getAllTransactions = async (req, res) => {
 const getSingleTransaction = async (req, res) => {
     try {
         const { transaction_id } = req.params
-        const transactions = await Transactions.getSingleTransaction(transaction_id)
+        const transactions = await Transactions.getSingleTransaction(
+            transaction_id
+        )
         res.json(transactions)
     } catch (err) {
         console.error(err.message)

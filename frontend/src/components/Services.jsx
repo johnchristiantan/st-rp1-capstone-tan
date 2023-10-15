@@ -237,12 +237,24 @@ export default function Services({ setJwt }) {
                 </div>
                 {/* End of ServiceList */}
 
-                <button
+                {/* <button
                     onDoubleClick={handleShowButton}
                     className="w-[30rem] p-1  rounded-lg hover:text-orange-600 text-orange-500   hover:font-bold"
                 >
                     Create New Service
-                </button>
+                </button> */}
+
+                <div
+                    className="absolute transform -translate-x-1/2 +addbutton bottom-10 left-1/2"
+                    style={{ zIndex: 9999 }}
+                >
+                    <button
+                        className="flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem]  hover:bg-orange-600 transition-transform transition-bg hover:scale-110 hover:shadow-md hover:text-white hover:border-orange-600"
+                        onDoubleClick={handleShowButton}
+                    >
+                        +
+                    </button>
+                </div>
 
                 <div className="relative flex flex-col items-center justify-start h-screen pt-16">
                     {showServiceCreateForm && (

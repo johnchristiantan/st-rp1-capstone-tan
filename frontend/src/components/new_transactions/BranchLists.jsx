@@ -43,7 +43,7 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
             <div className="flex flex-col w-[12rem]   rounded">
                 <select
                     name="branch_id" // Add the name attribute here
-                    className="p-1 text-black bg-white border rounded"
+                    className="p-1 mt-2 text-black bg-white border rounded"
                     value={
                         selectedTransaction
                             ? selectedTransaction['branch_id']

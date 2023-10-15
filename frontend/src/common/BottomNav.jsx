@@ -7,10 +7,11 @@ import { SiBookmeter } from 'react-icons/si'
 const BottomNav = () => {
     const bottomPages = [
         {
-            name: 'Home',
-            link: '/booking',
-            icon: <FaHome className="mb-1 text-lg text-orange-400 " />,
+            // name: 'Home',
+            // link: '/home',
+            // icon: <FaHome className="mb-1 text-lg text-orange-400 " />,
         },
+
         {
             name: 'Dashboard',
             link: '/dashboard',
@@ -21,15 +22,17 @@ const BottomNav = () => {
             link: '/booking',
             icon: <FaBookOpen className="mb-1 text-lg text-orange-400 " />,
         },
+
         // {
         //     name: 'Dark Mode',
         //     link: '/dark-mode',
         //     icon: <FaMoon className="mb-1 text-lg text-orange-400 " />,
         // },
+
         {
-            name: 'Profile',
-            link: '/profile',
-            icon: <FaUserCircle className="mb-1 text-lg text-orange-400" />,
+            // name: 'Profile',
+            // link: '/profile',
+            // icon: <FaUserCircle className="mb-1 text-lg text-orange-400" />,
         },
     ]
 

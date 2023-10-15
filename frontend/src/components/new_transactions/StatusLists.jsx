@@ -18,16 +18,9 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
         setSelectedStatus(value)
         setCreateTransactionInputField(name, value)
 
-        console.log(name, value)
-        console.log(createTransactionInputField)
+        // console.log(name, value)
+        // console.log(createTransactionInputField)
     }
-
-    // console.log('status: ', selectedTransaction['status'])
-    // if (selectedTransaction !== null) {
-    //     const iStatus = selectedTransaction['status']
-    //     selectedTransaction['status'] = iStatus
-    // }
-    // setSelectedStatus(selectedTransaction['status'])
 
     return (
         <div className="flex justify-between w-full space-y-2 text-black">
@@ -37,7 +30,9 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
                     name="status" // Add the name attribute here
                     className="p-1 text-black bg-white border rounded"
                     value={
-                        selectedTransaction ? selectedTransaction['status'] : selectedStatus
+                        selectedTransaction
+                            ? selectedTransaction['status']
+                            : selectedStatus
                     }
                     onChange={handleOnChange}
                     // defaultValue={selectedTransaction['status']}
@@ -51,4 +46,4 @@ export default function BranchLists({ selectedTransaction, isEditMode }) {
 }
 
 // NOTES
-// THIS IS USED TO POPULATE THE DROPDOWN LIST WITH NAME OF BRANCHES
+// THIS IS USED TO POPULATE THE DROPDOWN LIST WITH

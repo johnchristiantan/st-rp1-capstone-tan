@@ -6,17 +6,20 @@ import ServiceCard from './ServiceCard'
 import useTransactionFormStore from '../../data/Store'
 import {
     createdTransaction,
-    getAllTransactions
+    getAllTransactions,
 } from '../../services/TransactionServices'
 import { getUsers } from '../../services/Users'
 import UserFilter from './UserFilter'
 import { useState, useEffect, useRef } from 'react'
 import Nav from '../../common/Nav'
+import { removeTimeStamp } from '../../utils/DateFormatter'
+// import Select from 'react-select'
 
 const NewTransaction = ({ setJwt }) => {
     const [transactions, setTransactions] = useState([])
-
+    const [isMounted, setIsMounted] = useState(true)
     const [selectedStatus, setSelectedStatus] = useState('All') // Default to 'All' to show all transactions initially
+    // const [selectedUser, setSelectedUser] = useState(null) // Define and initialize selectedUser state
 
     const {
         availedServices,
@@ -29,10 +32,16 @@ const NewTransaction = ({ setJwt }) => {
     const [users, setUsers] = useState([])
     const [isEditMode, setIsEditMode] = useState(false)
     const [isFormVisible, setIsFormVisible] = useState(false)
+    const [isSelectedFormVisible, setIsSelectedFormVisible] = useState(false)
 
     const toggleFormVisibility = () => {
         setIsFormVisible((prev) => !prev) // Toggle between true and false
     }
+
+    // const toggleSelectedFormVisibility = () => {
+    //     // setIsSelectedFormVisible((prev) => !prev) // Toggle between true and false
+    //     setIsSelectedFormVisible(true)
+    // }
 
     const [selectedTransaction, setSelectedTransaction] = useState(null)
 
@@ -54,11 +63,14 @@ const NewTransaction = ({ setJwt }) => {
     const handleClose = () => {
         setIsFormVisible((prev) => !prev)
     }
+    const handleUpdateClose = () => {
+        setIsSelectedFormVisible((prev) => !prev)
+    }
 
     const callCreateTransactions = async (data) => {
         try {
             const transactionCreated = await createdTransaction(data)
-            console.log(transactionCreated)
+            // console.log(transactionCreated)
 
             getAllTransactions()
                 .then((res) => {
@@ -101,6 +113,13 @@ const NewTransaction = ({ setJwt }) => {
             .catch((error) => {
                 console.log('Error fetching transactions:', error)
             })
+    }, [])
+
+    // hiding + button
+    useEffect(() => {
+        return () => {
+            setIsMounted(false) // Set isMounted to false when the component unmounts
+        }
     }, [])
 
     const filteredTransactions =
@@ -158,11 +177,13 @@ const NewTransaction = ({ setJwt }) => {
         // setSelectedBranch(branch)
         // setShowSelectedBranch(true)
         // console.log("Transaction:    ", transaction)
+
+        setIsSelectedFormVisible(true)
         setIsEditMode(true)
         setSelectedTransaction(transaction)
         // setFormattedDate(transaction)
 
-        // console.log('trans', transaction)
+        console.log('trans', transaction)
 
         if (transaction_id_ur.current) {
             transaction_id_ur.current.value = transaction.transaction_id
@@ -183,51 +204,157 @@ const NewTransaction = ({ setJwt }) => {
             status_ur.current.value = transaction.status
         }
     }
+
+    if (selectedTransaction !== null) {
+        console.log('selectedTransaction: ', selectedTransaction)
+        selectedTransaction['transaction_date'] = removeTimeStamp(
+            selectedTransaction['transaction_date']
+        )
+    }
+
     return (
         <>
-        <Nav setJwt={setJwt} />
-        <div className="flex flex-col items-center justify-start pt-2 mt-20 mb-4 ">
-                <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
-                    <div className="flex w-full">
-                        <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
-                            <span>{isEditMode ? 'Update' : 'Create'}</span>
-                            <button type="button" onClick={handleClose}>
-                                <RxCross2 size={20} />
-                            </button>
-                        </h1>
-                    </div>
+            <Nav setJwt={setJwt} />
+            <div className="flex flex-col items-center justify-start pt-2 mt-20 mb-4 ">
+                {isSelectedFormVisible && (
+                    <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
+                        <div className="flex w-full">
+                            <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
+                                <span>{isEditMode ? 'Update' : 'Create'}</span>
+                                <button
+                                    type="button"
+                                    onClick={handleUpdateClose}
+                                >
+                                    <RxCross2 size={20} />
+                                </button>
+                            </h1>
+                        </div>
 
-                    <PrioInputFields
+                        {/* <PrioInputFields
                         selectedTransaction={selectedTransaction}
                         isEditMode={isEditMode}
-                    />
-                    <UserFilter
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
-                    <BranchLists
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
-                    <StatusLists
-                        selectedTransaction={selectedTransaction}
-                        isEditMode={isEditMode}
-                    />
+                    /> */}
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Date:</label>
+                            <div className="flex flex-col  w-[12rem]">
+                                <input
+                                    className="p-1 text-black border rounded"
+                                    type="date"
+                                    name="transaction_date"
+                                    // onChange={handleOnChange}
 
-                    <div className="flex items-center justify-center w-full mt-4">
-                        <input
-                            className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
-                            type="submit"
-                            value="Submit"
-                        />
-                    </div>
-                </form>
+                                    defaultValue={
+                                        selectedTransaction
+                                            ? selectedTransaction.transaction_date
+                                            : ''
+                                    }
+                                    disabled
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Voucher No.:</label>
+                            <div className="flex flex-col border rounded">
+                                <input
+                                    className="p-1 text-black rounded"
+                                    type="text"
+                                    name="voucher_number"
+                                    // onChange={handleOnChange}
+
+                                    defaultValue={
+                                        selectedTransaction
+                                            ? selectedTransaction.voucher_number
+                                            : ''
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        {/* ERROR HERE */}
+                        {/* <UserFilter
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    /> */}
+
+                        {/* WIP: NOT WORKING */}
+                        {/* <div className="flex justify-between w-full text-black">
+                        <label className="self-center">Customer:</label>
+                        <div className="mt-2 w-[12rem] mb-2">
+                            <Select
+                                value={selectedUser} // Store the selected user's ID in the state
+                                options={users.map((user) => ({
+                                    label: mapCustomerIdToName(
+                                        user.customer_id,
+                                        users
+                                    ),
+                                    value: user.customer_id,
+                                }))}
+                                onChange={(selectedOption) =>
+                                    setSelectedUser(selectedOption.value)
+                                }
+                            />
+                        </div>
+                    </div> */}
+
+                        {/* <BranchLists
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    /> */}
+
+                        {/* <StatusLists
+                        selectedTransaction={selectedTransaction}
+                        isEditMode={isEditMode}
+                    /> */}
+                        <div className="flex justify-between w-full space-y-2 text-black">
+                            <label className="self-center">Status:</label>
+                            <div className="flex flex-col w-[12rem]  rounded">
+                                <select
+                                    name="status" // Add the name attribute here
+                                    className="p-1 text-black bg-white border rounded"
+                                    value={
+                                        selectedTransaction
+                                            ? selectedTransaction['status']
+                                            : selectedStatus
+                                    }
+                                    // onChange={handleOnChange}
+                                >
+                                    <option value="All">All</option>
+                                    <option value="booked">Booked</option>
+                                    <option value="ongoing">Ongoing</option>
+                                    <option value="cancelled">Cancelled</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-center w-full mt-4">
+                            <input
+                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
+                                type="submit"
+                                value="Submit"
+                            />
+                        </div>
+                    </form>
+                )}
             </div>
 
             <div className="flex items-center justify-center m-2 ">
-                <div className="transition-transform transition-bg hover:scale-110 relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group">
+                {/* <div className="transition-transform transition-bg hover:scale-110 relative flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem] overflow-hidden group">
                     <button
                         className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 "
+                        onClick={toggleFormVisibility}
+                    >
+                        +
+                    </button>
+                </div> */}
+
+                <div
+                    className="absolute transform -translate-x-1/2 +addbutton bottom-10 left-1/2"
+                    style={{ zIndex: 9999 }}
+                >
+                    <button
+                        className="flex items-center justify-center text-xl font-bold text-white bg-orange-400 border border-white rounded-full w-[3rem] h-[3rem]  hover:bg-orange-600 transition-transform transition-bg hover:scale-110 hover:shadow-md hover:text-white hover:border-orange-600"
                         onClick={toggleFormVisibility}
                     >
                         +
@@ -266,7 +393,7 @@ const NewTransaction = ({ setJwt }) => {
                     </div>
                 )}
             </div>
-            
+
             <div className="flex flex-col items-center pt-2 text-black ">
                 <select
                     value={selectedStatus}
