@@ -27,42 +27,62 @@ function App() {
     return (
         <>
             <Routes>
-                <>
-                    <Route path="/home" element={<Home setJwt={setJwt} />} />
-                    <Route
-                        path="/dashboard"
-                        element={<Dashboard setJwt={setJwt} />}
-                    />
-                    <Route
-                        path="/booking"
-                        element={<NewTransaction setJwt={setJwt} />}
-                    />
-                    <Route
-                        path="/branches"
-                        element={<Branches setJwt={setJwt} />}
-                    />
-                    <Route
-                        path="/services"
-                        element={<Services setJwt={setJwt} />}
-                    />
-                    <Route
-                        path="/discounts"
-                        element={<Discounts setJwt={setJwt} />}
-                    />
-                    <Route
-                        path="/settings"
-                        element={<Settings setJwt={setJwt} />}
-                    />
-                    <Route
-                        path="/users"
-                        element={<ShowUsers setJwt={setJwt} />}
-                    />
-                    <Route path="/" element={<Redirect setJwt={setJwt} />} />
-                    <Route
-                        path="/profile"
-                        element={<Redirect setJwt={setJwt} />}
-                    />
-                </>
+                {jwt ? (
+                    <>
+                        <Route
+                            path="/dashboard"
+                            element={<Dashboard setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/booking"
+                            element={<NewTransaction setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/branches"
+                            element={<Branches setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/services"
+                            element={<Services setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/discounts"
+                            element={<Discounts setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/settings"
+                            element={<Settings setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/users"
+                            element={<ShowUsers setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/"
+                            element={<Redirect setJwt={setJwt} />}
+                        />
+                        <Route
+                            path="/profile"
+                            element={<Redirect setJwt={setJwt} />}
+                        />
+                    </>
+                ) : (
+                    <>
+                        {/* <Route path="/" element={<Home />} /> */}
+                        <Route
+                            path="/"
+                            element={<LoginForm setJwt={setJwt} />}
+                        />
+                        <Route path="/dashboard" element={<PageNotFound />} />
+                        <Route path="/booking" element={<PageNotFound />} />
+                        <Route path="/branches" element={<PageNotFound />} />
+                        <Route path="/services" element={<PageNotFound />} />
+                        <Route path="/discounts" element={<PageNotFound />} />
+                        <Route path="/settings" element={<PageNotFound />} />
+                        <Route path="/users" element={<PageNotFound />} />
+                        <Route path="/profile" element={<PageNotFound />} />
+                    </>
+                )}
             </Routes>
         </>
     )

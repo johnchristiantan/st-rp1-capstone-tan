@@ -109,7 +109,8 @@ export const ShowUsers = ({ setJwt }) => {
                             >
                                 <div
                                     // onClick={() => handleSelectDiscount(discount)}
-                                    className=" hover:shadow-md w-[22rem] bg-white border shadow-md rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
+                                    // className=" hover:shadow-md w-[22rem] bg-white border shadow-md rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
+                                    className=" hover:shadow-md w-[22rem] border-b  bg-white   rounded  cursor-pointer h-[5rem]  flex flex-col justify-center  text-left p-2"
                                 >
                                     <div className="text-lg font-bold ">
                                         {user.last_name} {user.first_name}

@@ -6,6 +6,7 @@ import {
     editBranch,
 } from '../services/BranchServices'
 import Nav from '../common/Nav'
+import { RxCross2 } from 'react-icons/rx'
 
 export default function Branches({ setJwt }) {
     const [branches, setBranches] = useState([])
@@ -152,7 +153,7 @@ export default function Branches({ setJwt }) {
         }
     }
 
-    const columnWidth = 'calc(22rem / 3)'
+    const columnWidth = 'calc(22rem / 1)'
 
     return (
         <>
@@ -164,13 +165,14 @@ export default function Branches({ setJwt }) {
                             return (
                                 <div
                                     key={index}
-                                    className={`w-full md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth}`}
+                                    // className={`w-full md:w-1/2 lg:w-1/3 p-2 md:w-${columnWidth} lg:w-${columnWidth}`}
+                                    className={`  pt-2 w-[22rem] `}
                                 >
                                     <div
                                         onClick={() =>
                                             handleSelectBranch(branch)
                                         }
-                                        className="transition-transform transition-bg hover:scale-110 hover:shadow-md bg-white border  shadow-md rounded p-4 cursor-pointer h-[10rem] overflow-y-auto flex flex-col justify-center items-center text-center"
+                                        className="transition-transform transition-bg hover:scale-110 hover:shadow-sm bg-white border-b  rounded p-4 cursor-pointer h-[4rem] flex flex-col justify-center  text-left"
                                     >
                                         <div className="text-sm font-bold">
                                             {branch.branch_name}
@@ -214,9 +216,16 @@ export default function Branches({ setJwt }) {
                             className="flex flex-col justify-around bg-white w-[22rem] p-6 text-white border-2 border-gray-500 rounded px-15 items-left h-9/12"
                             onSubmit={handleOnSubmit}
                         >
-                            <div className="flex items-center w-full">
-                                <h1 className="mb-2 text-lg font-bold text-left text-orange-600">
-                                    Create Branch
+                            <div className="flex w-full">
+                                <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-500">
+                                    <span> Create Branch</span>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleShowButton}
+                                    >
+                                        <RxCross2 size={20} />
+                                    </button>
                                 </h1>
                             </div>
 
@@ -264,14 +273,14 @@ export default function Branches({ setJwt }) {
                                     value="Submit"
                                 />
                             </div>
-                            <div className="flex items-center justify-between w-full mt-4 ">
+                            {/* <div className="flex items-center justify-between w-full mt-4 ">
                                 <input
                                     className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
                                     type="button"
                                     onClick={handleShowButton}
                                     value="Cancel"
                                 />
-                            </div>
+                            </div> */}
                         </form>
                     </div>
                 )}
@@ -281,9 +290,16 @@ export default function Branches({ setJwt }) {
                             className="flex flex-col justify-around w-[25rem] p-6 bg-white text-white  rounded-lg border-2 border-gray-600 px-15 items-left h-9/12"
                             onSubmit={handleEditSubmit}
                         >
-                            <div className="flex items-center w-full">
-                                <h1 className="mb-2  text-[1.2rem] text-lg font-bold text-left text-orange-500">
-                                    Edit/Delete Branch
+                            <div className="flex w-full">
+                                <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-500">
+                                    <span> Edit/Delete Branch</span>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleOnCancelEdit}
+                                    >
+                                        <RxCross2 size={20} />
+                                    </button>
                                 </h1>
                             </div>
 
@@ -336,18 +352,18 @@ export default function Branches({ setJwt }) {
                                 />
                             </div>
 
-                            <div className="flex items-center justify-center w-full mt-4">
+                            {/* <div className="flex items-center justify-center w-full mt-4">
                                 <input
                                     className="w-[30rem] p-1 bg-white rounded-lg hover:bg-orange-500 text-black border-2 border-orange-500 hover:text-white"
                                     type="button"
                                     onClick={handleOnCancelEdit}
                                     value="Cancel"
                                 />
-                            </div>
+                            </div> */}
 
                             <div className="flex items-center justify-center w-full mt-4">
                                 <input
-                                    className="w-[30rem] p-1 rounded-full text-black hover:text-orange-500 "
+                                    className="w-[30rem] p-1 rounded-lg text-black hover:text-orange-500 border-orange-400 border-2 "
                                     type="button"
                                     value="Delete"
                                     onClick={() =>

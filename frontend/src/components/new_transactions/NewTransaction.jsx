@@ -4,11 +4,14 @@ import BranchLists from './BranchLists'
 import StatusLists from './StatusLists'
 import ServiceCard from './ServiceCard'
 import useTransactionFormStore from '../../data/Store'
+import { getAllServices } from '../../services/SpaServices'
 import {
     createdTransaction,
     getAllTransactions,
 } from '../../services/TransactionServices'
 import { getUsers } from '../../services/Users'
+import { getAllAvailedServices } from '../../services/AvailedServices'
+
 import UserFilter from './UserFilter'
 import { useState, useEffect, useRef } from 'react'
 import Nav from '../../common/Nav'
@@ -17,12 +20,13 @@ import { removeTimeStamp } from '../../utils/DateFormatter'
 
 const NewTransaction = ({ setJwt }) => {
     const [transactions, setTransactions] = useState([])
+
     const [isMounted, setIsMounted] = useState(true)
-    const [selectedStatus, setSelectedStatus] = useState('All') // Default to 'All' to show all transactions initially
+    const [selectedStatus, setSelectedStatus] = useState('Current') // Default to 'All' to show all transactions initially
     // const [selectedUser, setSelectedUser] = useState(null) // Define and initialize selectedUser state
 
     const {
-        availedServices,
+        // availedServices,
         createTransactionInputField,
         setCreateTransactionInputField,
         availedServicesArray,
@@ -115,6 +119,18 @@ const NewTransaction = ({ setJwt }) => {
             })
     }, [])
 
+    const [availedServices, setAvailedServices] = useState([])
+    useEffect(() => {
+        getAllAvailedServices()
+            .then((res) => {
+                setAvailedServices(res)
+            })
+            .catch((error) => {
+                console.error('Error fetching availed services:', error)
+                // Set state or show an error message in your component
+            })
+    }, [])
+
     // hiding + button
     useEffect(() => {
         return () => {
@@ -122,9 +138,20 @@ const NewTransaction = ({ setJwt }) => {
         }
     }, [])
 
+    // const filteredTransactions =
+    //     selectedStatus === 'All'
+    //         ? transactions
+    //         : transactions.filter(
+    //               (transaction) => transaction.status === selectedStatus
+    //           )
+
     const filteredTransactions =
-        selectedStatus === 'All'
-            ? transactions
+        selectedStatus === 'Current'
+            ? transactions.filter(
+                  (transaction) =>
+                      transaction.status === 'ongoing' ||
+                      transaction.status === 'booked'
+              )
             : transactions.filter(
                   (transaction) => transaction.status === selectedStatus
               )
@@ -172,11 +199,23 @@ const NewTransaction = ({ setJwt }) => {
     // const tip_ur = useRef(null)
     // const total_commission_ur = useRef(null)
 
+    // Function to filter availed_services based on the selected transaction
+    const getAvailedServicesForTransaction = (transactionId) => {
+        if (transactionId && availedServices.length > 0) {
+            return availedServices.filter(
+                (availedService) =>
+                    availedService.transaction_id === transactionId
+            )
+        }
+        return []
+    }
+
     const handleSelectTransaction = (transaction) => {
         // setIsFormVisible(false)
         // setSelectedBranch(branch)
         // setShowSelectedBranch(true)
         // console.log("Transaction:    ", transaction)
+        setSelectedTransaction(transaction)
 
         setIsSelectedFormVisible(true)
         setIsEditMode(true)
@@ -206,7 +245,7 @@ const NewTransaction = ({ setJwt }) => {
     }
 
     if (selectedTransaction !== null) {
-        console.log('selectedTransaction: ', selectedTransaction)
+        // console.log('selectedTransaction: ', selectedTransaction)
         selectedTransaction['transaction_date'] = removeTimeStamp(
             selectedTransaction['transaction_date']
         )
@@ -217,68 +256,73 @@ const NewTransaction = ({ setJwt }) => {
             <Nav setJwt={setJwt} />
             <div className="flex flex-col items-center justify-start pt-2 mt-20 mb-4 ">
                 {isSelectedFormVisible && (
-                    <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
-                        <div className="flex w-full">
-                            <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
-                                <span>{isEditMode ? 'Update' : 'Create'}</span>
-                                <button
-                                    type="button"
-                                    onClick={handleUpdateClose}
-                                >
-                                    <RxCross2 size={20} />
-                                </button>
-                            </h1>
-                        </div>
+                    <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50 backdrop-contrast-50 ">
+                        <form className="flex flex-col justify-around w-[22rem] bg-white p-6 m-4 text-white border rounded form1 px-15 items-left h-9/12">
+                            <div className="flex w-full">
+                                <h1 className="flex justify-between w-full mb-2 text-base font-bold text-left text-orange-600">
+                                    <span>
+                                        {isEditMode ? 'Update' : 'Create'}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={handleUpdateClose}
+                                    >
+                                        <RxCross2 size={20} />
+                                    </button>
+                                </h1>
+                            </div>
 
-                        {/* <PrioInputFields
+                            {/* <PrioInputFields
                         selectedTransaction={selectedTransaction}
                         isEditMode={isEditMode}
                     /> */}
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Date:</label>
-                            <div className="flex flex-col  w-[12rem]">
-                                <input
-                                    className="p-1 text-black border rounded"
-                                    type="date"
-                                    name="transaction_date"
-                                    // onChange={handleOnChange}
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">Date:</label>
+                                <div className="flex flex-col  w-[12rem]">
+                                    <input
+                                        className="p-1 text-black border rounded"
+                                        type="date"
+                                        name="transaction_date"
+                                        // onChange={handleOnChange}
 
-                                    defaultValue={
-                                        selectedTransaction
-                                            ? selectedTransaction.transaction_date
-                                            : ''
-                                    }
-                                    disabled
-                                />
+                                        defaultValue={
+                                            selectedTransaction
+                                                ? selectedTransaction.transaction_date
+                                                : ''
+                                        }
+                                        disabled
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Voucher No.:</label>
-                            <div className="flex flex-col border rounded">
-                                <input
-                                    className="p-1 text-black rounded"
-                                    type="text"
-                                    name="voucher_number"
-                                    // onChange={handleOnChange}
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">
+                                    Voucher No.:
+                                </label>
+                                <div className="flex flex-col border rounded">
+                                    <input
+                                        className="p-1 text-black rounded"
+                                        type="text"
+                                        name="voucher_number"
+                                        // onChange={handleOnChange}
 
-                                    defaultValue={
-                                        selectedTransaction
-                                            ? selectedTransaction.voucher_number
-                                            : ''
-                                    }
-                                />
+                                        defaultValue={
+                                            selectedTransaction
+                                                ? selectedTransaction.voucher_number
+                                                : ''
+                                        }
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        {/* ERROR HERE */}
-                        {/* <UserFilter
+                            {/* ERROR HERE */}
+                            {/* <UserFilter
                         selectedTransaction={selectedTransaction}
                         isEditMode={isEditMode}
                     /> */}
 
-                        {/* WIP: NOT WORKING */}
-                        {/* <div className="flex justify-between w-full text-black">
+                            {/* WIP: NOT WORKING */}
+                            {/* <div className="flex justify-between w-full text-black">
                         <label className="self-center">Customer:</label>
                         <div className="mt-2 w-[12rem] mb-2">
                             <Select
@@ -297,45 +341,95 @@ const NewTransaction = ({ setJwt }) => {
                         </div>
                     </div> */}
 
-                        {/* <BranchLists
+                            {/* <BranchLists
                         selectedTransaction={selectedTransaction}
                         isEditMode={isEditMode}
                     /> */}
 
-                        {/* <StatusLists
+                            {/* <StatusLists
                         selectedTransaction={selectedTransaction}
                         isEditMode={isEditMode}
                     /> */}
-                        <div className="flex justify-between w-full space-y-2 text-black">
-                            <label className="self-center">Status:</label>
-                            <div className="flex flex-col w-[12rem]  rounded">
-                                <select
-                                    name="status" // Add the name attribute here
-                                    className="p-1 text-black bg-white border rounded"
-                                    value={
-                                        selectedTransaction
-                                            ? selectedTransaction['status']
-                                            : selectedStatus
-                                    }
-                                    // onChange={handleOnChange}
-                                >
-                                    <option value="All">All</option>
-                                    <option value="booked">Booked</option>
-                                    <option value="ongoing">Ongoing</option>
-                                    <option value="cancelled">Cancelled</option>
-                                    <option value="completed">Completed</option>
-                                </select>
+                            <div className="flex justify-between w-full space-y-2 text-black">
+                                <label className="self-center">Status:</label>
+                                <div className="flex flex-col w-[12rem]  rounded">
+                                    <select
+                                        name="status" // Add the name attribute here
+                                        className="p-1 text-black bg-white border rounded"
+                                        value={
+                                            selectedTransaction
+                                                ? selectedTransaction['status']
+                                                : selectedStatus
+                                        }
+                                        // onChange={handleOnChange}
+                                    >
+                                        <option value="current">Current</option>
+                                        <option value="booked">Booked</option>
+                                        <option value="ongoing">Ongoing</option>
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>
+                                        <option value="completed">
+                                            Completed
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex items-center justify-center w-full mt-4">
-                            <input
-                                className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
-                                type="submit"
-                                value="Submit"
-                            />
-                        </div>
-                    </form>
+                            <div className="m-2 text-black AvailedTransactionList">
+                                {/* Render your list of transactions here */}
+
+                                {/* Display availed services for the selected transaction */}
+                                {selectedTransaction && (
+                                    <>
+                                        <div>
+                                            <h2>
+                                                Availed Services for Transaction
+                                                ID:{' '}
+                                                {
+                                                    selectedTransaction.transaction_id
+                                                }
+                                            </h2>
+                                        </div>
+                                        <div className="bg-yellow-300">
+                                            <ul>
+                                                {getAvailedServicesForTransaction(
+                                                    selectedTransaction.transaction_id
+                                                ).map((availedService) => (
+                                                    <li
+                                                        key={
+                                                            availedService.availed_service_id
+                                                        }
+                                                    >
+                                                        Service ID:{' '}
+                                                        {
+                                                            availedService.service_id
+                                                        }
+                                                        , Service Name:{' '}
+                                                        {
+                                                            availedService.service_name
+                                                        }
+                                                        , Quantity:{' '}
+                                                        {
+                                                            availedService.quantity
+                                                        }
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            <div className="flex items-center justify-center w-full mt-4">
+                                <input
+                                    className="w-[30rem] p-1 bg-orange-400 rounded-lg hover-bg-orange-500 border-orange-400 border-2 hover-border-orange-500"
+                                    type="submit"
+                                    value="Submit"
+                                />
+                            </div>
+                        </form>
+                    </div>
                 )}
             </div>
 
@@ -400,7 +494,7 @@ const NewTransaction = ({ setJwt }) => {
                     onChange={(e) => setSelectedStatus(e.target.value)}
                     className="mt-4 p-2 bg-orange-100 rounded w-[22rem] "
                 >
-                    <option value="All">All</option>
+                    <option value="Current">Current</option>
                     <option value="booked">Booked</option>
                     <option value="ongoing">Ongoing</option>
                     <option value="cancelled">Cancelled</option>
